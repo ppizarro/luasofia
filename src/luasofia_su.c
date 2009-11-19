@@ -33,6 +33,8 @@ static int lua_su_root_create(lua_State *L)
     if (!root)
         luaL_error(L, "su_root_create failed!");
 
+    su_root_threading(root, 0);
+
     /* create a su_root object */
     userdata = (su_root_userdata*) lua_newuserdata(L, sizeof(su_root_userdata));
     /* set Lua state */

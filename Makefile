@@ -1,6 +1,6 @@
 TARGET = luasofia.so
 
-OBJECTS = luasofia.o luasofia_root.o
+OBJECTS = luasofia.o luasofia_su.o luasofia_su_root.o
 
 CFLAGS += -O2 -c -Wall -fPIC
 CFLAGS += `pkg-config --cflags sofia-sip-ua lua5.1`
