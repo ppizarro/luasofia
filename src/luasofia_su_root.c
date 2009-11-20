@@ -1,6 +1,4 @@
 /* vim: set ts=8 et sw=4 sta ai cin: */
-#include <sofia-sip/su_wait.h>
-
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>

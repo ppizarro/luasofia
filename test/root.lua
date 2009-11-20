@@ -4,7 +4,7 @@ su.init()
 
 root = su.root_create()
 
-root:run()
+--root:run()
 
 root = nil
 

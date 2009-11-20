@@ -2,6 +2,8 @@
 #ifndef __LUASOFIA_SU_ROOT_H__
 #define __LUASOFIA_SU_ROOT_H__
 
+#include <sofia-sip/su_wait.h>
+
 #define SU_ROOT_MTABLE "su_root_t"
 
 typedef struct su_root_userdata_s {
