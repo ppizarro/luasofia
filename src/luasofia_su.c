@@ -23,7 +23,7 @@ static int lua_su_deinit(lua_State *L)
 static int lua_su_root_create(lua_State *L)
 {
     su_root_t *root = NULL;
-    su_root_userdata *userdata = NULL;
+    lua_su_root_t *lroot = NULL;
     int argc = lua_gettop(L); 
 
     if (argc > 0)
@@ -37,17 +37,17 @@ static int lua_su_root_create(lua_State *L)
     su_root_threading(root, 0);
 
     /* create a su_root object */
-    userdata = (su_root_userdata*) lua_newuserdata(L, sizeof(su_root_userdata));
+    lroot = (lua_su_root_t*) lua_newuserdata(L, sizeof(lua_su_root_t));
     /* set Lua state */
-    userdata->L = L;
-    userdata->root = root;
+    lroot->L = L;
+    lroot->root = root;
 
     /* set its metatable */
     luaL_getmetatable(L, SU_ROOT_MTABLE);
     lua_setmetatable(L, -2);
 
     // FIXME guardamos a table no registry e setamos o magic com o ref ou
-    // guardamos a table no environment do userdata e setamos o magic como NULL?
+    // guardamos a table no environment do lroot e setamos o magic como NULL?
     if (argc > 0) {
         /* set callback table as environment for udata */
         lua_pushvalue(L, 1);
@@ -60,7 +60,7 @@ static int lua_su_root_create(lua_State *L)
 static int lua_su_home_new(lua_State *L)
 {
     su_home_t *home = NULL;
-    su_home_userdata *userdata = NULL;
+    lua_su_home_t *lhome = NULL;
     int size = luaL_optint(L, 1, sizeof(su_home_t));
 
     /* create the su_home */
@@ -69,10 +69,10 @@ static int lua_su_home_new(lua_State *L)
         luaL_error(L, "su_home_new failed!");
 
     /* create a su_home object */
-    userdata = (su_home_userdata*) lua_newuserdata(L, sizeof(su_home_userdata));
+    lhome = (lua_su_home_t*) lua_newuserdata(L, sizeof(lua_su_home_t));
     /* set Lua state */
-    userdata->L = L;
-    userdata->home = home;
+    lhome->L = L;
+    lhome->home = home;
 
     /* set its metatable */
     luaL_getmetatable(L, SU_HOME_MTABLE);

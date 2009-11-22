@@ -6,10 +6,10 @@
 
 #define SU_HOME_MTABLE "su_home_t"
 
-typedef struct su_home_userdata_s {
+typedef struct lua_su_home_s {
     su_home_t *home;
     lua_State *L;
-} su_home_userdata;
+} lua_su_home_t;
 
 int luaopen_su_home(lua_State *L);
 

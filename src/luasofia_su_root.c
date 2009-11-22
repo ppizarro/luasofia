@@ -7,14 +7,14 @@
 
 static int lua_su_root_destroy(lua_State *L)
 {
-    su_root_userdata *luserdata = NULL;
+    lua_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    luserdata = (su_root_userdata*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
-    if (luserdata->root) {
-        su_root_destroy(luserdata->root);
-        luserdata->root = NULL;
+    if (lroot->root) {
+        su_root_destroy(lroot->root);
+        lroot->root = NULL;
     }
 
     return 0;
@@ -42,24 +42,24 @@ static int lua_su_root_unregister(lua_State *L)
 
 static int lua_su_root_run(lua_State *L)
 {
-    su_root_userdata *luserdata = NULL;
+    lua_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    luserdata = (su_root_userdata*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
-    su_root_run(luserdata->root);
+    su_root_run(lroot->root);
 
     return 0;
 }
 
 static int lua_su_root_break(lua_State *L)
 {
-    su_root_userdata *luserdata = NULL;
+    lua_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    luserdata = (su_root_userdata*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
-    su_root_break(luserdata->root);
+    su_root_break(lroot->root);
 
     return 0;
 }
