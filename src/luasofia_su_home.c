@@ -1,11 +1,33 @@
 /* vim: set ts=8 et sw=4 sta ai cin: */
-#include <sofia-sip/su_wait.h>
 
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
 
 #include "luasofia_su_home.h"
+
+int lua_su_home_new(lua_State *L)
+{
+    su_home_t *home = NULL;
+    lua_su_home_t *lhome = NULL;
+    int size = luaL_optint(L, 1, sizeof(su_home_t));
+
+    /* create the su_home */
+    home = su_home_new(size);
+    if (!home)
+        luaL_error(L, "su_home_new failed!");
+
+    /* create a su_home object */
+    lhome = (lua_su_home_t*) lua_newuserdata(L, sizeof(lua_su_home_t));
+    /* set Lua state */
+    lhome->L = L;
+    lhome->home = home;
+
+    /* set its metatable */
+    luaL_getmetatable(L, SU_HOME_MTABLE);
+    lua_setmetatable(L, -2);
+    return 1;
+}
 
 static int lua_su_home_ref(lua_State *L)
 {

@@ -6,9 +6,13 @@
 
 #include "luasofia_su.h"
 #include "luasofia_nua.h"
+#include "luasofia_weak_table.h"
 
 int luaopen_luasofia(lua_State *L)
 {
+    /* create luasofia weak table at REGISTRYINDEX */
+    luasofia_weak_table_create(L);
+
     luaopen_su(L);
     luaopen_nua(L);
 

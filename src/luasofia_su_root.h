@@ -4,14 +4,16 @@
 
 #include <sofia-sip/su_wait.h>
 
-#define SU_ROOT_MTABLE "su_root_t"
-
 typedef struct lua_su_root_s {
     su_root_t *root;
     lua_State *L;
 } lua_su_root_t;
 
+#define SU_ROOT_MTABLE "su_root_t"
+
 int luaopen_su_root(lua_State *L);
+
+int lua_su_root_create(lua_State *L);
 
 #endif //__LUASOFIA_SU_ROOT_H_
 

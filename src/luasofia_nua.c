@@ -7,7 +7,17 @@
 #include "luasofia_su_root.h"
 #include "luasofia_nua.h"
 
-static int nua_table_ref = LUA_REFNIL;
+#include <sofia-sip/nua.h>
+
+struct lua_nua_handle_s {
+    nua_handle_t *nh;
+    lua_State *L;
+};
+
+struct lua_nua_s {
+    nua_t *nua;
+    lua_State *L;
+};
 
 static int lua_nua_handle_bind(lua_State *L)
 {
@@ -44,8 +54,8 @@ static int lua_nua_destroy(lua_State *L)
         lnua->nua = NULL;
     }
 
-    /* remove lnua of the nua weak table */
-    luasofia_weak_table_remove(L, nua_table_ref, lnua->nua);
+    /* remove lnua of the luasofia weak table */
+    luasofia_weak_table_remove(L, lnua->nua);
     return 0;
 }
 
@@ -59,18 +69,18 @@ static int lua_nua_shutdown(lua_State *L)
 }
 
 /* NUA event callback */
-void nua_event_callback(nua_event_t event,
-                        int status, char const *phrase,
-                        nua_t *nua, nua_magic_t *magic,
-                        nua_handle_t *nh, nua_hmagic_t *hmagic,
-                        sip_t const *sip,
-                        tagi_t tags[])
+static void nua_event_callback(nua_event_t event,
+                               int status, char const *phrase,
+                               nua_t *nua, nua_magic_t *magic,
+                               nua_handle_t *nh, nua_hmagic_t *hmagic,
+                               sip_t const *sip,
+                               tagi_t tags[])
 {
     lua_nua_t *lnua = (lua_nua_t*)magic;
     lua_State *L = lnua->L;
 
     // put userdataum at stack and check if it is ok.
-    luasofia_weak_table_get(L, nua_table_ref, lnua->nua);
+    luasofia_weak_table_get(L, lnua->nua);
     luaL_checkudata(L, -1, NUA_MTABLE);
 
     /* put callback table at stack */
@@ -123,8 +133,8 @@ static int lua_nua_create(lua_State *L)
     luaL_getmetatable(L, NUA_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store nua at nua weak table */
-    luasofia_weak_table_set(L, nua_table_ref, nua);
+    /* store nua at luasofia weak table */
+    luasofia_weak_table_set(L, nua);
 
     /* set callback table as environment for udata */
     lua_pushvalue(L, 1);
@@ -169,11 +179,7 @@ int luaopen_nua(lua_State *L)
     luaL_register(L, NULL, nua_meths);
     lua_pop(L, 1);
 
-    /* create nua weak table at REGISTRYINDEX */
-    nua_table_ref = luasofia_weak_table_create(L);
-
     luaL_register(L, "nua", nua_lib);
-
     return 1;
 }
 

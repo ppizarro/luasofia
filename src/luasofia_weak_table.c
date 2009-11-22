@@ -3,7 +3,9 @@
 #include <lua.h>
 #include <lualib.h>
 
-void luasofia_weak_table_remove(lua_State *L, int weak_table_ref, void* key)
+static int weak_table_ref = LUA_REFNIL;
+
+void luasofia_weak_table_remove(lua_State *L, void* key)
 {
     /* put the weak table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, weak_table_ref);
@@ -16,7 +18,7 @@ void luasofia_weak_table_remove(lua_State *L, int weak_table_ref, void* key)
     lua_pop(L, 1);
 }
 
-void luasofia_weak_table_get(lua_State *L, int weak_table_ref, void* key)
+void luasofia_weak_table_get(lua_State *L, void* key)
 {
     /* put the weak table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, weak_table_ref);
@@ -30,7 +32,7 @@ void luasofia_weak_table_get(lua_State *L, int weak_table_ref, void* key)
     lua_remove(L, -2);
 }
 
-void luasofia_weak_table_set(lua_State *L, int weak_table_ref, void* key)
+void luasofia_weak_table_set(lua_State *L, void* key)
 {
    /* put the weak table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, weak_table_ref);
@@ -63,6 +65,7 @@ int luasofia_weak_table_create(lua_State *L)
 
     /* now lets store the weak table at the LUA_REGISTRYINDEX, */
     /* so it can be acessed by the unregistered callback functions */
-    return luaL_ref(L, LUA_REGISTRYINDEX);
+    weak_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_pop(L, 1);
 }
 
