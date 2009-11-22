@@ -6,9 +6,13 @@ home = su.home_new()
 
 root = su.root_create()
 
-nua = nua.create(root, { event_handler = function () end })
+nua = nua.create(root, {
+        event_handler = function (event, status, phrase)
+            print("=> event: " .. event .. " status: " ..
+                  status .. " phrase: " .. phrase)
+        end })
 
---root:run()
+root:run()
 
 nua:shutdown()
 

@@ -1,26 +1,11 @@
 /* vim: set ts=8 et sw=4 sta ai cin: */
-#include <sofia-sip/nua.h>
-
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
 
 #include "luasofia_weak_table.h"
 #include "luasofia_su_root.h"
-
-#define NUA_HANDLE_MTABLE "lua_nua_handle_t"
-
-typedef struct lua_nua_handle_s {
-    nua_handle_t *nh;
-    lua_State *L;
-} lua_nua_handle_t;
-
-#define NUA_MTABLE "lua_nua_t"
-
-typedef struct lua_nua_s {
-    nua_t *nua;
-    lua_State *L;
-} lua_nua_t;
+#include "luasofia_nua.h"
 
 static int nua_table_ref = LUA_REFNIL;
 
@@ -60,9 +45,7 @@ static int lua_nua_destroy(lua_State *L)
     }
 
     /* remove lnua of the nua weak table */
-    /* nua_table[lnua] = nil */
-    lua_pushnil(L);
-    luasofia_weak_table_set(L, nua_table_ref, lnua);
+    luasofia_weak_table_remove(L, nua_table_ref, lnua->nua);
     return 0;
 }
 
@@ -83,6 +66,33 @@ void nua_event_callback(nua_event_t event,
                         sip_t const *sip,
                         tagi_t tags[])
 {
+    lua_nua_t *lnua = (lua_nua_t*)magic;
+    lua_State *L = lnua->L;
+
+    // put userdataum at stack and check if it is ok.
+    luasofia_weak_table_get(L, nua_table_ref, lnua->nua);
+    luaL_checkudata(L, -1, NUA_MTABLE);
+
+    /* put callback table at stack */
+    lua_getfenv(L, -1);
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+        return;
+    }
+
+    /* get callback */
+    lua_getfield(L, -1, "event_handler");
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 3);
+        return;
+    }
+
+    lua_pushvalue(L, 1);
+    lua_pushinteger(L, event);
+    lua_pushinteger(L, status);
+    lua_pushstring(L, phrase);
+    lua_call(L, 3, 0);
+    lua_pop(L, 2);
 }
 
 static int lua_nua_create(lua_State *L)
@@ -113,8 +123,8 @@ static int lua_nua_create(lua_State *L)
     luaL_getmetatable(L, NUA_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store lnua at nua weak table */
-    luasofia_weak_table_set(L, nua_table_ref, lnua);
+    /* store nua at nua weak table */
+    luasofia_weak_table_set(L, nua_table_ref, nua);
 
     /* set callback table as environment for udata */
     lua_pushvalue(L, 1);
