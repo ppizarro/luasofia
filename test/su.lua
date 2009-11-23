@@ -4,16 +4,14 @@ su.init()
 
 root = su.root_create()
 
-timer = su.timer_create(nil, 200)
+timer = su.timer_create(root:task(), 200)
 
---[[
-timer:set({ timer_handler = function ()
+timer:set({ timer_handler = function (t)
                 print("Timer fired!")
                 root:quit()
             end })
---]]
 
---root:run()
+root:run()
 
 timer = nil
 

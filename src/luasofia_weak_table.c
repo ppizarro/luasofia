@@ -13,8 +13,9 @@ void luasofia_weak_table_remove(lua_State *L, void* key)
         luaL_error(L, "Failed to get weak table!");
 
     /* weak_table[key] = nil */
+    lua_pushlightuserdata(L, key);
     lua_pushnil(L);
-    lua_rawseti(L, -2, (int)key);
+    lua_rawset(L, -3);
     lua_pop(L, 1);
 }
 
@@ -26,7 +27,8 @@ void luasofia_weak_table_get(lua_State *L, void* key)
         luaL_error(L, "Failed to get weak table!");
 
     /* get weak_table[key] */
-    lua_rawgeti(L, -1, (int)key);
+    lua_pushlightuserdata(L, key);
+    lua_rawget(L, -2);
 
     /* remove the table from the stack */
     lua_remove(L, -2);
@@ -39,15 +41,18 @@ void luasofia_weak_table_set(lua_State *L, void* key)
     if (lua_isnil(L, -1))
         luaL_error(L, "Failed to get weak table!");
 
+    /* put key at top of the stack */
+    lua_pushlightuserdata(L, key);
+
     /* put userdata at top of the stack */
-    lua_pushvalue(L, -2);
+    lua_pushvalue(L, -3);
 
     /* weak_table[key] = userdata */
-    lua_rawseti(L, -2, (int)key);
+    lua_rawset(L, -3);
     lua_pop(L, 1);
 }
 
-int luasofia_weak_table_create(lua_State *L)
+void luasofia_weak_table_create(lua_State *L)
 {
     /* create userdata table */
     lua_newtable(L);

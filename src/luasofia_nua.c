@@ -50,12 +50,12 @@ static int lua_nua_destroy(lua_State *L)
     lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
     if (lnua->nua) {
+        /* remove lnua of the luasofia weak table */
+        luasofia_weak_table_remove(L, lnua->nua);
+
         nua_destroy(lnua->nua);
         lnua->nua = NULL;
     }
-
-    /* remove lnua of the luasofia weak table */
-    luasofia_weak_table_remove(L, lnua->nua);
     return 0;
 }
 
@@ -79,7 +79,7 @@ static void nua_event_callback(nua_event_t event,
     lua_nua_t *lnua = (lua_nua_t*)magic;
     lua_State *L = lnua->L;
 
-    // put userdataum at stack and check if it is ok.
+    // put userdatum at stack and check if it is ok.
     luasofia_weak_table_get(L, lnua->nua);
     luaL_checkudata(L, -1, NUA_MTABLE);
 
@@ -97,11 +97,11 @@ static void nua_event_callback(nua_event_t event,
         return;
     }
 
-    lua_pushvalue(L, 1);
+    lua_pushvalue(L, -3);
     lua_pushinteger(L, event);
     lua_pushinteger(L, status);
     lua_pushstring(L, phrase);
-    lua_call(L, 3, 0);
+    lua_call(L, 4, 0);
     lua_pop(L, 2);
 }
 
@@ -137,7 +137,7 @@ static int lua_nua_create(lua_State *L)
     luasofia_weak_table_set(L, nua);
 
     /* set callback table as environment for udata */
-    lua_pushvalue(L, 1);
+    lua_pushvalue(L, -2);
     lua_setfenv(L, -2);
 
     return 1;

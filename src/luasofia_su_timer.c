@@ -4,26 +4,27 @@
 #include <lualib.h>
 
 #include "luasofia_su_timer.h"
+#include "luasofia_su_task.h"
 #include "luasofia_weak_table.h"
 
 int lua_su_timer_create(lua_State *L)
 {
     su_timer_t *timer = NULL;
     lua_su_timer_t *ltimer = NULL;
+    lua_su_task_t *ltask = NULL;
     //su_task_r const task = NULL;
     su_duration_t msec = 0;
 
-    // TODO pegar task object
-    //task = luaL_checkluserdata(L, 1);
+    /* get first argument (a task) */
+    ltask = (lua_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
 
     /* get second argument (a duration int) */
     msec = luaL_checkinteger(L, 2);
-printf("su_timer_create...\n");
+
     /* create the su_timer */
-    timer = su_timer_create(NULL, msec);
+    timer = su_timer_create(ltask->ptask, msec);
     if (!timer)
         luaL_error(L, "su_timer_create failed!");
-printf("su_timer_create OK!\n");
 
     /* create a su_timer object */
     ltimer = (lua_su_timer_t*) lua_newuserdata(L, sizeof(lua_su_timer_t));
@@ -48,6 +49,9 @@ static int lua_su_timer_destroy(lua_State *L)
     ltimer = (lua_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
 
     if (ltimer->timer) {
+        /* remove timer of the luasofia weak table */
+        luasofia_weak_table_remove(L, ltimer->timer);
+
         su_timer_destroy(ltimer->timer);
         ltimer->timer = NULL;
     }
@@ -61,7 +65,7 @@ static void lua_su_timer_callback(su_root_magic_t *magic,
     lua_su_timer_t *ltimer = (lua_su_timer_t*)arg;
     lua_State *L = ltimer->L;
 
-    // put userdataum at stack and check if it is ok.
+    // put userdatum at stack and check if it is ok.
     luasofia_weak_table_get(L, ltimer->timer);
     luaL_checkudata(L, -1, SU_TIMER_MTABLE);
 
@@ -79,14 +83,16 @@ static void lua_su_timer_callback(su_root_magic_t *magic,
         return;
     }
 
-    lua_call(L, 2, 0);
+    lua_pushvalue(L, -3);
+    lua_call(L, 1, 0);
+    lua_pop(L, 2);
 }
 
 static int lua_su_timer_set(lua_State *L)
 {
     lua_su_timer_t *ltimer = NULL;
    
-    /* get and check first argument (should be a engine) */
+    /* get and check first argument (should be a timer) */
     ltimer = (lua_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
 
     /* check the callback table */
@@ -95,7 +101,7 @@ static int lua_su_timer_set(lua_State *L)
     /* set callback table as environment for udata */
     lua_setfenv(L, -2);
 
-    su_timer_set(ltimer->timer, lua_su_timer_callback, NULL);
+    su_timer_set(ltimer->timer, lua_su_timer_callback, ltimer);
     return 0;
 }
 

@@ -2,10 +2,12 @@ TARGET = luasofia.so
 
 OBJECTS = luasofia.o \
 	  luasofia_weak_table.o \
+	  luasofia_utils.o \
           luasofia_su.o \
 	  luasofia_su_root.o \
 	  luasofia_su_home.o \
 	  luasofia_su_timer.o \
+	  luasofia_su_task.o \
 	  luasofia_nua.o
 
 CFLAGS += -O2 -c -Wall -fPIC

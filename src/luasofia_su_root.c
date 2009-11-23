@@ -4,6 +4,7 @@
 #include <lualib.h>
 
 #include "luasofia_su_root.h"
+#include "luasofia_su_task.h"
 
 int lua_su_root_create(lua_State *L)
 {
@@ -115,13 +116,12 @@ static int lua_su_root_set_max_defer(lua_State *L)
 static int lua_su_root_task(lua_State *L)
 {
     lua_su_root_t *lroot = NULL;
-    _su_task_r task;
    
     /* get and check first argument (should be a engine) */
     lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
-    task = su_root_task(lroot->root);
-    return 0;
+    lua_su_task_create(L, su_root_task(lroot->root));
+    return 1;
 }
 
 static const luaL_Reg su_root_meths[] = {
