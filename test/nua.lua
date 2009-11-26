@@ -2,8 +2,6 @@ require "luasofia"
 
 su.init()
 
-home = su.home_new()
-
 root = su.root_create()
 
 callbacks = {
@@ -21,7 +19,16 @@ callbacks = {
     end
 }
 
-nua = nua.create(root, callbacks)
+tags = {
+    NUTAG_URL = "sip:*:5060;transport=udp",
+    NUTAG_USER_AGENT = "lua_test",
+    NUTAG_MEDIA_ENABLE = 1,
+    NUTAG_EARLY_ANSWER = 1,
+    NUTAG_OUTBOUND = "no-validate no-options-keepalive no-natify",
+    NUTAG_M_USERNAME = "1001"
+}
+
+nua = nua.create(root, callbacks, tags)
 
 timer = su.timer_create(root:task(), 200)
 
