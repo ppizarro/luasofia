@@ -12,6 +12,8 @@
 #include <sofia-sip/nua_tag.h>
 #include <sofia-sip/soa_tag.h>
 
+#define TAGS_MAX_SIZE 128
+
 struct lua_nua_handle_s {
     nua_handle_t *nh;
     lua_State *L;
@@ -113,8 +115,7 @@ static int lua_nua_create(lua_State *L)
     lua_su_root_t *lroot = NULL;
     lua_nua_t *lnua = NULL;
     nua_t *nua = NULL;
-
-    tagi_t tags[100];
+    tagi_t tags[TAGS_MAX_SIZE];
 
     /* get and check first argument (should be a root_t) */
     lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
@@ -122,13 +123,13 @@ static int lua_nua_create(lua_State *L)
     /* check the callback table */
     luaL_checktype(L, 2, LUA_TTABLE);
 
-    luasofia_tags_table_to_taglist(L, 3, tags, 100);
+    luasofia_tags_table_to_taglist(L, 3, tags, TAGS_MAX_SIZE);
 
     /* create a nua object */
     lnua = (lua_nua_t*) lua_newuserdata(L, sizeof(lua_nua_t));
 
     /* create the nua_t */
-    nua = nua_create(lroot->root, nua_event_callback, lnua, TAG_NULL());
+    nua = nua_create(lroot->root, nua_event_callback, lnua, TAG_NEXT(tags));
     if (!nua)
         luaL_error(L, "nua_create failed!");
 
