@@ -7,10 +7,12 @@
 #include "luasofia_su_root.h"
 #include "luasofia_tags.h"
 #include "luasofia_nua.h"
+#include "luasofia_utils.h"
 
 #include <sofia-sip/nua.h>
 #include <sofia-sip/nua_tag.h>
 #include <sofia-sip/soa_tag.h>
+#include <sofia-sip/su_tag_io.h>
 
 #define TAGS_MAX_SIZE 128
 
@@ -23,6 +25,19 @@ struct lua_nua_s {
     nua_t *nua;
     lua_State *L;
 };
+
+static int lua_nua_set_params(lua_State *L)
+{
+    /* get and check first argument (should be a lua_nua_t) */
+    lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+    tagi_t tags[TAGS_MAX_SIZE];
+
+    luasofia_tags_table_to_taglist(L, 2, tags, TAGS_MAX_SIZE);
+    tl_print(stdout, "lua_nua_set_params:\n", tags);
+
+    nua_set_params(lnua->nua, TAG_NEXT(tags));
+    return 0;
+}
 
 static int lua_nua_handle_bind(lua_State *L)
 {
@@ -125,6 +140,8 @@ static int lua_nua_create(lua_State *L)
 
     luasofia_tags_table_to_taglist(L, 3, tags, TAGS_MAX_SIZE);
 
+    tl_print(stdout, "lua_nua_create:\n", tags);
+
     /* create a nua object */
     lnua = (lua_nua_t*) lua_newuserdata(L, sizeof(lua_nua_t));
 
@@ -152,14 +169,15 @@ static int lua_nua_create(lua_State *L)
 }
 
 static const luaL_Reg nua_handle_meths[] = {
-    {"ref",     lua_nua_handle_ref },
-    {"unref",   lua_nua_handle_unref },
-    {"bind",    lua_nua_handle_bind },
-    {"__gc",    lua_nua_handle_destroy },
+    {"ref",        lua_nua_handle_ref },
+    {"unref",      lua_nua_handle_unref },
+    {"bind",       lua_nua_handle_bind },
+    {"__gc",       lua_nua_handle_destroy },
     {NULL, NULL}
 };
 
 static const luaL_Reg nua_meths[] = {
+    {"set_params", lua_nua_set_params },
     {"handle_create",  lua_nua_handle_create },
     {"shutdown", lua_nua_shutdown },
     {"__gc",     lua_nua_destroy },
@@ -369,9 +387,9 @@ int luaopen_nua(lua_State *L)
     luaL_register(L, NULL, nua_meths);
     lua_pop(L, 1);
 
-    luaL_register(L, "nua", nua_lib);
-
     luasofia_tags_register(L, nua_tags);
+
+    luaL_register(L, "nua", nua_lib);
     return 1;
 }
 
