@@ -114,11 +114,15 @@ static int lua_nua_create(lua_State *L)
     lua_nua_t *lnua = NULL;
     nua_t *nua = NULL;
 
+    tagi_t tags[100];
+
     /* get and check first argument (should be a root_t) */
     lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     /* check the callback table */
     luaL_checktype(L, 2, LUA_TTABLE);
+
+    luasofia_tags_table_to_taglist(L, 3, tags, 100);
 
     /* create a nua object */
     lnua = (lua_nua_t*) lua_newuserdata(L, sizeof(lua_nua_t));
@@ -140,7 +144,7 @@ static int lua_nua_create(lua_State *L)
     luasofia_weak_table_set(L, nua);
 
     /* set callback table as environment for udata */
-    lua_pushvalue(L, -2);
+    lua_pushvalue(L, 2);
     lua_setfenv(L, -2);
 
     return 1;

@@ -3,17 +3,98 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include <sofia-sip/su_tag_io.h>
+#include <sofia-sip/nua_tag.h>
+
+#include <string.h>
+
 #include "luasofia_tags.h"
+
+static int tag_table_ref = LUA_REFNIL;
+
+void luasofia_tags_create(lua_State *L)
+{
+    /* create userdata table */
+    lua_newtable(L);
+   
+    /* now lets store the tag table at the LUA_REGISTRYINDEX, */
+    tag_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    lua_pop(L, 1);
+}
 
 void luasofia_tags_register(lua_State *L, const luasofia_tag_reg_t *tags)
 {
     if (!tags)
         return;
 
+    /* put the tag table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
+    if (lua_isnil(L, -1))
+        luaL_error(L, "Failed to get tag table!");
+
     for (; tags->tag_name; tags++) {
         lua_pushstring(L, tags->tag_name);
-        lua_pushlightuserdata(L, (void*)tags->tag);
+        lua_pushlightuserdata(L, (void*)tags->t_tag);
         lua_rawset(L,-3);
     }
+}
+
+void luasofia_tags_table_to_taglist(lua_State *L, int index, tagi_t tags[], int maxtags)
+{
+    int i = 0;
+
+    if (maxtags < 1) return;
+
+    if(maxtags == 1 || !lua_istable(L, index)) {
+        tags[0].t_tag = NULL;
+        tags[0].t_value = 0;
+        return;
+    }
+
+    /* put the tag table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
+    if (lua_isnil(L, -1))
+        luaL_error(L, "Failed to get tag table!");
+
+    if (index < 0)
+        index--;
+
+    /* primeira chave */
+    lua_pushnil(L);
+    while(lua_next(L, index) != 0) {
+        /* usa 'key' (no índice -2) e 'value' (no índice -1) */
+        tag_type_t t_tag = NULL;
+        tag_value_t return_value;
+        char const *s = lua_tostring(L, -1);
+
+        // Procura chave na tabela de tags
+        // e retorna o tag_type_t equivalente
+        lua_pushvalue(L, -2);
+        lua_rawget(L, -4);
+        t_tag = lua_touserdata(L, -1);
+        lua_pop(L, 1);
+
+        if(t_scan(t_tag, NULL, s, &return_value) < 0) {
+            lua_pop(L, 1);
+            continue;
+        }
+
+        tags[i].t_tag = t_tag;
+        tags[i++].t_value = return_value;
+
+        if(i == maxtags - 1) {
+            /* remove 'value' e 'key' */
+            lua_pop(L, 2);
+            break;
+        }
+
+        /* remove 'value'; guarda 'key'  para a próxima iteração */
+        lua_pop(L, 1);
+    }
+    /* remove tag table from stack */
+    lua_pop(L, 1);
+
+    tags[i].t_tag = NULL;
+    tags[i].t_value = 0;
 }
 
