@@ -13,7 +13,7 @@ void luasofia_tags_create(lua_State *L);
 
 void luasofia_tags_register(lua_State *L, const luasofia_tag_reg_t *tags);
 
-void luasofia_tags_table_to_taglist(lua_State *L, int index, tagi_t tags[], int maxtags);
+tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home);
 
 #endif //__LUASOFIA_TAGS
 

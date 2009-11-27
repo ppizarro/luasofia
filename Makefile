@@ -6,7 +6,6 @@ OBJECTS = luasofia.o \
 	  luasofia_utils.o \
           luasofia_su.o \
 	  luasofia_su_root.o \
-	  luasofia_su_home.o \
 	  luasofia_su_timer.o \
 	  luasofia_su_task.o \
 	  luasofia_nua.o

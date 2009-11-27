@@ -4,11 +4,14 @@
 #include <lualib.h>
 
 #include <sofia-sip/su_tag_io.h>
+#include <sofia-sip/su_alloc.h>
 #include <sofia-sip/nua_tag.h>
 
 #include <string.h>
 
 #include "luasofia_tags.h"
+
+#define TAGS_LIST_SIZE 32
 
 static int tag_table_ref = LUA_REFNIL;
 
@@ -19,7 +22,6 @@ void luasofia_tags_create(lua_State *L)
    
     /* now lets store the tag table at the LUA_REGISTRYINDEX, */
     tag_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_pop(L, 1);
 }
 
 void luasofia_tags_register(lua_State *L, const luasofia_tag_reg_t *tags)
@@ -39,17 +41,14 @@ void luasofia_tags_register(lua_State *L, const luasofia_tag_reg_t *tags)
     }
 }
 
-void luasofia_tags_table_to_taglist(lua_State *L, int index, tagi_t tags[], int maxtags)
+tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
 {
     int i = 0;
+    int maxtags = TAGS_LIST_SIZE;
+    tagi_t* tags = su_zalloc(home, sizeof(tagi_t) * maxtags);
 
-    if (maxtags < 1) return;
-
-    if(maxtags == 1 || !lua_istable(L, index)) {
-        tags[0].t_tag = NULL;
-        tags[0].t_value = 0;
-        return;
-    }
+    if(!lua_istable(L, index))
+        return tags;
 
     /* put the tag table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
@@ -74,7 +73,8 @@ void luasofia_tags_table_to_taglist(lua_State *L, int index, tagi_t tags[], int 
         t_tag = lua_touserdata(L, -1);
         lua_pop(L, 1);
 
-        if(t_scan(t_tag, NULL, s, &return_value) < 0) {
+        if(t_scan(t_tag, home, s, &return_value) < 0) {
+            /* remove 'value'; guarda 'key'  para a próxima iteração */
             lua_pop(L, 1);
             continue;
         }
@@ -83,9 +83,8 @@ void luasofia_tags_table_to_taglist(lua_State *L, int index, tagi_t tags[], int 
         tags[i++].t_value = return_value;
 
         if(i == maxtags - 1) {
-            /* remove 'value' e 'key' */
-            lua_pop(L, 2);
-            break;
+            maxtags *= 2;
+            tags = su_realloc(home, tags, sizeof(tagi_t) * maxtags);
         }
 
         /* remove 'value'; guarda 'key'  para a próxima iteração */
@@ -96,5 +95,6 @@ void luasofia_tags_table_to_taglist(lua_State *L, int index, tagi_t tags[], int 
 
     tags[i].t_tag = NULL;
     tags[i].t_value = 0;
+    return tags;
 }
 

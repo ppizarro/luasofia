@@ -14,8 +14,6 @@
 #include <sofia-sip/soa_tag.h>
 #include <sofia-sip/su_tag_io.h>
 
-#define TAGS_MAX_SIZE 128
-
 struct lua_nua_handle_s {
     nua_handle_t *nh;
     lua_State *L;
@@ -29,13 +27,13 @@ struct lua_nua_s {
 static int lua_nua_set_params(lua_State *L)
 {
     /* get and check first argument (should be a lua_nua_t) */
+    su_home_t *home = su_home_create();
     lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
-    tagi_t tags[TAGS_MAX_SIZE];
+    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    luasofia_tags_table_to_taglist(L, 2, tags, TAGS_MAX_SIZE);
     tl_print(stdout, "lua_nua_set_params:\n", tags);
-
     nua_set_params(lnua->nua, TAG_NEXT(tags));
+    su_home_unref(home);
     return 0;
 }
 
@@ -83,7 +81,6 @@ static int lua_nua_shutdown(lua_State *L)
 {
     /* get and check first argument (should be a lua_nua_t) */
     lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
-
     nua_shutdown(lnua->nua);
     return 0;
 }
@@ -99,6 +96,9 @@ static void nua_event_callback(nua_event_t event,
     lua_nua_t *lnua = (lua_nua_t*)magic;
     lua_State *L = lnua->L;
 
+    printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p]\n",
+           event, status, phrase, nua, magic);
+
     // put userdatum at stack and check if it is ok.
     luasofia_weak_table_get(L, lnua->nua);
     luaL_checkudata(L, -1, NUA_MTABLE);
@@ -112,7 +112,7 @@ static void nua_event_callback(nua_event_t event,
 
     /* get callback */
     lua_getfield(L, -1, "event_handler");
-    if (lua_isnil(L, -1)) {
+    if (!lua_isfunction(L, -1)) {
         lua_pop(L, 3);
         return;
     }
@@ -130,7 +130,8 @@ static int lua_nua_create(lua_State *L)
     lua_su_root_t *lroot = NULL;
     lua_nua_t *lnua = NULL;
     nua_t *nua = NULL;
-    tagi_t tags[TAGS_MAX_SIZE];
+    tagi_t *tags = NULL;
+    su_home_t *home = su_home_create();
 
     /* get and check first argument (should be a root_t) */
     lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
@@ -138,7 +139,7 @@ static int lua_nua_create(lua_State *L)
     /* check the callback table */
     luaL_checktype(L, 2, LUA_TTABLE);
 
-    luasofia_tags_table_to_taglist(L, 3, tags, TAGS_MAX_SIZE);
+    tags = luasofia_tags_table_to_taglist(L, 3, home);
 
     tl_print(stdout, "lua_nua_create:\n", tags);
 
@@ -165,6 +166,7 @@ static int lua_nua_create(lua_State *L)
     lua_pushvalue(L, 2);
     lua_setfenv(L, -2);
 
+    su_home_unref(home);
     return 1;
 }
 

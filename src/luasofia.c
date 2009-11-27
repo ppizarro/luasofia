@@ -19,7 +19,6 @@ int luaopen_luasofia(lua_State *L)
 
     luaopen_su(L);
     luaopen_nua(L);
-
     return 1;
 }
 

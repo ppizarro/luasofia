@@ -71,6 +71,5 @@ void luasofia_weak_table_create(lua_State *L)
     /* now lets store the weak table at the LUA_REGISTRYINDEX, */
     /* so it can be acessed by the unregistered callback functions */
     weak_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
-    lua_pop(L, 1);
 }
 
