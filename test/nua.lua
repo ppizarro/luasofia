@@ -4,19 +4,31 @@ su.init()
 
 root = su.root_create()
 
-n = nua.create(root,
-               { event_handler = function (n, event, status, phrase, tags)
-                     print("=> event: " .. event .. " status: " ..
-                           status .. " phrase: " .. phrase)
-                     print("=> tags size: " .. #tags)
-                     for i=1, #tags do
-                        print("\t" .. tags[i])
-                     end
-                     if (event == nua.nua_r_shutdown) then
-                         root:quit()
-                     end
-                 end 
-               },
+callbacks = {}
+
+callbacks["event_handler"] = function (n, event, status, phrase, tags)
+                                 print("event_handler: " .. event .. " status: " ..
+                                        status .. " phrase: " .. phrase)
+                                 if (#tags > 0) then
+                                     print("\ttags size[" .. #tags .. "]:")
+                                     for i=1, #tags do
+                                         print("\t\t" .. tags[i])
+                                     end
+                                 end
+                             end
+
+callbacks[nua.nua_r_set_params] = function (n, event, status, phrase, tags)
+                                      print("nua_r_set_params: status[" .. status ..
+                                            "] phrase[" .. phrase .. "]")
+                                  end
+
+callbacks[nua.nua_r_shutdown] = function (n, event, status, phrase, tags)
+                                    print("nua_r_shutdown: status[" .. status ..
+                                          "] phrase[" .. phrase .. "]")
+                                    root:quit()
+                                end
+
+n = nua.create(root, callbacks,
                { NUTAG_URL = "sip:*:5060;transport=udp",
                  NUTAG_USER_AGENT = "lua_test",
                  NUTAG_MEDIA_ENABLE = 1,
@@ -35,7 +47,7 @@ n:set_params({ NUTAG_ENABLEMESSAGE = 1,
 timer = su.timer_create(root:task(), 200)
 
 timer:set( { timer_handler = function (t)
-                 print("nua shutdown!")
+                 print("timer fired: nua shutdown")
                  n:shutdown()
              end })
 
