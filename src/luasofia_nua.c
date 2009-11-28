@@ -96,8 +96,8 @@ static void nua_event_callback(nua_event_t event,
     lua_nua_t *lnua = (lua_nua_t*)magic;
     lua_State *L = lnua->L;
 
-    printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p]\n",
-           event, status, phrase, nua, magic);
+    printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] tags[%p]\n",
+           event, status, phrase, nua, magic, tags);
 
     // put userdatum at stack and check if it is ok.
     luasofia_weak_table_get(L, lnua->nua);
@@ -121,7 +121,10 @@ static void nua_event_callback(nua_event_t event,
     lua_pushinteger(L, event);
     lua_pushinteger(L, status);
     lua_pushstring(L, phrase);
-    lua_call(L, 4, 0);
+
+    luasofia_tags_taglist_to_table(L, tags);
+
+    lua_call(L, 5, 0);
     lua_pop(L, 2);
 }
 

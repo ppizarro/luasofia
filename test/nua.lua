@@ -5,9 +5,13 @@ su.init()
 root = su.root_create()
 
 n = nua.create(root,
-               { event_handler = function (m, event, status, phrase)
+               { event_handler = function (m, event, status, phrase, tags)
                      print("=> event: " .. event .. " status: " ..
                            status .. " phrase: " .. phrase)
+                     print("=> tags size: " .. #tags)
+                     for i=1, #tags do
+                        print("\t" .. tags[i])
+                     end
                      if (event == 25) then
                          root:quit()
                      end

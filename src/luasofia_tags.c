@@ -98,3 +98,17 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
     return tags;
 }
 
+void luasofia_tags_taglist_to_table(lua_State *L, tagi_t tags[])
+{
+    int i = 0;
+
+    if(!tags) return;
+
+    lua_newtable(L);
+    while(tags[i].t_tag) {
+        lua_pushstring(L, tags[i].t_tag->tt_name);
+        lua_pushlightuserdata(L, (void*)(tags[i++].t_tag));
+        lua_rawset(L,-3);
+    }
+}
+
