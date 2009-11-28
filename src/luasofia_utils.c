@@ -3,6 +3,19 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include "luasofia_utils.h"
+
+void luasofia_register_constants(lua_State *L, const luasofia_reg_const_t *consts)
+{
+    if (!consts) return;
+
+    for (; consts->name; consts++) {
+        lua_pushstring(L, consts->name);
+        lua_pushnumber(L, consts->value);
+        lua_rawset(L,-3);
+    }
+}
+
 void stack_dump(lua_State *L)
 {
     int i = 1;

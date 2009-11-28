@@ -376,6 +376,61 @@ static const luasofia_tag_reg_t nua_tags[] = {
     {NULL, NULL}
 };
 
+static const luasofia_reg_const_t nua_constants[] = {
+    { "nua_i_none", nua_i_none },
+    { "nua_i_error", nua_i_error },
+    { "nua_i_invite", nua_i_invite },
+    { "nua_i_cancel", nua_i_cancel },
+    { "nua_i_ack", nua_i_ack },
+    { "nua_i_fork", nua_i_fork },
+    { "nua_i_active", nua_i_active },
+    { "nua_i_terminated", nua_i_terminated },
+    { "nua_i_state", nua_i_state },
+    { "nua_i_outbound", nua_i_outbound },
+    { "nua_i_bye", nua_i_bye },
+    { "nua_i_options", nua_i_options },
+    { "nua_i_refer", nua_i_refer },
+    { "nua_i_publish", nua_i_publish },
+    { "nua_i_prack", nua_i_prack },
+    { "nua_i_info", nua_i_info },
+    { "nua_i_update", nua_i_update },
+    { "nua_i_message", nua_i_message },
+    { "nua_i_chat", nua_i_chat },
+    { "nua_i_subscribe", nua_i_subscribe },
+    { "nua_i_subscription", nua_i_subscription },
+    { "nua_i_notify", nua_i_notify },
+    { "nua_i_method", nua_i_method },
+    { "nua_i_media_error", nua_i_media_error },
+    { "nua_r_set_params", nua_r_set_params },
+    { "nua_r_get_params", nua_r_get_params },
+    { "nua_r_shutdown", nua_r_shutdown },
+    { "nua_r_notifier", nua_r_notifier },
+    { "nua_r_terminate", nua_r_terminate },
+    { "nua_r_authorize", nua_r_authorize },
+    { "nua_r_register", nua_r_register },
+    { "nua_r_unregister", nua_r_unregister },
+    { "nua_r_invite", nua_r_invite },
+    { "nua_r_cancel", nua_r_cancel },
+    { "nua_r_bye", nua_r_bye },
+    { "nua_r_options", nua_r_options },
+    { "nua_r_refer", nua_r_refer },
+    { "nua_r_publish", nua_r_publish },
+    { "nua_r_unpublish", nua_r_unpublish },
+    { "nua_r_info", nua_r_info },
+    { "nua_r_prack", nua_r_prack },
+    { "nua_r_update", nua_r_update },
+    { "nua_r_message", nua_r_message },
+    { "nua_r_chat", nua_r_chat },
+    { "nua_r_subscribe", nua_r_subscribe },
+    { "nua_r_unsubscribe", nua_r_unsubscribe },
+    { "nua_r_notify", nua_r_notify },
+    { "nua_r_method", nua_r_method },
+    { "nua_r_authenticate", nua_r_authenticate },
+    { "nua_i_network_changed", nua_i_network_changed },
+    { "nua_i_register", nua_i_register },
+    {NULL, 0 }
+};
+
 int luaopen_nua(lua_State *L)
 {
     luaL_newmetatable(L, NUA_HANDLE_MTABLE);
@@ -395,6 +450,9 @@ int luaopen_nua(lua_State *L)
     luasofia_tags_register(L, nua_tags);
 
     luaL_register(L, "nua", nua_lib);
+
+    luasofia_register_constants(L, nua_constants);
+
     return 1;
 }
 
