@@ -1,5 +1,16 @@
 require "luasofia"
 
+function gera_chamada(n, uri, from, to)
+
+    print("gera_chamada: uri[" .. uri ..
+          "] from[" .. from ..
+          "] to[" .. to .. "]")
+
+    nh = n:handle_create({ NUTAG_URL = uri,
+                           SIPTAG_TO_STR = to,
+                           SIPTAG_FROM_STR = from })
+end
+
 su.init()
 
 root = su.root_create()
@@ -20,6 +31,12 @@ callbacks["event_handler"] = function (n, event, status, phrase, tags)
 callbacks[nua.nua_r_set_params] = function (n, event, status, phrase, tags)
                                       print("nua_r_set_params: status[" .. status ..
                                             "] phrase[" .. phrase .. "]")
+                                      if (status == 200) then
+                                          gera_chamada(n,
+                                                       "sip:1001@127.0.0.1:5060",
+                                                       "<sip:1000@127.0.0.1>",
+                                                       "<sip:1001@127.0.0.1>")
+                                      end
                                   end
 
 callbacks[nua.nua_r_shutdown] = function (n, event, status, phrase, tags)
@@ -44,7 +61,7 @@ n:set_params({ NUTAG_ENABLEMESSAGE = 1,
                NUTAG_AUTOANSWER = 0
              })
 
-timer = su.timer_create(root:task(), 200)
+timer = su.timer_create(root:task(), 1000)
 
 timer:set( { timer_handler = function (t)
                  print("timer fired: nua shutdown")

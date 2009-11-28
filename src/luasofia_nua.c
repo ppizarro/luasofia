@@ -59,7 +59,40 @@ static int lua_nua_handle_destroy(lua_State *L)
 
 static int lua_nua_handle_create(lua_State *L)
 {
-    return 0;
+    lua_nua_t *lnua = NULL;
+    lua_nua_handle_t *lnh = NULL;
+    nua_handle_t *nh = NULL;
+    tagi_t *tags = NULL;
+    su_home_t *home = su_home_create();
+
+    /* get and check first argument (should be a nua_t) */
+    lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+
+    tags = luasofia_tags_table_to_taglist(L, 2, home);
+
+    tl_print(stdout, "lua_nua_handle:\n", tags);
+
+    /* create a nua object */
+    lnh = (lua_nua_handle_t*) lua_newuserdata(L, sizeof(lua_nua_handle_t));
+
+    /* create the nua_handle_t */
+    nh = nua_handle(lnua->nua, lnh, TAG_NEXT(tags));
+    if (!nh)
+        luaL_error(L, "nua_handle failed!");
+
+    /* set Lua state */
+    lnh->L = L;
+    lnh->nh = nh;
+
+    /* set its metatable */
+    luaL_getmetatable(L, NUA_HANDLE_MTABLE);
+    lua_setmetatable(L, -2);
+
+    /* store nua handle at luasofia weak table */
+    luasofia_weak_table_set(L, nh);
+
+    su_home_unref(home);
+    return 1;
 }
 
 static int lua_nua_destroy(lua_State *L)
