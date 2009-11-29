@@ -122,11 +122,26 @@ static int lua_su_timer_run(lua_State *L)
 
 static int lua_su_timer_set_for_ever(lua_State *L)
 {
+    lua_su_timer_t *ltimer = NULL;
+   
+    /* get and check first argument (should be a timer) */
+    ltimer = (lua_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
+
+    /* check the callback table */
+    luaL_checktype(L, -1, LUA_TTABLE);
+
+    /* set callback table as environment for udata */
+    lua_setfenv(L, -2);
+
+    su_timer_set_for_ever(ltimer->timer, lua_su_timer_callback, ltimer);
     return 0;
 }
 
 static int lua_su_timer_reset(lua_State *L)
 {
+    /* get and check first argument (should be a timer) */
+    lua_su_timer_t *ltimer = (lua_su_timer_t*)luaL_checkudata(L, -1, SU_TIMER_MTABLE);
+    su_timer_reset(ltimer->timer);
     return 0;
 }
 

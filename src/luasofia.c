@@ -7,6 +7,7 @@
 #include "luasofia_su.h"
 #include "luasofia_nua.h"
 #include "luasofia_sip.h"
+#include "luasofia_soa.h"
 #include "luasofia_weak_table.h"
 #include "luasofia_tags.h"
 
@@ -20,6 +21,7 @@ int luaopen_luasofia(lua_State *L)
 
     luaopen_su(L);
     luaopen_sip(L);
+    luaopen_soa(L);
     luaopen_nua(L);
     return 1;
 }

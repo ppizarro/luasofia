@@ -37,23 +37,48 @@ static int lua_nua_set_params(lua_State *L)
     return 0;
 }
 
-static int lua_nua_handle_bind(lua_State *L)
+static int lua_nua_handle_invite(lua_State *L)
 {
+    tagi_t *tags = NULL;
+    su_home_t *home = su_home_create();
+    /* get and check first argument (should be a lua_nua_handle_t) */
+    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
+
+    tags = luasofia_tags_table_to_taglist(L, 2, home);
+    tl_print(stdout, "lua_nua_invite:\n", tags);
+    printf("nua_invite: nh[%p]\n", lnh->nh);
+    nua_invite(lnh->nh, TAG_NEXT(tags));
+    su_home_unref(home);
     return 0;
 }
 
 static int lua_nua_handle_ref(lua_State *L)
 {
+    /* get and check first argument (should be a lua_nua_handle_t) */
+    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
+    nua_handle_ref(lnh->nh);
     return 0;
 }
 
 static int lua_nua_handle_unref(lua_State *L)
 {
+    /* get and check first argument (should be a lua_nua_handle_t) */
+    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
+    nua_handle_unref(lnh->nh);
     return 0;
 }
 
 static int lua_nua_handle_destroy(lua_State *L)
 {
+    /* get and check first argument (should be a lua_nua_handle_t) */
+    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
+
+    if (lnh->nh) {
+        /* remove lnh of the luasofia weak table */
+        luasofia_weak_table_remove(L, lnh->nh);
+        nua_handle_destroy(lnh->nh);
+        lnh->nh = NULL;
+    }
     return 0;
 }
 
@@ -155,14 +180,15 @@ static void nua_event_callback(nua_event_t event,
         }
     }
 
-    lua_pushvalue(L, -3);
     lua_pushinteger(L, event);
     lua_pushinteger(L, status);
     lua_pushstring(L, phrase);
+    lua_pushvalue(L, -6);
+    lua_pushnil(L);
 
     luasofia_tags_taglist_to_table(L, tags);
 
-    lua_call(L, 5, 0);
+    lua_call(L, 6, 0);
     lua_pop(L, 2);
 }
 
@@ -211,24 +237,33 @@ static int lua_nua_create(lua_State *L)
     return 1;
 }
 
+static int lua_nua_event_name(lua_State *L)
+{
+    nua_event_t event = lua_tointeger(L, -1);
+    char const *name = nua_event_name(event);
+    lua_pushstring(L, name);
+    return 1;
+}
+
 static const luaL_Reg nua_handle_meths[] = {
-    {"ref",        lua_nua_handle_ref },
-    {"unref",      lua_nua_handle_unref },
-    {"bind",       lua_nua_handle_bind },
-    {"__gc",       lua_nua_handle_destroy },
+    {"ref",    lua_nua_handle_ref },
+    {"unref",  lua_nua_handle_unref },
+    {"invite", lua_nua_handle_invite },
+    {"__gc",   lua_nua_handle_destroy },
     {NULL, NULL}
 };
 
 static const luaL_Reg nua_meths[] = {
-    {"set_params", lua_nua_set_params },
-    {"handle_create",  lua_nua_handle_create },
-    {"shutdown", lua_nua_shutdown },
-    {"__gc",     lua_nua_destroy },
+    {"set_params",    lua_nua_set_params },
+    {"handle_create", lua_nua_handle_create },
+    {"shutdown",      lua_nua_shutdown },
+    {"__gc",          lua_nua_destroy },
     {NULL, NULL}
 };
 
 static const luaL_Reg nua_lib[] = {
     {"create", lua_nua_create },
+    {"event_name", lua_nua_event_name },
     {NULL, NULL}
 };
 
