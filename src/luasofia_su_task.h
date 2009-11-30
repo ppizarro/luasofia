@@ -12,7 +12,7 @@ typedef struct lua_su_task_s {
 
 #define SU_TASK_MTABLE "su_task_t"
 
-int luaopen_su_task(lua_State *L);
+int luasofia_register_task_meta(lua_State *L);
 
 int lua_su_task_init(lua_State *L);
 

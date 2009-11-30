@@ -11,7 +11,7 @@ typedef struct lua_su_root_s {
 
 #define SU_ROOT_MTABLE "su_root_t"
 
-int luaopen_su_root(lua_State *L);
+int luasofia_register_root_meta(lua_State *L);
 
 int lua_su_root_create(lua_State *L);
 

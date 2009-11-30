@@ -11,7 +11,7 @@ typedef struct lua_su_timer_s {
 
 #define SU_TIMER_MTABLE "su_timer_t"
 
-int luaopen_su_timer(lua_State *L);
+int luasofia_register_timer_meta(lua_State *L);
 
 int lua_su_timer_create(lua_State *L);
 

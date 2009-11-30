@@ -28,20 +28,29 @@ static const luaL_Reg su_lib[] = {
     {"init",         lua_su_init },
     {"deinit",       lua_su_deinit },
     {"root_create",  lua_su_root_create },
-//    {"home_new",     lua_su_home_new },
+    //{"home_new",     lua_su_home_new },
     {"timer_create", lua_su_timer_create },
     {"task_init",    lua_su_task_init },
     {NULL, NULL}
 };
 
-int luaopen_su(lua_State *L)
+int luaopen_luasofia_su(lua_State *L)
 {
-    luaopen_su_root(L);
-    //luaopen_su_home(L);
-    luaopen_su_timer(L);
-    luaopen_su_task(L);
+    luasofia_register_root_meta(L);
+    //luasofia_register_home_meta(L);
+    luasofia_register_timer_meta(L);
+    luasofia_register_task_meta(L);
 
-    luaL_register(L, "su", su_lib);
+    lua_getglobal(L, "luasofia");
+    if(lua_isnil(L, -1)) {
+        lua_newtable(L);
+        lua_pushvalue(L, -1);
+        lua_setglobal(L, "luasofia");
+    }
+    lua_newtable(L);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -3, "su");
+    luaL_register(L, NULL, su_lib);
     return 1;
 }
 

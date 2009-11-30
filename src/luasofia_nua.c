@@ -6,13 +6,20 @@
 #include "luasofia_weak_table.h"
 #include "luasofia_su_root.h"
 #include "luasofia_tags.h"
-#include "luasofia_nua.h"
 #include "luasofia_utils.h"
 
 #include <sofia-sip/nua.h>
 #include <sofia-sip/nua_tag.h>
 #include <sofia-sip/soa_tag.h>
 #include <sofia-sip/su_tag_io.h>
+
+typedef struct lua_nua_handle_s lua_nua_handle_t;
+
+#define NUA_HANDLE_MTABLE "lua_nua_handle_t"
+
+typedef struct lua_nua_s lua_nua_t;
+
+#define NUA_MTABLE "lua_nua_t"
 
 struct lua_nua_handle_s {
     nua_handle_t *nh;
@@ -46,7 +53,6 @@ static int lua_nua_handle_invite(lua_State *L)
 
     tags = luasofia_tags_table_to_taglist(L, 2, home);
     tl_print(stdout, "lua_nua_invite:\n", tags);
-    printf("nua_invite: nh[%p]\n", lnh->nh);
     nua_invite(lnh->nh, TAG_NEXT(tags));
     su_home_unref(home);
     return 0;
@@ -154,8 +160,8 @@ static void nua_event_callback(nua_event_t event,
     lua_nua_t *lnua = (lua_nua_t*)magic;
     lua_State *L = lnua->L;
 
-    //printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] tags[%p]\n",
-    //       event, status, phrase, nua, magic, tags);
+    //printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] sip[%p] tags[%p]\n",
+    //       event, status, phrase, nua, magic, sip, tags);
 
     // put userdatum at stack and check if it is ok.
     luasofia_weak_table_get(L, lnua->nua);
@@ -184,7 +190,12 @@ static void nua_event_callback(nua_event_t event,
     lua_pushinteger(L, status);
     lua_pushstring(L, phrase);
     lua_pushvalue(L, -6);
-    lua_pushnil(L);
+
+    // TODO enviar SIP
+    if (sip && sip->sip_from) {
+        lua_pushlightuserdata(L, sip->sip_from->a_url);
+    } else
+        lua_pushnil(L);
 
     luasofia_tags_taglist_to_table(L, tags);
 
@@ -504,7 +515,7 @@ static const luasofia_reg_const_t nua_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_nua(lua_State *L)
+int luaopen_luasofia_nua(lua_State *L)
 {
     luaL_newmetatable(L, NUA_HANDLE_MTABLE);
     /* metatable.__index = metatable */
@@ -522,7 +533,16 @@ int luaopen_nua(lua_State *L)
 
     luasofia_tags_register(L, nua_tags);
 
-    luaL_register(L, "nua", nua_lib);
+    lua_getglobal(L, "luasofia");
+    if(lua_isnil(L, -1)) {
+        lua_newtable(L);
+        lua_pushvalue(L, -1);
+        lua_setglobal(L, "luasofia");
+    }
+    lua_newtable(L);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -3, "nua");
+    luaL_register(L, NULL, nua_lib);
 
     luasofia_register_constants(L, nua_constants);
 

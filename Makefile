@@ -1,6 +1,6 @@
 TARGET = luasofia.so
 
-OBJECTS = luasofia.o \
+OBJECTS = luasofia_core.o \
 	  luasofia_weak_table.o \
 	  luasofia_tags.o \
 	  luasofia_utils.o \

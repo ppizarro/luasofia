@@ -28,6 +28,9 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, sip, tags)
                                       print("nua_i_invite: status["..status.."] phrase["..phrase.."]")
+                                      u = url:new(sip)
+                                      print("host:"..u.host)
+                                      print("user:"..u.user)
                                   end
   
     callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, sip, tags)

@@ -3,14 +3,15 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_weak_table.h"
-#include "luasofia_su_root.h"
 #include "luasofia_tags.h"
-#include "luasofia_soa.h"
 #include "luasofia_utils.h"
 
 #include <sofia-sip/soa.h>
 #include <sofia-sip/soa_tag.h>
+
+typedef struct lua_soa_session_s lua_soa_session_t;
+
+#define SOA_SESSION_MTABLE "lua_soa_session_t"
 
 struct lua_soa_session_s {
     soa_session_t *soa;
@@ -85,7 +86,7 @@ static const luasofia_reg_const_t soa_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_soa(lua_State *L)
+int luaopen_luasofia_soa(lua_State *L)
 {
     luaL_newmetatable(L, SOA_SESSION_MTABLE);
     /* metatable.__index = metatable */
@@ -96,7 +97,16 @@ int luaopen_soa(lua_State *L)
 
     luasofia_tags_register(L, soa_tags);
 
-    luaL_register(L, "soa", soa_lib);
+    lua_getglobal(L, "luasofia");
+    if(lua_isnil(L, -1)) {
+        lua_newtable(L);
+        lua_pushvalue(L, -1);
+        lua_setglobal(L, "luasofia");
+    }
+    lua_newtable(L);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -3, "soa");
+    luaL_register(L, NULL, soa_lib);
 
     luasofia_register_constants(L, soa_constants);
 

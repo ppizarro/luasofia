@@ -112,7 +112,7 @@ static const luaL_Reg su_task_meths[] = {
     {NULL, NULL}
 };
 
-int luaopen_su_task(lua_State *L)
+int luasofia_register_task_meta(lua_State *L)
 {
     luaL_newmetatable(L, SU_TASK_MTABLE);
     /* metatable.__index = metatable */

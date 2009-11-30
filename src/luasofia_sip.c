@@ -3,14 +3,15 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_weak_table.h"
-#include "luasofia_su_root.h"
 #include "luasofia_tags.h"
-#include "luasofia_sip.h"
 #include "luasofia_utils.h"
 
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_tag.h>
+
+typedef struct lua_sip_s lua_sip_t;
+
+#define SIP_MTABLE "lua_sip_t"
 
 struct lua_sip_s {
     sip_t *sip;
@@ -325,7 +326,7 @@ static const luasofia_reg_const_t sip_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_sip(lua_State *L)
+int luaopen_luasofia_sip(lua_State *L)
 {
     luaL_newmetatable(L, SIP_MTABLE);
     /* metatable.__index = metatable */
@@ -336,7 +337,16 @@ int luaopen_sip(lua_State *L)
 
     luasofia_tags_register(L, sip_tags);
 
-    luaL_register(L, "sip", sip_lib);
+    lua_getglobal(L, "luasofia");
+    if(lua_isnil(L, -1)) {
+        lua_newtable(L);
+        lua_pushvalue(L, -1);
+        lua_setglobal(L, "luasofia");
+    }
+    lua_newtable(L);
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -3, "sip");
+    luaL_register(L, NULL, sip_lib);
 
     luasofia_register_constants(L, sip_constants);
 

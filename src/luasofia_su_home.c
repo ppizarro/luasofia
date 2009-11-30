@@ -64,7 +64,7 @@ static const luaL_Reg su_home_meths[] = {
     {NULL, NULL}
 };
 
-int luaopen_su_home(lua_State *L)
+int luasofia_register_home_meta(lua_State *L)
 {
     luaL_newmetatable(L, SU_HOME_MTABLE);
     /* metatable.__index = metatable */

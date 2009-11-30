@@ -11,7 +11,7 @@ typedef struct lua_su_home_s {
 
 #define SU_HOME_MTABLE "su_home_t"
 
-int luaopen_su_home(lua_State *L);
+int luasofia_register_home_meta(lua_State *L);
 
 int lua_su_home_new(lua_State *L);
 
