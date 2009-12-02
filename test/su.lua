@@ -1,5 +1,7 @@
 require "luasofia"
 
+su = require "luasofia.su"
+
 su.init()
 
 root = su.root_create()
