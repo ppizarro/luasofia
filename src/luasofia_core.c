@@ -8,6 +8,7 @@
 
 #include "luasofia_weak_table.h"
 #include "luasofia_tags.h"
+#include "luasofia_struct.h"
 
 #define LUASOFIA_BUFFER_META "luasofia_buffer"
 
@@ -296,6 +297,8 @@ int luaopen_luasofia_core(lua_State *L)
 
     /* create luasofia tag table at REGISTRYINDEX */
     luasofia_tags_create(L);
+
+    luasofia_register_struct_meta(L);
 
     luasofia_register_buffer_meta(L);
 

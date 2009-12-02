@@ -5,6 +5,7 @@
 
 #include "luasofia_tags.h"
 #include "luasofia_utils.h"
+#include "luasofia_struct.h"
 
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_tag.h>
@@ -18,11 +19,36 @@ struct lua_sip_s {
     lua_State *L;
 };
 
+static const luasofia_struct_info_t url_getters[] = {
+{"pad",      luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_pad), offsetof(url_t, url_type)},
+{"type",     luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_type),     0},
+{"root",     luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_root),     0},
+{"scheme",   luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_scheme),   0},
+{"user",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_user),     0},
+{"password", luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_password), 0},
+{"host",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_host),     0},
+{"port",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_port),     0},
+{"path",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_path),     0},
+{"params",   luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_params),   0},
+{"headers",  luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_headers),  0},
+{"fragment", luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_fragment), 0},
+{NULL, NULL, 0 }
+};
+
+int luasofia_url_create(lua_State *L)
+{
+    /* Push struct info table at stack */
+    luasofia_struct_create_info_table(L, url_getters);    
+    /* Create struct with info table */
+    return luasofia_struct_create(L);
+}
+
 static const luaL_Reg sip_meths[] = {
     {NULL, NULL}
 };
 
 static const luaL_Reg sip_lib[] = {
+    {"url_create",  luasofia_url_create },
     {NULL, NULL}
 };
 
@@ -343,6 +369,7 @@ int luaopen_luasofia_sip(lua_State *L)
         lua_pushvalue(L, -1);
         lua_setglobal(L, "luasofia");
     }
+    /* luasofia[sip] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "sip");

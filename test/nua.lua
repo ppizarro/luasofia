@@ -1,4 +1,10 @@
-require "luasofia"
+require "luasofia.core"
+
+su = require "luasofia.su"
+nua = require "luasofia.nua"
+sip = require "luasofia.sip"
+soa = require "luasofia.soa"
+
 
 function make_call(ua, uri, from, to)
     print("gera_chamada: uri["..uri.."] from["..from.."] to["..to.."]")
@@ -26,11 +32,13 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                      end
                                  end
 
-    callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, sip, tags)
+    callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, url, tags)
                                       print("nua_i_invite: status["..status.."] phrase["..phrase.."]")
-                                      u = url:new(sip)
-                                      print("host:"..u.host)
+                                      --u = url:new(sip)
+                                      u = sip:url_create(url)
+                                      print("scheme:"..u.scheme)
                                       print("user:"..u.user)
+                                      print("host:"..u.host)
                                   end
   
     callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, sip, tags)
@@ -74,8 +82,8 @@ su.init()
 
 root = su.root_create()
 
-a_quit = false
-b_quit = false
+local a_quit = false
+local b_quit = false
 
 shutdown_a = function (event, status, phrase, ua, sip, tags)
                  print("User Agent A shutdown: status["..status.."] phrase["..phrase.."]")

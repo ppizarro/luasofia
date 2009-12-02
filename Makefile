@@ -4,6 +4,7 @@ OBJECTS = luasofia_core.o \
 	  luasofia_weak_table.o \
 	  luasofia_tags.o \
 	  luasofia_utils.o \
+	  luasofia_struct.o \
           luasofia_su.o \
 	  luasofia_su_root.o \
 	  luasofia_su_timer.o \
