@@ -1,10 +1,11 @@
-require "luasofia.core"
+
+require "luasofia"
 
 su = require "luasofia.su"
 nua = require "luasofia.nua"
 sip = require "luasofia.sip"
 soa = require "luasofia.soa"
-
+lstruct = require "luasofia.struct"
 
 function make_call(ua, uri, from, to)
     print("gera_chamada: uri["..uri.."] from["..from.."] to["..to.."]")
@@ -34,8 +35,7 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, url, tags)
                                       print("nua_i_invite: status["..status.."] phrase["..phrase.."]")
-                                      --u = url:new(sip)
-                                      u = sip:url_create(url)
+                                      local u = sip:url_create(url)
                                       print("scheme:"..u.scheme)
                                       print("user:"..u.user)
                                       print("host:"..u.host)
