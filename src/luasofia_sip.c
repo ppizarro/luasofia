@@ -20,7 +20,107 @@ struct lua_sip_s {
     lua_State *L;
 };
 
+static const luasofia_struct_info_t sip_addr_info[] = {
+{"a_display", luasofia_struct_get_string, offsetof(sip_addr_t, a_display), 0},
+
+{"a_url_scheme",   luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_scheme),   0},
+{"a_url_user",     luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_user),     0},
+{"a_url_password", luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_password), 0},
+{"a_url_host",     luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_host),     0},
+{"a_url_port",     luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_port),     0},
+{"a_url_path",     luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_path),     0},
+{"a_url_params",   luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_params),   0},
+{"a_url_headers",  luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_headers),  0},
+{"a_url_fragment", luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_fragment), 0},
+
+{"a_params",  luasofia_struct_get_pointer, offsetof(sip_addr_t, a_params), 0},
+{"a_comment", luasofia_struct_get_string, offsetof(sip_addr_t, a_comment), 0},
+{"a_tag",     luasofia_struct_get_string, offsetof(sip_addr_t, a_tag), 0},
+{NULL, NULL, 0 }
+};
+
 static const luasofia_struct_info_t sip_info[] = {
+//{"h_succ",  luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_succ),  0},
+//{"h_prev",  luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_prev),  0},
+//{"h_class", luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_class), 0},
+//{"h_data",  luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_data),  0},
+//{"h_len",   luasofia_struct_get_int,     offsetof(sip_t, sip_common) + offset(msg_common_t, h_len),   0},
+//{"sip_next", luasofia_struct_get_pointer, offsetof(sip_t, sip_next), 0},
+{"sip_user", luasofia_struct_get_pointer, offsetof(sip_t, sip_user), 0},
+{"sip_size", luasofia_struct_get_int, offsetof(sip_t, sip_size), 0},
+{"sip_flags", luasofia_struct_get_int, offsetof(sip_t, sip_flags), 0},
+{"sip_error", luasofia_struct_get_pointer, offsetof(sip_t, sip_error), 0},
+{"sip_request", luasofia_struct_get_pointer, offsetof(sip_t, sip_request), 0},
+{"sip_status", luasofia_struct_get_pointer, offsetof(sip_t, sip_status), 0},
+{"sip_via", luasofia_struct_get_pointer, offsetof(sip_t, sip_via), 0},
+{"sip_route", luasofia_struct_get_pointer, offsetof(sip_t, sip_route), 0},
+{"sip_record_route", luasofia_struct_get_pointer, offsetof(sip_t, sip_record_route), 0},
+{"sip_max_forwards", luasofia_struct_get_pointer, offsetof(sip_t, sip_max_forwards), 0},
+{"sip_proxy_require", luasofia_struct_get_pointer, offsetof(sip_t, sip_proxy_require), 0},
+{"sip_from", luasofia_struct_get_pointer, offsetof(sip_t, sip_from), 0},
+{"sip_to", luasofia_struct_get_pointer, offsetof(sip_t, sip_to), 0},
+{"sip_call_id", luasofia_struct_get_pointer, offsetof(sip_t, sip_call_id), 0},
+{"sip_cseq", luasofia_struct_get_pointer, offsetof(sip_t, sip_cseq), 0},
+{"sip_contact", luasofia_struct_get_pointer, offsetof(sip_t, sip_contact), 0},
+{"sip_rseq", luasofia_struct_get_pointer, offsetof(sip_t, sip_rseq), 0},
+{"sip_rack", luasofia_struct_get_pointer, offsetof(sip_t, sip_rack), 0},
+{"sip_request_disposition", luasofia_struct_get_pointer, offsetof(sip_t, sip_request_disposition), 0},
+{"sip_accept_contact", luasofia_struct_get_pointer, offsetof(sip_t, sip_accept_contact), 0},
+{"sip_reject_contact", luasofia_struct_get_pointer, offsetof(sip_t, sip_reject_contact), 0},
+{"sip_expires", luasofia_struct_get_pointer, offsetof(sip_t, sip_expires), 0},
+{"sip_date", luasofia_struct_get_pointer, offsetof(sip_t, sip_date), 0},
+{"sip_retry_after", luasofia_struct_get_pointer, offsetof(sip_t, sip_retry_after), 0},
+{"sip_timestamp", luasofia_struct_get_pointer, offsetof(sip_t, sip_timestamp), 0},
+{"sip_min_expires", luasofia_struct_get_pointer, offsetof(sip_t, sip_min_expires), 0},
+{"sip_subject", luasofia_struct_get_pointer, offsetof(sip_t, sip_subject), 0},
+{"sip_priority", luasofia_struct_get_pointer, offsetof(sip_t, sip_priority), 0},
+{"sip_call_info", luasofia_struct_get_pointer, offsetof(sip_t, sip_call_info), 0},
+{"sip_organization", luasofia_struct_get_pointer, offsetof(sip_t, sip_organization), 0},
+{"sip_server", luasofia_struct_get_pointer, offsetof(sip_t, sip_server), 0},
+{"sip_user_agent", luasofia_struct_get_pointer, offsetof(sip_t, sip_user_agent), 0},
+{"sip_in_reply_to", luasofia_struct_get_pointer, offsetof(sip_t, sip_in_reply_to), 0},
+{"sip_accept", luasofia_struct_get_pointer, offsetof(sip_t, sip_accept), 0},
+{"sip_accept_encoding", luasofia_struct_get_pointer, offsetof(sip_t, sip_accept_encoding), 0},
+{"sip_accept_language", luasofia_struct_get_pointer, offsetof(sip_t, sip_accept_language), 0},
+{"sip_allow", luasofia_struct_get_pointer, offsetof(sip_t, sip_allow), 0},
+{"sip_require", luasofia_struct_get_pointer, offsetof(sip_t, sip_require), 0},
+{"sip_supported", luasofia_struct_get_pointer, offsetof(sip_t, sip_supported), 0},
+{"sip_unsupported", luasofia_struct_get_pointer, offsetof(sip_t, sip_unsupported), 0},
+{"sip_event", luasofia_struct_get_pointer, offsetof(sip_t, sip_event), 0},
+{"sip_allow_events", luasofia_struct_get_pointer, offsetof(sip_t, sip_allow_events), 0},
+{"sip_subscription_state", luasofia_struct_get_pointer, offsetof(sip_t, sip_subscription_state), 0},
+{"sip_proxy_authenticate", luasofia_struct_get_pointer, offsetof(sip_t, sip_proxy_authenticate), 0},
+{"sip_proxy_authentication_info", luasofia_struct_get_pointer, offsetof(sip_t, sip_proxy_authentication_info), 0},
+{"sip_proxy_authorization", luasofia_struct_get_pointer, offsetof(sip_t, sip_proxy_authorization), 0},
+{"sip_authorization", luasofia_struct_get_pointer, offsetof(sip_t, sip_authorization), 0},
+{"sip_www_authenticate", luasofia_struct_get_pointer, offsetof(sip_t, sip_www_authenticate), 0},
+{"sip_authentication_info", luasofia_struct_get_pointer, offsetof(sip_t, sip_authentication_info), 0},
+{"sip_error_info", luasofia_struct_get_pointer, offsetof(sip_t, sip_error_info), 0},
+{"sip_warning", luasofia_struct_get_pointer, offsetof(sip_t, sip_warning), 0},
+{"sip_refer_to", luasofia_struct_get_pointer, offsetof(sip_t, sip_refer_to), 0},
+{"sip_referred_by", luasofia_struct_get_pointer, offsetof(sip_t, sip_referred_by), 0},
+{"sip_replaces", luasofia_struct_get_pointer, offsetof(sip_t, sip_replaces), 0},
+{"sip_session_expires", luasofia_struct_get_pointer, offsetof(sip_t, sip_session_expires), 0},
+{"sip_min_se", luasofia_struct_get_pointer, offsetof(sip_t, sip_min_se), 0},
+{"sip_path", luasofia_struct_get_pointer, offsetof(sip_t, sip_path), 0},
+{"sip_service_route", luasofia_struct_get_pointer, offsetof(sip_t, sip_service_route), 0},
+{"sip_reason", luasofia_struct_get_pointer, offsetof(sip_t, sip_reason), 0},
+{"sip_security_client", luasofia_struct_get_pointer, offsetof(sip_t, sip_security_client), 0},
+{"sip_security_server", luasofia_struct_get_pointer, offsetof(sip_t, sip_security_server), 0},
+{"sip_security_verify", luasofia_struct_get_pointer, offsetof(sip_t, sip_security_verify), 0},
+{"sip_privacy", luasofia_struct_get_pointer, offsetof(sip_t, sip_privacy), 0},
+{"sip_etag", luasofia_struct_get_pointer, offsetof(sip_t, sip_etag), 0},
+{"sip_if_match", luasofia_struct_get_pointer, offsetof(sip_t, sip_if_match), 0},
+{"sip_mime_version", luasofia_struct_get_pointer, offsetof(sip_t, sip_mime_version), 0},
+{"sip_content_type", luasofia_struct_get_pointer, offsetof(sip_t, sip_content_type), 0},
+{"sip_content_encoding", luasofia_struct_get_pointer, offsetof(sip_t, sip_content_encoding), 0},
+{"sip_content_language", luasofia_struct_get_pointer, offsetof(sip_t, sip_content_language), 0},
+{"sip_content_disposition", luasofia_struct_get_pointer, offsetof(sip_t, sip_content_disposition), 0},
+{"sip_content_length", luasofia_struct_get_pointer, offsetof(sip_t, sip_content_length), 0},
+{"sip_unknown", luasofia_struct_get_pointer, offsetof(sip_t, sip_unknown), 0},
+{"sip_separator", luasofia_struct_get_pointer, offsetof(sip_t, sip_separator), 0},
+{"sip_payload", luasofia_struct_get_pointer, offsetof(sip_t, sip_payload), 0},
+{"sip_multipart", luasofia_struct_get_pointer, offsetof(sip_t, sip_multipart), 0},
 {NULL, NULL, 0 }
 };
 
@@ -32,12 +132,21 @@ int luasofia_get_proxy_sip(lua_State *L)
     return luasofia_struct_create(L);
 }
 
+int luasofia_get_proxy_sip_addr(lua_State *L)
+{
+    /* Push struct info table at stack */
+    luasofia_struct_create_info_table(L, sip_addr_info);    
+    /* Create struct with info table */
+    return luasofia_struct_create(L);
+}
+
 static const luaL_Reg sip_meths[] = {
     {NULL, NULL}
 };
 
 static const luaL_Reg sip_lib[] = {
-    {"get_proxy_sip",  luasofia_get_proxy_sip },
+    {"get_proxy_sip",      luasofia_get_proxy_sip },
+    {"get_proxy_sip_addr", luasofia_get_proxy_sip_addr },
     {NULL, NULL}
 };
 

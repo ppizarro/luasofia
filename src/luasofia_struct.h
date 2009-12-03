@@ -28,5 +28,7 @@ int luasofia_struct_get_short(lua_State *L, void *v);
 
 int luasofia_struct_get_char(lua_State *L, void *v);
 
+int luasofia_struct_get_pointer(lua_State *L, void *v);
+
 #endif //__LUASOFIA_STRUCT_H__
 

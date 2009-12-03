@@ -46,32 +46,40 @@ int luasofia_struct_create(lua_State *L)
 
 int luasofia_struct_get_int (lua_State *L, void *v)
 {
-  lua_pushnumber(L, *(int*)v);
-  return 1;
+    lua_pushnumber(L, *(int*)v);
+    return 1;
 }
 
 int luasofia_struct_get_short (lua_State *L, void *v)
 {
-  lua_pushnumber(L, *(short*)v);
-  return 1;
+    lua_pushnumber(L, *(short*)v);
+    return 1;
 }
 
 int luasofia_struct_get_char (lua_State *L, void *v)
 {
-  lua_pushnumber(L, *(char*)v);
-  return 1;
+    lua_pushnumber(L, *(char*)v);
+    return 1;
 }
 
 int luasofia_struct_get_number (lua_State *L, void *v)
 {
-  lua_pushnumber(L, *(lua_Number*)v);
-  return 1;
+    lua_pushnumber(L, *(lua_Number*)v);
+    return 1;
 }
 
 int luasofia_struct_get_string (lua_State *L, void *v)
 {
-  lua_pushstring(L, *(char**)v );
-  return 1;
+    lua_pushstring(L, *(char**)v );
+    return 1;
+}
+
+int luasofia_struct_get_pointer (lua_State *L, void *v)
+{
+    void *p;
+    p = *((void**)v);
+    p ? lua_pushlightuserdata(L, p) : lua_pushnil(L);
+    return 1;
 }
 
 static int luasofia_struct_index(lua_State *L)

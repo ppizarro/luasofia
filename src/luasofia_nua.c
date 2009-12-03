@@ -192,11 +192,7 @@ static void nua_event_callback(nua_event_t event,
     lua_pushstring(L, phrase);
     lua_pushvalue(L, -6);
 
-    // TODO enviar SIP
-    if (sip && sip->sip_from) {
-        lua_pushlightuserdata(L, sip->sip_from->a_url);
-    } else
-        lua_pushnil(L);
+    sip ? lua_pushlightuserdata(L, (void*)sip) : lua_pushnil(L);
 
     luasofia_tags_taglist_to_table(L, tags);
 
