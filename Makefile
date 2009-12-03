@@ -11,7 +11,8 @@ OBJECTS = luasofia.o \
 	  luasofia_su_task.o \
 	  luasofia_nua.o \
 	  luasofia_sip.o \
-	  luasofia_soa.o
+	  luasofia_soa.o \
+	  luasofia_url.o
 
 CFLAGS += -O2 -c -Wall -fPIC
 CFLAGS += `pkg-config --cflags sofia-sip-ua lua5.1`

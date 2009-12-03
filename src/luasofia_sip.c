@@ -20,26 +20,14 @@ struct lua_sip_s {
     lua_State *L;
 };
 
-static const luasofia_struct_info_t url_info[] = {
-{"pad",      luasofia_struct_get_char,   offsetof(url_t, url_pad),      offsetof(url_t, url_type)},
-{"type",     luasofia_struct_get_char,   offsetof(url_t, url_type),     0},
-{"root",     luasofia_struct_get_char,   offsetof(url_t, url_root),     0},
-{"scheme",   luasofia_struct_get_string, offsetof(url_t, url_scheme),   0},
-{"user",     luasofia_struct_get_string, offsetof(url_t, url_user),     0},
-{"password", luasofia_struct_get_string, offsetof(url_t, url_password), 0},
-{"host",     luasofia_struct_get_string, offsetof(url_t, url_host),     0},
-{"port",     luasofia_struct_get_string, offsetof(url_t, url_port),     0},
-{"path",     luasofia_struct_get_string, offsetof(url_t, url_path),     0},
-{"params",   luasofia_struct_get_string, offsetof(url_t, url_params),   0},
-{"headers",  luasofia_struct_get_string, offsetof(url_t, url_headers),  0},
-{"fragment", luasofia_struct_get_string, offsetof(url_t, url_fragment), 0},
+static const luasofia_struct_info_t sip_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_get_proxy_url(lua_State *L)
+int luasofia_get_proxy_sip(lua_State *L)
 {
     /* Push struct info table at stack */
-    luasofia_struct_create_info_table(L, url_info);    
+    luasofia_struct_create_info_table(L, sip_info);    
     /* Create struct with info table */
     return luasofia_struct_create(L);
 }
@@ -49,7 +37,7 @@ static const luaL_Reg sip_meths[] = {
 };
 
 static const luaL_Reg sip_lib[] = {
-    {"get_proxy_url",  luasofia_get_proxy_url },
+    {"get_proxy_sip",  luasofia_get_proxy_sip },
     {NULL, NULL}
 };
 
