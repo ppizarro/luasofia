@@ -50,22 +50,10 @@ int luasofia_struct_get_int (lua_State *L, void *v)
   return 1;
 }
 
-int luasofia_struct_set_int (lua_State *L, void *v)
-{
-  *(int*)v = luaL_checkint(L, 3);
-  return 0;
-}
-
 int luasofia_struct_get_short (lua_State *L, void *v)
 {
   lua_pushnumber(L, *(short*)v);
   return 1;
-}
-
-int luasofia_struct_set_short (lua_State *L, void *v)
-{
-  *(short*)v = luaL_checkint(L, 3);
-  return 0;
 }
 
 int luasofia_struct_get_char (lua_State *L, void *v)
@@ -74,40 +62,16 @@ int luasofia_struct_get_char (lua_State *L, void *v)
   return 1;
 }
 
-int luasofia_struct_set_char (lua_State *L, void *v)
-{
-  *(char*)v = luaL_checkint(L, 3);
-  return 0;
-}
-
 int luasofia_struct_get_number (lua_State *L, void *v)
 {
   lua_pushnumber(L, *(lua_Number*)v);
   return 1;
 }
 
-int luasofia_struct_set_number (lua_State *L, void *v)
-{
-  *(lua_Number*)v = luaL_checknumber(L, 3);
-  return 0;
-}
-
 int luasofia_struct_get_string (lua_State *L, void *v)
 {
   lua_pushstring(L, *(char**)v );
   return 1;
-}
-
-int luasofia_struct_set_string (lua_State *L, void *v)
-{
-    // FIXME Criar uma copia da string e liberar a atual
-    *((char**)v) = (lua_isnil(L, 3) ? NULL : (char*)lua_tostring(L, 3));
-    return 0;
-}
-
-static int luasofia_struct_destroy(lua_State *L)
-{
-    return 0;
 }
 
 static int luasofia_struct_index(lua_State *L)
@@ -136,12 +100,6 @@ static int luasofia_struct_index(lua_State *L)
     return m->get_func(L, (void *)(((char *)*ust) + m->offset));
 }
 
-static int luasofia_struct_newindex(lua_State *L)
-{
-    /* for set: stack has userdata, index, value, lightuserdata */
-    return 0;
-}
-
 static int luasofia_struct_tostring(lua_State *L)
 {
     return 0;
@@ -155,20 +113,11 @@ int luasofia_register_struct_meta(lua_State *L)
     lua_pushcfunction(L, luasofia_struct_index);
     lua_settable(L, -3);
 
-    lua_pushliteral(L, "__newindex");
-    lua_pushcfunction(L, luasofia_struct_newindex);
-    lua_settable(L, -3);
-
     lua_pushliteral(L, "__tostring");
     lua_pushcfunction(L, luasofia_struct_tostring);
     lua_settable(L, -3);
 
-    lua_pushliteral(L, "__gc");
-    lua_pushcfunction(L, luasofia_struct_destroy);
-    lua_settable(L, -3);
-
     lua_pop(L, 1);
-
     return 0;
 }
 

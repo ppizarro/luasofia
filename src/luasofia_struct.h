@@ -8,7 +8,6 @@ typedef int (*struct_func) (lua_State *L, void *v);
 typedef struct luasofia_struct_info_s {
     const char *name;  /* member name */
     struct_func get_func;  /* get function for type of member */
-    struct_func set_func;  /* set function for type of member */
     size_t offset;     /* offset of member within struct */
     int lenght;        /* fixed array size. Example: int point[2]  */
 } luasofia_struct_info_t;
@@ -29,15 +28,5 @@ int luasofia_struct_get_short(lua_State *L, void *v);
 
 int luasofia_struct_get_char(lua_State *L, void *v);
 
-int luasofia_struct_set_int(lua_State *L, void *v);
-
-int luasofia_struct_set_number(lua_State *L, void *v);
-
-int luasofia_struct_set_string(lua_State *L, void *v);
-
-int luasofia_struct_set_short(lua_State *L, void *v);
-
-int luasofia_struct_set_char(lua_State *L, void *v);
-
-#endif //__LUASOFIA_STRUCT
+#endif //__LUASOFIA_STRUCT_H__
 

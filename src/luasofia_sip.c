@@ -21,18 +21,18 @@ struct lua_sip_s {
 };
 
 static const luasofia_struct_info_t url_info[] = {
-{"pad",      luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_pad), offsetof(url_t, url_type)},
-{"type",     luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_type),     0},
-{"root",     luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_root),     0},
-{"scheme",   luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_scheme),   0},
-{"user",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_user),     0},
-{"password", luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_password), 0},
-{"host",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_host),     0},
-{"port",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_port),     0},
-{"path",     luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_path),     0},
-{"params",   luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_params),   0},
-{"headers",  luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_headers),  0},
-{"fragment", luasofia_struct_get_string, luasofia_struct_set_string, offsetof(url_t, url_fragment), 0},
+{"pad",      luasofia_struct_get_char,   offsetof(url_t, url_pad),      offsetof(url_t, url_type)},
+{"type",     luasofia_struct_get_char,   offsetof(url_t, url_type),     0},
+{"root",     luasofia_struct_get_char,   offsetof(url_t, url_root),     0},
+{"scheme",   luasofia_struct_get_string, offsetof(url_t, url_scheme),   0},
+{"user",     luasofia_struct_get_string, offsetof(url_t, url_user),     0},
+{"password", luasofia_struct_get_string, offsetof(url_t, url_password), 0},
+{"host",     luasofia_struct_get_string, offsetof(url_t, url_host),     0},
+{"port",     luasofia_struct_get_string, offsetof(url_t, url_port),     0},
+{"path",     luasofia_struct_get_string, offsetof(url_t, url_path),     0},
+{"params",   luasofia_struct_get_string, offsetof(url_t, url_params),   0},
+{"headers",  luasofia_struct_get_string, offsetof(url_t, url_headers),  0},
+{"fragment", luasofia_struct_get_string, offsetof(url_t, url_fragment), 0},
 {NULL, NULL, 0 }
 };
 
