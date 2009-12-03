@@ -95,7 +95,8 @@ static int lua_su_task_wakeup(lua_State *L)
     /* get and check first argument (should be a engine) */
     ltask = (lua_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
 
-    ret = su_task_wakeup(ltask->task);
+    //ret = su_task_wakeup(ltask->task);
+    /* FIXME 1.12.10 does not have su_task_wakeup */
     lua_pushinteger(L, ret);
     return 1;
 }
