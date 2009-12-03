@@ -20,9 +20,27 @@ struct lua_sip_s {
     lua_State *L;
 };
 
-static const luasofia_struct_info_t sip_addr_info[] = {
-{"a_display", luasofia_struct_get_string, offsetof(sip_addr_t, a_display), 0},
+static const luasofia_struct_info_t sip_contact_info[] = {
+{"m_next",         luasofia_struct_get_pointer, offsetof(sip_contact_t, m_next), 0},
+{"m_display",      luasofia_struct_get_string, offsetof(sip_contact_t, m_display), 0},
+{"m_url_scheme",   luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_scheme),   0},
+{"m_url_user",     luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_user),     0},
+{"m_url_password", luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_password), 0},
+{"m_url_host",     luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_host),     0},
+{"m_url_port",     luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_port),     0},
+{"m_url_path",     luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_path),     0},
+{"m_url_params",   luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_params),   0},
+{"m_url_headers",  luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_headers),  0},
+{"m_url_fragment", luasofia_struct_get_string, offsetof(sip_contact_t, m_url) + offsetof(url_t, url_fragment), 0},
+{"m_params",       luasofia_struct_get_pointer, offsetof(sip_contact_t, m_params), 0},
+{"m_comment",      luasofia_struct_get_string, offsetof(sip_contact_t, m_comment), 0},
+{"m_q",            luasofia_struct_get_string, offsetof(sip_contact_t, m_q), 0},
+{"m_expires",      luasofia_struct_get_string, offsetof(sip_contact_t, m_expires), 0},
+{NULL, NULL, 0 }
+};
 
+static const luasofia_struct_info_t sip_addr_info[] = {
+{"a_display",      luasofia_struct_get_string, offsetof(sip_addr_t, a_display), 0},
 {"a_url_scheme",   luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_scheme),   0},
 {"a_url_user",     luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_user),     0},
 {"a_url_password", luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_password), 0},
@@ -32,20 +50,13 @@ static const luasofia_struct_info_t sip_addr_info[] = {
 {"a_url_params",   luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_params),   0},
 {"a_url_headers",  luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_headers),  0},
 {"a_url_fragment", luasofia_struct_get_string, offsetof(sip_addr_t, a_url) + offsetof(url_t, url_fragment), 0},
-
-{"a_params",  luasofia_struct_get_pointer, offsetof(sip_addr_t, a_params), 0},
-{"a_comment", luasofia_struct_get_string, offsetof(sip_addr_t, a_comment), 0},
-{"a_tag",     luasofia_struct_get_string, offsetof(sip_addr_t, a_tag), 0},
+{"a_params",       luasofia_struct_get_pointer, offsetof(sip_addr_t, a_params), 0},
+{"a_comment",      luasofia_struct_get_string, offsetof(sip_addr_t, a_comment), 0},
+{"a_tag",          luasofia_struct_get_string, offsetof(sip_addr_t, a_tag), 0},
 {NULL, NULL, 0 }
 };
 
 static const luasofia_struct_info_t sip_info[] = {
-//{"h_succ",  luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_succ),  0},
-//{"h_prev",  luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_prev),  0},
-//{"h_class", luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_class), 0},
-//{"h_data",  luasofia_struct_get_pointer, offsetof(sip_t, sip_common) + offset(msg_common_t, h_data),  0},
-//{"h_len",   luasofia_struct_get_int,     offsetof(sip_t, sip_common) + offset(msg_common_t, h_len),   0},
-//{"sip_next", luasofia_struct_get_pointer, offsetof(sip_t, sip_next), 0},
 {"sip_user", luasofia_struct_get_pointer, offsetof(sip_t, sip_user), 0},
 {"sip_size", luasofia_struct_get_int, offsetof(sip_t, sip_size), 0},
 {"sip_flags", luasofia_struct_get_int, offsetof(sip_t, sip_flags), 0},
@@ -140,13 +151,22 @@ int luasofia_get_proxy_sip_addr(lua_State *L)
     return luasofia_struct_create(L);
 }
 
+int luasofia_get_proxy_sip_contact(lua_State *L)
+{
+    /* Push struct info table at stack */
+    luasofia_struct_create_info_table(L, sip_contact_info);    
+    /* Create struct with info table */
+    return luasofia_struct_create(L);
+}
+
 static const luaL_Reg sip_meths[] = {
     {NULL, NULL}
 };
 
 static const luaL_Reg sip_lib[] = {
-    {"get_proxy_sip",      luasofia_get_proxy_sip },
-    {"get_proxy_sip_addr", luasofia_get_proxy_sip_addr },
+    {"get_proxy_sip",         luasofia_get_proxy_sip },
+    {"get_proxy_sip_addr",    luasofia_get_proxy_sip_addr },
+    {"get_proxy_sip_contact", luasofia_get_proxy_sip_contact },
     {NULL, NULL}
 };
 
