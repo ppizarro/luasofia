@@ -1,23 +1,23 @@
 require "luasofia"
-require "luasofia.sip"
+sip = require "luasofia.sip"
 require "lunit"
 
 module( "url_testcase", lunit.testcase, package.seeall)
 
 function setup()
-             empty_url =  sip.create_url()
+             empty_url =  sip:create_url()
          end
 
-function test_pad_default_value_nil()
-             assert_equal(nil, empty_url.pad)
+function test_pad_default_value_0()
+             assert_equal(0, empty_url.pad)
          end
 
-function test_type_default_value_nil()
-             assert_equal(nil, empty_url.type)
+function test_type_default_value_0()
+             assert_equal(0, empty_url.type)
          end
 
-function test_root_default_value_nil()
-             assert_equal(nil, empty_url.root)
+function test_root_default_value_0()
+             assert_equal(0, empty_url.root)
          end
 
 function test_scheme_default_value_nil()
@@ -55,3 +55,6 @@ function test_headers_default_value_nil()
 function test_fragment_default_value_nil()
              assert_equal(nil, empty_url.fragment)
          end
+
+lunit.main()         
+
