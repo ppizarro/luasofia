@@ -36,7 +36,7 @@ static const luasofia_struct_info_t url_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_url_create(lua_State *L)
+int luasofia_get_proxy_url(lua_State *L)
 {
     /* Push struct info table at stack */
     luasofia_struct_create_info_table(L, url_info);    
@@ -49,7 +49,7 @@ static const luaL_Reg sip_meths[] = {
 };
 
 static const luaL_Reg sip_lib[] = {
-    {"create_url",  luasofia_url_create },
+    {"get_proxy_url",  luasofia_get_proxy_url },
     {NULL, NULL}
 };
 
