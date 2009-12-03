@@ -19,7 +19,7 @@ struct lua_sip_s {
     lua_State *L;
 };
 
-static const luasofia_struct_info_t url_getters[] = {
+static const luasofia_struct_info_t url_info[] = {
 {"pad",      luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_pad), offsetof(url_t, url_type)},
 {"type",     luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_type),     0},
 {"root",     luasofia_struct_get_char,   luasofia_struct_set_char,   offsetof(url_t, url_root),     0},
@@ -38,9 +38,9 @@ static const luasofia_struct_info_t url_getters[] = {
 int luasofia_url_create(lua_State *L)
 {
     /* Push struct info table at stack */
-    luasofia_struct_create_info_table(L, url_getters);    
+    luasofia_struct_create_info_table(L, url_info);    
     /* Create struct with info table */
-    return luasofia_struct_create(L);
+    return luasofia_struct_create(L, sizeof(url_t));
 }
 
 static const luaL_Reg sip_meths[] = {
@@ -48,7 +48,7 @@ static const luaL_Reg sip_meths[] = {
 };
 
 static const luaL_Reg sip_lib[] = {
-    {"url_create",  luasofia_url_create },
+    {"create_url",  luasofia_url_create },
     {NULL, NULL}
 };
 

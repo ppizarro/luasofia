@@ -15,7 +15,7 @@ typedef struct luasofia_struct_info_s {
 
 int luasofia_struct_create_info_table(lua_State *L, const luasofia_struct_info_t *l);
 
-int luasofia_struct_create(lua_State *L);
+int luasofia_struct_create(lua_State *L, size_t size);
 
 int luasofia_register_struct_meta(lua_State *L);
 

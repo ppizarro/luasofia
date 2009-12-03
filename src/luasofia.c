@@ -6,7 +6,7 @@
 
 #include "luasofia_weak_table.h"
 #include "luasofia_tags.h"
-//#include "luasofia_structs.h"
+#include "luasofia_struct.h"
 
 int luaopen_luasofia(lua_State *L)
 {
@@ -17,7 +17,7 @@ int luaopen_luasofia(lua_State *L)
     luasofia_tags_create(L);
 
     /* create luasofia meta struct at REGISTRYINDEX */
-    //luasofia_register_struct_meta(L);
+    luasofia_register_struct_meta(L);
 
     return 1;
 }

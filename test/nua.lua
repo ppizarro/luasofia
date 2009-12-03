@@ -5,7 +5,6 @@ su = require "luasofia.su"
 nua = require "luasofia.nua"
 sip = require "luasofia.sip"
 soa = require "luasofia.soa"
-lstruct = require "luasofia.struct"
 
 function make_call(ua, uri, from, to)
     print("gera_chamada: uri["..uri.."] from["..from.."] to["..to.."]")

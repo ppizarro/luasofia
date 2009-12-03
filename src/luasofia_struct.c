@@ -22,11 +22,21 @@ int luasofia_struct_create_info_table(lua_State *L, const luasofia_struct_info_t
     return 1;
 }
 
-int luasofia_struct_create(lua_State *L)
+int luasofia_struct_create(lua_State *L, size_t size)
 {
     void **ust = NULL;
-    void *p = lua_touserdata(L, -2);
-    luaL_argcheck(L, p != NULL, -2, "lightuserdata expected");
+    void *p = NULL;
+
+    if(lua_type(L, -2) == LUA_TLIGHTUSERDATA) {
+        p = lua_touserdata(L, -2);
+    } else if(size > 0) {
+        p = malloc(size);
+        memset(p, 0, size);
+        lua_pushlightuserdata(L, p);
+        lua_insert(L, -2);
+    } else {
+        luaL_error(L, "cannot create struct!");
+    }
 
     /* check the struct info table at stack top */
     luaL_checktype(L, -1, LUA_TTABLE);
@@ -170,27 +180,5 @@ int luasofia_register_struct_meta(lua_State *L)
     lua_pop(L, 1);
 
     return 0;
-}
-
-static const struct luaL_reg struct_lib[] = {
-  {"create", luasofia_struct_create},
-  {NULL, NULL},
-};
-
-int luaopen_luasofia_struct(lua_State *L)
-{
-    luasofia_register_struct_meta(L);
-
-    lua_getglobal(L, "luasofia");
-    if(lua_isnil(L, -1)) {
-        lua_newtable(L);
-        lua_pushvalue(L, -1);
-        lua_setglobal(L, "luasofia");
-    }
-    lua_newtable(L);
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -3, "struct");
-    luaL_register(L, NULL, struct_lib);
-    return 1;
 }
 
