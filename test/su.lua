@@ -1,4 +1,3 @@
-require "luasofia"
 
 su = require "luasofia.su"
 

@@ -3,6 +3,7 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include "luasofia.h"
 #include "luasofia_tags.h"
 #include "luasofia_utils.h"
 #include "luasofia_struct.h"
@@ -40,7 +41,7 @@ int luasofia_url_create(lua_State *L)
     /* Push struct info table at stack */
     luasofia_struct_create_info_table(L, url_info);    
     /* Create struct with info table */
-    return luasofia_struct_create(L, sizeof(url_t));
+    return luasofia_struct_create(L);
 }
 
 static const luaL_Reg sip_meths[] = {
@@ -363,12 +364,8 @@ int luaopen_luasofia_sip(lua_State *L)
 
     luasofia_tags_register(L, sip_tags);
 
-    lua_getglobal(L, "luasofia");
-    if(lua_isnil(L, -1)) {
-        lua_newtable(L);
-        lua_pushvalue(L, -1);
-        lua_setglobal(L, "luasofia");
-    }
+    luaopen_luasofia(L);
+
     /* luasofia[sip] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);

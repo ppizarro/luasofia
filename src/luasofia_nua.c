@@ -3,6 +3,7 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include "luasofia.h"
 #include "luasofia_weak_table.h"
 #include "luasofia_su_root.h"
 #include "luasofia_tags.h"
@@ -533,12 +534,9 @@ int luaopen_luasofia_nua(lua_State *L)
 
     luasofia_tags_register(L, nua_tags);
 
-    lua_getglobal(L, "luasofia");
-    if(lua_isnil(L, -1)) {
-        lua_newtable(L);
-        lua_pushvalue(L, -1);
-        lua_setglobal(L, "luasofia");
-    }
+    luaopen_luasofia(L);
+
+    /* luasofia[nua] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "nua");

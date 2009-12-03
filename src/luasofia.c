@@ -8,8 +8,17 @@
 #include "luasofia_tags.h"
 #include "luasofia_struct.h"
 
+static const struct luaL_reg core_lib[] = {
+  {"lightuserdata_proxy", luasofia_struct_create},
+  {NULL, NULL},
+};
+
 int luaopen_luasofia(lua_State *L)
-{
+{ 
+    lua_getglobal(L, "luasofia");
+    if(!lua_isnil(L, -1))
+        return 1;
+
     /* create luasofia weak table at REGISTRYINDEX */
     luasofia_weak_table_create(L);
 
@@ -19,6 +28,7 @@ int luaopen_luasofia(lua_State *L)
     /* create luasofia meta struct at REGISTRYINDEX */
     luasofia_register_struct_meta(L);
 
+    luaL_register(L, "luasofia", core_lib);
     return 1;
 }
 

@@ -22,22 +22,12 @@ int luasofia_struct_create_info_table(lua_State *L, const luasofia_struct_info_t
     return 1;
 }
 
-int luasofia_struct_create(lua_State *L, size_t size)
+int luasofia_struct_create(lua_State *L)
 {
     void **ust = NULL;
-    void *p = NULL;
-
-    if(lua_type(L, -2) == LUA_TLIGHTUSERDATA) {
-        p = lua_touserdata(L, -2);
-    } else if(size > 0) {
-        p = malloc(size);
-        memset(p, 0, size);
-        lua_pushlightuserdata(L, p);
-        lua_insert(L, -2);
-    } else {
-        luaL_error(L, "cannot create struct!");
-    }
-
+    void *p = lua_touserdata(L, -2);
+    luaL_argcheck(L, p != NULL, -2, "lightuserdata expected");
+         
     /* check the struct info table at stack top */
     luaL_checktype(L, -1, LUA_TTABLE);
 

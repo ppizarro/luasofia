@@ -3,6 +3,7 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include "luasofia.h"
 #include "luasofia_tags.h"
 #include "luasofia_utils.h"
 
@@ -97,12 +98,9 @@ int luaopen_luasofia_soa(lua_State *L)
 
     luasofia_tags_register(L, soa_tags);
 
-    lua_getglobal(L, "luasofia");
-    if(lua_isnil(L, -1)) {
-        lua_newtable(L);
-        lua_pushvalue(L, -1);
-        lua_setglobal(L, "luasofia");
-    }
+    luaopen_luasofia(L);
+
+    /* luasofia[soa] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "soa");

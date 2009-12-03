@@ -4,6 +4,7 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include "luasofia.h"
 #include "luasofia_weak_table.h"
 #include "luasofia_su_root.h"
 //#include "luasofia_su_home.h"
@@ -41,12 +42,9 @@ int luaopen_luasofia_su(lua_State *L)
     luasofia_register_timer_meta(L);
     luasofia_register_task_meta(L);
 
-    lua_getglobal(L, "luasofia");
-    if(lua_isnil(L, -1)) {
-        lua_newtable(L);
-        lua_pushvalue(L, -1);
-        lua_setglobal(L, "luasofia");
-    }
+    luaopen_luasofia(L);
+
+    /* luasofia[su] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "su");
