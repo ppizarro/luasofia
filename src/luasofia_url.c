@@ -11,15 +11,6 @@
 #include <sofia-sip/url.h>
 #include <sofia-sip/url_tag.h>
 
-typedef struct lua_url_s lua_url_t;
-
-#define URL_MTABLE "lua_url_t"
-
-struct lua_url_s {
-    url_t *url;
-    lua_State *L;
-};
-
 static const luasofia_proxy_info_t url_info[] = {
 {"pad",      luasofia_proxy_get_char,   offsetof(url_t, url_pad),      offsetof(url_t, url_type)},
 {"type",     luasofia_proxy_get_char,   offsetof(url_t, url_type),     0},
@@ -33,20 +24,13 @@ static const luasofia_proxy_info_t url_info[] = {
 {"params",   luasofia_proxy_get_string, offsetof(url_t, url_params),   0},
 {"headers",  luasofia_proxy_get_string, offsetof(url_t, url_headers),  0},
 {"fragment", luasofia_proxy_get_string, offsetof(url_t, url_fragment), 0},
-{NULL, NULL, 0 }
+{NULL, NULL, 0, 0 }
 };
 
-int luasofia_url_get_proxy(lua_State *L)
+static int luasofia_url_get_proxy(lua_State *L)
 {
-    /* Push struct info table at stack */
-    luasofia_proxy_create_info_table(L, url_info);    
-    /* Create struct with info table */
-    return luasofia_proxy_create(L);
+    return luasofia_proxy_create(L, "luasofia_url_t");
 }
-
-static const luaL_Reg url_meths[] = {
-    {NULL, NULL}
-};
 
 static const luaL_Reg url_lib[] = {
     {"get_proxy",  luasofia_url_get_proxy },
@@ -66,15 +50,6 @@ static const luasofia_reg_const_t url_constants[] = {
 
 int luaopen_luasofia_url(lua_State *L)
 {
-    luaL_newmetatable(L, URL_MTABLE);
-    /* metatable.__index = metatable */
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, url_meths);
-    lua_pop(L, 1);
-
-    luasofia_tags_register(L, url_tags);
-
     luaopen_luasofia(L);
 
     /* luasofia[url] = table */
@@ -82,6 +57,10 @@ int luaopen_luasofia_url(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "url");
     luaL_register(L, NULL, url_lib);
+
+    luasofia_tags_register(L, url_tags);
+
+    luasofia_proxy_register_info_table(L, "luasofia_url_t", url_info);
 
     luasofia_register_constants(L, url_constants);
 

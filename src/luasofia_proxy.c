@@ -9,27 +9,52 @@
 #include "luasofia_proxy.h"
 #include "luasofia_utils.h"
 
+static int proxy_table_ref = LUA_REFNIL;
+
 #define LUASOFIA_PROXY_META "luasofia_proxy"
 
-int luasofia_proxy_create_info_table(lua_State *L, const luasofia_proxy_info_t *l)
+int luasofia_proxy_register_info_table(lua_State *L, const char* name, const luasofia_proxy_info_t *l)
 {
+    if (!name || !l) return 0;
+
+    /* put the tag table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, proxy_table_ref);
+    if (lua_isnil(L, -1))
+        luaL_error(L, "Failed to get proxy info table!");
+
+    lua_pushstring(L, name);
     lua_newtable(L);
     for (; l->name; l++) {
         lua_pushstring(L, l->name);
         lua_pushlightuserdata(L, (void*)l);
         lua_rawset(L, -3);
     }
-    return 1;
+    lua_rawset(L, -3);
+    lua_pop(L, 1);
+    return 0;
 }
 
-int luasofia_proxy_create(lua_State *L)
+int luasofia_proxy_create(lua_State *L, const char* name)
 {
     void **ust = NULL;
-    void *p = lua_touserdata(L, -2);
-    luaL_argcheck(L, p != NULL, -2, "lightuserdata expected");
-         
+    void *p = lua_touserdata(L, -1);
+    luaL_argcheck(L, p != NULL, -1, "lightuserdata expected");
+
+    /* put the tables of info tables at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, proxy_table_ref);
+    if (lua_isnil(L, -1))
+        luaL_error(L, "Failed to get proxy info table!");
+
+    /* put the info table at the stack */
+    lua_pushstring(L, name);
+    lua_rawget(L, -2);
+
     /* check the struct info table at stack top */
-    luaL_checktype(L, -1, LUA_TTABLE);
+    if (lua_isnil(L, -1))
+        luaL_error(L, "Failed to get info table!");
+    
+    /* remove tables of info tables from the stack */
+    lua_remove(L, -2);
 
     /* create a userdata struct */
     ust = (void**)lua_newuserdata(L, sizeof(void*));
@@ -41,6 +66,8 @@ int luasofia_proxy_create(lua_State *L)
     /* set struct info table as environment for udata */
     lua_pushvalue(L, -2);
     lua_setfenv(L, -2);
+
+    lua_remove(L, -2);
     return 1;
 }
 
@@ -120,8 +147,15 @@ static int luasofia_proxy_tostring(lua_State *L)
     return 0;
 }
 
-int luasofia_proxy_create_metatable(lua_State *L)
+void luasofia_proxy_register(lua_State *L)
 {
+    /* create userdata table */
+    lua_newtable(L);
+   
+    /* now lets store the tag table at the LUA_REGISTRYINDEX, */
+    proxy_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
+    /* create metatable PROXY */
     luaL_newmetatable(L, LUASOFIA_PROXY_META);
 
     lua_pushliteral(L, "__index");
@@ -133,6 +167,5 @@ int luasofia_proxy_create_metatable(lua_State *L)
     lua_settable(L, -3);
 
     lua_pop(L, 1);
-    return 0;
 }
 

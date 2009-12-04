@@ -11,15 +11,6 @@
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_tag.h>
 
-typedef struct lua_sip_s lua_sip_t;
-
-#define SIP_MTABLE "lua_sip_t"
-
-struct lua_sip_s {
-    sip_t *sip;
-    lua_State *L;
-};
-
 static const luasofia_proxy_info_t sip_contact_info[] = {
 {"m_next",    luasofia_proxy_get_pointer, offsetof(sip_contact_t, m_next), 0},
 {"m_display", luasofia_proxy_get_string, offsetof(sip_contact_t, m_display), 0},
@@ -39,7 +30,6 @@ static const luasofia_proxy_info_t sip_addr_info[] = {
 {"a_tag",     luasofia_proxy_get_string, offsetof(sip_addr_t, a_tag), 0},
 {NULL, NULL, 0 }
 };
-
 
 static const luasofia_proxy_info_t sip_request_info[] = {
 {"rq_method",      luasofia_proxy_get_address, offsetof(sip_request_t, rq_method),     0},
@@ -128,43 +118,25 @@ static const luasofia_proxy_info_t sip_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_sip_get_proxy(lua_State *L)
+static int luasofia_sip_get_proxy(lua_State *L)
 {
-    /* Push struct info table at stack */
-    luasofia_proxy_create_info_table(L, sip_info);    
-    /* Create struct with info table */
-    return luasofia_proxy_create(L);
+    return luasofia_proxy_create(L, "luasofia_sip_t");
 }
 
-int luasofia_sip_get_proxy_addr(lua_State *L)
+static int luasofia_sip_get_proxy_addr(lua_State *L)
 {
-    /* Push struct info table at stack */
-    luasofia_proxy_create_info_table(L, sip_addr_info);    
-    /* Create struct with info table */
-    return luasofia_proxy_create(L);
+    return luasofia_proxy_create(L, "luasofia_sip_addr_t");
 }
 
-int luasofia_sip_get_proxy_contact(lua_State *L)
+static int luasofia_sip_get_proxy_contact(lua_State *L)
 {
-    /* Push struct info table at stack */
-    luasofia_proxy_create_info_table(L, sip_contact_info);    
-    /* Create struct with info table */
-    return luasofia_proxy_create(L);
+    return luasofia_proxy_create(L, "luasofia_sip_contact_t");
 }
 
-
-int luasofia_sip_get_proxy_request(lua_State *L)
+static int luasofia_sip_get_proxy_request(lua_State *L)
 {
-    /* Push struct info table at stack */
-    luasofia_proxy_create_info_table(L, sip_request_info);
-    /* Create struct with info table */
-    return luasofia_proxy_create(L);
+    return luasofia_proxy_create(L, "luasofia_sip_request_t");
 }
-
-
-static const luaL_Reg sip_meths[] = {
-    {NULL, NULL}
-};
 
 static const luaL_Reg sip_lib[] = {
     {"get_proxy",         luasofia_sip_get_proxy },
@@ -476,15 +448,6 @@ static const luasofia_reg_const_t sip_constants[] = {
 
 int luaopen_luasofia_sip(lua_State *L)
 {
-    luaL_newmetatable(L, SIP_MTABLE);
-    /* metatable.__index = metatable */
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, sip_meths);
-    lua_pop(L, 1);
-
-    luasofia_tags_register(L, sip_tags);
-
     luaopen_luasofia(L);
 
     /* luasofia[sip] = table */
@@ -492,6 +455,13 @@ int luaopen_luasofia_sip(lua_State *L)
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "sip");
     luaL_register(L, NULL, sip_lib);
+
+    luasofia_tags_register(L, sip_tags);
+
+    luasofia_proxy_register_info_table(L, "luasofia_sip_t", sip_info);    
+    luasofia_proxy_register_info_table(L, "luasofia_sip_addr_t", sip_addr_info);    
+    luasofia_proxy_register_info_table(L, "luasofia_sip_contact_t", sip_contact_info);    
+    luasofia_proxy_register_info_table(L, "luasofia_sip_request_t", sip_request_info);
 
     luasofia_register_constants(L, sip_constants);
 

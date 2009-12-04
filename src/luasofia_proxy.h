@@ -12,11 +12,11 @@ typedef struct luasofia_proxy_info_s {
     int lenght;           /* fixed array size. Example: int point[2]  */
 } luasofia_proxy_info_t;
 
-int luasofia_proxy_create_info_table(lua_State *L, const luasofia_proxy_info_t *l);
+void luasofia_proxy_register(lua_State *L);
 
-int luasofia_proxy_create(lua_State *L);
+int luasofia_proxy_register_info_table(lua_State *L, const char* name, const luasofia_proxy_info_t *l);
 
-int luasofia_proxy_create_metatable(lua_State *L);
+int luasofia_proxy_create(lua_State *L, const char* name);
 
 int luasofia_proxy_get_int(lua_State *L, void *v);
 

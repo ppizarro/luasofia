@@ -39,6 +39,7 @@ void luasofia_tags_register(lua_State *L, const luasofia_tag_reg_t *tags)
         lua_pushlightuserdata(L, (void*)tags->t_tag);
         lua_rawset(L,-3);
     }
+    lua_pop(L, 1);
 }
 
 tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
