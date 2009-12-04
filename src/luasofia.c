@@ -25,7 +25,7 @@ int luaopen_luasofia(lua_State *L)
     luasofia_tags_create(L);
 
     /* create luasofia meta struct at REGISTRYINDEX */
-    luasofia_proxy_register_meta(L);
+    luasofia_proxy_create_metatable(L);
 
     luaL_register(L, "luasofia", core_lib);
     return 1;

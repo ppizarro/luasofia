@@ -4,19 +4,19 @@
 
 typedef int (*struct_func) (lua_State *L, void *v);
 
-/* member info for get and set handlers */
+/* member info for get handlers */
 typedef struct luasofia_proxy_info_s {
-    const char *name;  /* member name */
-    struct_func get_func;  /* get function for type of member */
-    size_t offset;     /* offset of member within struct */
-    int lenght;        /* fixed array size. Example: int point[2]  */
+    const char *name;     /* member name */
+    struct_func get_func; /* get function for type of member */
+    size_t offset;        /* offset of member within struct */
+    int lenght;           /* fixed array size. Example: int point[2]  */
 } luasofia_proxy_info_t;
 
 int luasofia_proxy_create_info_table(lua_State *L, const luasofia_proxy_info_t *l);
 
 int luasofia_proxy_create(lua_State *L);
 
-int luasofia_proxy_register_meta(lua_State *L);
+int luasofia_proxy_create_metatable(lua_State *L);
 
 int luasofia_proxy_get_int(lua_State *L, void *v);
 

@@ -120,7 +120,7 @@ static int luasofia_proxy_tostring(lua_State *L)
     return 0;
 }
 
-int luasofia_proxy_register_meta(lua_State *L)
+int luasofia_proxy_create_metatable(lua_State *L)
 {
     luaL_newmetatable(L, LUASOFIA_PROXY_META);
 
