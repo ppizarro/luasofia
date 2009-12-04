@@ -36,13 +36,14 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                       local from = sip:get_proxy_addr(s.sip_from)
                                       local to = sip:get_proxy_addr(s.sip_to)
                                       local contact = sip:get_proxy_contact(s.sip_contact)
-
-                                      local url = url:get_proxy(from.a_url)
+                                      local from_url = url:get_proxy(from.a_url)
+                                      local to_url = url:get_proxy(to.a_url)
+                                      local contact_url = url:get_proxy(contact.m_url)
 
                                       print("nua_i_invite: status["..status.."] phrase["..phrase.."]")
-                                      print("from:    "..from.a_url_user.."@"..from.a_url_host)
-                                      print("to:      "..to.a_url_user.."@"..to.a_url_host)
-                                      print("contact: "..contact.m_url_user.."@"..contact.m_url_host)
+                                      print("from:    "..from_url.user.."@"..from_url.host)
+                                      print("to:      "..to_url.user.."@"..to_url.host)
+                                      print("contact: "..contact_url.user.."@"..contact_url.host)
                                   end
   
     callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, sip, tags)
