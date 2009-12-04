@@ -39,6 +39,8 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                       local to = sip:get_proxy_sip_addr(s.sip_to)
                                       local contact = sip:get_proxy_sip_contact(s.sip_contact)
 
+                                      local url = url:get_proxy(from.a_url)
+
                                       print("nua_i_invite: status["..status.."] phrase["..phrase.."]")
                                       print("from:    "..from.a_url_user.."@"..from.a_url_host)
                                       print("to:      "..to.a_url_user.."@"..to.a_url_host)

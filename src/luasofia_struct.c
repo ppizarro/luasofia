@@ -82,6 +82,12 @@ int luasofia_struct_get_pointer (lua_State *L, void *v)
     return 1;
 }
 
+int luasofia_struct_get_address (lua_State *L, void *v)
+{
+    lua_pushlightuserdata(L, v);
+    return 1;
+}
+
 static int luasofia_struct_index(lua_State *L)
 {
     luasofia_struct_info_t* m = NULL;
