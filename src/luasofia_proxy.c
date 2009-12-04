@@ -6,12 +6,12 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_struct.h"
+#include "luasofia_proxy.h"
 #include "luasofia_utils.h"
 
-#define LUASOFIA_STRUCT_META "luasofia_struct"
+#define LUASOFIA_PROXY_META "luasofia_proxy"
 
-int luasofia_struct_create_info_table(lua_State *L, const luasofia_struct_info_t *l)
+int luasofia_proxy_create_info_table(lua_State *L, const luasofia_proxy_info_t *l)
 {
     lua_newtable(L);
     for (; l->name; l++) {
@@ -22,7 +22,7 @@ int luasofia_struct_create_info_table(lua_State *L, const luasofia_struct_info_t
     return 1;
 }
 
-int luasofia_struct_create(lua_State *L)
+int luasofia_proxy_create(lua_State *L)
 {
     void **ust = NULL;
     void *p = lua_touserdata(L, -2);
@@ -35,7 +35,7 @@ int luasofia_struct_create(lua_State *L)
     ust = (void**)lua_newuserdata(L, sizeof(void*));
     *ust = p;
 
-    luaL_getmetatable(L, LUASOFIA_STRUCT_META);
+    luaL_getmetatable(L, LUASOFIA_PROXY_META);
     lua_setmetatable(L, -2);
 
     /* set struct info table as environment for udata */
@@ -44,37 +44,37 @@ int luasofia_struct_create(lua_State *L)
     return 1;
 }
 
-int luasofia_struct_get_int (lua_State *L, void *v)
+int luasofia_proxy_get_int (lua_State *L, void *v)
 {
     lua_pushnumber(L, *(int*)v);
     return 1;
 }
 
-int luasofia_struct_get_short (lua_State *L, void *v)
+int luasofia_proxy_get_short (lua_State *L, void *v)
 {
     lua_pushnumber(L, *(short*)v);
     return 1;
 }
 
-int luasofia_struct_get_char (lua_State *L, void *v)
+int luasofia_proxy_get_char (lua_State *L, void *v)
 {
     lua_pushnumber(L, *(char*)v);
     return 1;
 }
 
-int luasofia_struct_get_number (lua_State *L, void *v)
+int luasofia_proxy_get_number (lua_State *L, void *v)
 {
     lua_pushnumber(L, *(lua_Number*)v);
     return 1;
 }
 
-int luasofia_struct_get_string (lua_State *L, void *v)
+int luasofia_proxy_get_string (lua_State *L, void *v)
 {
     lua_pushstring(L, *(char**)v );
     return 1;
 }
 
-int luasofia_struct_get_pointer (lua_State *L, void *v)
+int luasofia_proxy_get_pointer (lua_State *L, void *v)
 {
     void *p;
     p = *((void**)v);
@@ -82,18 +82,18 @@ int luasofia_struct_get_pointer (lua_State *L, void *v)
     return 1;
 }
 
-int luasofia_struct_get_address (lua_State *L, void *v)
+int luasofia_proxy_get_address (lua_State *L, void *v)
 {
     lua_pushlightuserdata(L, v);
     return 1;
 }
 
-static int luasofia_struct_index(lua_State *L)
+static int luasofia_proxy_index(lua_State *L)
 {
-    luasofia_struct_info_t* m = NULL;
+    luasofia_proxy_info_t* m = NULL;
 
     /* stack has userdata, index */
-    void** ust = luaL_checkudata(L, 1, LUASOFIA_STRUCT_META);
+    void** ust = luaL_checkudata(L, 1, LUASOFIA_PROXY_META);
 
     /* put struct info table at stack */
     lua_getfenv(L, 1);
@@ -105,7 +105,7 @@ static int luasofia_struct_index(lua_State *L)
     lua_rawget(L, -2);      
     if (!lua_islightuserdata(L, -1))
         luaL_error(L, "cannot get member '%s'", lua_tostring(L, 2));
-    m = (luasofia_struct_info_t*)lua_touserdata(L, -1);
+    m = (luasofia_proxy_info_t*)lua_touserdata(L, -1);
 
     /* drop lightuserdata and info table */
     lua_pop(L, 2);
@@ -114,7 +114,7 @@ static int luasofia_struct_index(lua_State *L)
     return m->get_func(L, (void *)(((char *)*ust) + m->offset));
 }
 
-static int luasofia_struct_tostring(lua_State *L)
+static int luasofia_proxy_tostring(lua_State *L)
 {
     // TODO
     return 0;
@@ -122,14 +122,14 @@ static int luasofia_struct_tostring(lua_State *L)
 
 int luasofia_register_struct_meta(lua_State *L)
 {
-    luaL_newmetatable(L, LUASOFIA_STRUCT_META);
+    luaL_newmetatable(L, LUASOFIA_PROXY_META);
 
     lua_pushliteral(L, "__index");
-    lua_pushcfunction(L, luasofia_struct_index);
+    lua_pushcfunction(L, luasofia_proxy_index);
     lua_settable(L, -3);
 
     lua_pushliteral(L, "__tostring");
-    lua_pushcfunction(L, luasofia_struct_tostring);
+    lua_pushcfunction(L, luasofia_proxy_tostring);
     lua_settable(L, -3);
 
     lua_pop(L, 1);

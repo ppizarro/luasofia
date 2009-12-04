@@ -6,10 +6,10 @@
 
 #include "luasofia_weak_table.h"
 #include "luasofia_tags.h"
-#include "luasofia_struct.h"
+#include "luasofia_proxy.h"
 
 static const struct luaL_reg core_lib[] = {
-  {"lightuserdata_proxy", luasofia_struct_create},
+  {"lightuserdata_proxy", luasofia_proxy_create},
   {NULL, NULL},
 };
 
