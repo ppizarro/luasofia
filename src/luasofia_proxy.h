@@ -16,7 +16,7 @@ int luasofia_proxy_create_info_table(lua_State *L, const luasofia_proxy_info_t *
 
 int luasofia_proxy_create(lua_State *L);
 
-int luasofia_register_struct_meta(lua_State *L);
+int luasofia_proxy_register_meta(lua_State *L);
 
 int luasofia_proxy_get_int(lua_State *L, void *v);
 
