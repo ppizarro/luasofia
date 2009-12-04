@@ -180,7 +180,7 @@ static void nua_event_callback(nua_event_t event,
     if (lua_isnil(L, -1)) {
         lua_pop(L, 1);
         /* get default callback */
-        lua_getfield(L, -1, "event_handler");
+        lua_getfield(L, -1, "event_default");
         if (lua_isnil(L, -1)) {
             lua_pop(L, 3);
             return;

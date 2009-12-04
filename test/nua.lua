@@ -20,8 +20,8 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_r_shutdown] = f_shutdown
 
-    callbacks["event_handler"] = function (event, status, phrase, ua, sip, tags)
-                                     print("event_handler: event["..nua:event_name(event)..
+    callbacks["event_default"] = function (event, status, phrase, ua, sip, tags)
+                                     print("event_default: event["..nua:event_name(event)..
                                            "] status["..status.."] phrase["..phrase.."]")
                                      if (#tags > 0) then
                                          print("\ttags size[" .. #tags .. "]:")
