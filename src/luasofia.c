@@ -9,7 +9,6 @@
 #include "luasofia_proxy.h"
 
 static const struct luaL_reg core_lib[] = {
-  {"lightuserdata_proxy", luasofia_proxy_create},
   {NULL, NULL},
 };
 
