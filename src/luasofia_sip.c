@@ -40,6 +40,15 @@ static const luasofia_proxy_info_t sip_addr_info[] = {
 {NULL, NULL, 0 }
 };
 
+
+static const luasofia_proxy_info_t sip_request_info[] = {
+{"rq_method",      luasofia_proxy_get_address, offsetof(sip_request_t, rq_method),     0},
+{"rq_method_name", luasofia_proxy_get_string,  offsetof(sip_request_t, rq_method_name),0},
+{"rq_url",         luasofia_proxy_get_address, offsetof(sip_request_t, rq_url),        0},
+{"rq_version",     luasofia_proxy_get_string,  offsetof(sip_request_t, rq_version), 0},
+{NULL, NULL, 0 }
+};
+
 static const luasofia_proxy_info_t sip_info[] = {
 {"sip_user", luasofia_proxy_get_pointer, offsetof(sip_t, sip_user), 0},
 {"sip_size", luasofia_proxy_get_int, offsetof(sip_t, sip_size), 0},
@@ -143,6 +152,16 @@ int luasofia_sip_get_proxy_contact(lua_State *L)
     return luasofia_proxy_create(L);
 }
 
+
+int luasofia_sip_get_proxy_request(lua_State *L)
+{
+    /* Push struct info table at stack */
+    luasofia_proxy_create_info_table(L, sip_request_info);
+    /* Create struct with info table */
+    return luasofia_proxy_create(L);
+}
+
+
 static const luaL_Reg sip_meths[] = {
     {NULL, NULL}
 };
@@ -150,7 +169,8 @@ static const luaL_Reg sip_meths[] = {
 static const luaL_Reg sip_lib[] = {
     {"get_proxy",         luasofia_sip_get_proxy },
     {"get_proxy_addr",    luasofia_sip_get_proxy_addr },
-    {"get_proxy_contact", luasofia_sip_get_proxy_contact },
+    {"get_proxy_contact", luasofia_sip_get_proxy_contact},
+    {"get_proxy_request", luasofia_sip_get_proxy_request},
     {NULL, NULL}
 };
 
