@@ -135,7 +135,7 @@ static const luasofia_struct_info_t sip_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_get_proxy_sip(lua_State *L)
+int luasofia_sip_get_proxy(lua_State *L)
 {
     /* Push struct info table at stack */
     luasofia_struct_create_info_table(L, sip_info);    
@@ -143,7 +143,7 @@ int luasofia_get_proxy_sip(lua_State *L)
     return luasofia_struct_create(L);
 }
 
-int luasofia_get_proxy_sip_addr(lua_State *L)
+int luasofia_sip_get_proxy_addr(lua_State *L)
 {
     /* Push struct info table at stack */
     luasofia_struct_create_info_table(L, sip_addr_info);    
@@ -151,7 +151,7 @@ int luasofia_get_proxy_sip_addr(lua_State *L)
     return luasofia_struct_create(L);
 }
 
-int luasofia_get_proxy_sip_contact(lua_State *L)
+int luasofia_sip_get_proxy_contact(lua_State *L)
 {
     /* Push struct info table at stack */
     luasofia_struct_create_info_table(L, sip_contact_info);    
@@ -164,9 +164,9 @@ static const luaL_Reg sip_meths[] = {
 };
 
 static const luaL_Reg sip_lib[] = {
-    {"get_proxy_sip",         luasofia_get_proxy_sip },
-    {"get_proxy_sip_addr",    luasofia_get_proxy_sip_addr },
-    {"get_proxy_sip_contact", luasofia_get_proxy_sip_contact },
+    {"get_proxy",         luasofia_sip_get_proxy },
+    {"get_proxy_addr",    luasofia_sip_get_proxy_addr },
+    {"get_proxy_contact", luasofia_sip_get_proxy_contact },
     {NULL, NULL}
 };
 
