@@ -116,6 +116,7 @@ static int luasofia_struct_index(lua_State *L)
 
 static int luasofia_struct_tostring(lua_State *L)
 {
+    // TODO
     return 0;
 }
 

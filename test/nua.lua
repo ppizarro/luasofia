@@ -1,6 +1,4 @@
 
-require "luasofia"
-
 su = require "luasofia.su"
 nua = require "luasofia.nua"
 sip = require "luasofia.sip"
@@ -34,10 +32,10 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                  end
 
     callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, lu_sip, tags)
-                                      local s = sip:get_proxy_sip(lu_sip)
-                                      local from = sip:get_proxy_sip_addr(s.sip_from)
-                                      local to = sip:get_proxy_sip_addr(s.sip_to)
-                                      local contact = sip:get_proxy_sip_contact(s.sip_contact)
+                                      local s = sip:get_proxy(lu_sip)
+                                      local from = sip:get_proxy_addr(s.sip_from)
+                                      local to = sip:get_proxy_addr(s.sip_to)
+                                      local contact = sip:get_proxy_contact(s.sip_contact)
 
                                       local url = url:get_proxy(from.a_url)
 
