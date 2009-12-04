@@ -17,7 +17,7 @@ int luasofia_proxy_register_info_table(lua_State *L, const char* name, const lua
 {
     if (!name || !l) return 0;
 
-    /* put the tag table at the stack */
+    /* put the proxy table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, proxy_table_ref);
     if (lua_isnil(L, -1))
         luaL_error(L, "Failed to get proxy info table!");
@@ -152,10 +152,9 @@ void luasofia_proxy_register(lua_State *L)
     /* create userdata table */
     lua_newtable(L);
    
-    /* now lets store the tag table at the LUA_REGISTRYINDEX, */
+    /* now lets store the proxy table at the LUA_REGISTRYINDEX, */
     proxy_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 
-    /* create metatable PROXY */
     luaL_newmetatable(L, LUASOFIA_PROXY_META);
 
     lua_pushliteral(L, "__index");
