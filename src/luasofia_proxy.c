@@ -49,7 +49,7 @@ int luasofia_proxy_create(lua_State *L, const char* name)
     lua_pushstring(L, name);
     lua_rawget(L, -2);
 
-    /* check the struct info table at stack top */
+    /* check the proxy_info table at stack top */
     if (lua_isnil(L, -1))
         luaL_error(L, "Failed to get info table!");
     
