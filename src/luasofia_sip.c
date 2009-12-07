@@ -11,6 +11,13 @@
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_tag.h>
 
+#define SIP_TABLE_NAME         "luasofia_sip_t"    
+#define SIP_ADDR_TABLE_NAME    "luasofia_sip_addr_t"    
+#define SIP_CONTACT_TABLE_NAME "luasofia_sip_contact_t"    
+#define SIP_REQUEST_TABLE_NAME "luasofia_sip_request_t"
+#define SIP_VIA_TABLE_NAME     "luasofia_sip_via_t"
+#define SIP_STATUS_TABLE_NAME  "luasofia_sip_status_t"
+
 static const luasofia_proxy_info_t sip_contact_info[] = {
 {"m_next",    luasofia_proxy_get_pointer, offsetof(sip_contact_t, m_next), 0},
 {"m_display", luasofia_proxy_get_string, offsetof(sip_contact_t, m_display), 0},
@@ -143,32 +150,32 @@ static const luasofia_proxy_info_t sip_info[] = {
 
 static int luasofia_sip_get_proxy(lua_State *L)
 {
-    return luasofia_proxy_create(L, "luasofia_sip_t");
+    return luasofia_proxy_create(L, SIP_TABLE_NAME);
 }
 
 static int luasofia_sip_get_proxy_addr(lua_State *L)
 {
-    return luasofia_proxy_create(L, "luasofia_sip_addr_t");
+    return luasofia_proxy_create(L, SIP_ADDR_TABLE_NAME);
 }
 
 static int luasofia_sip_get_proxy_contact(lua_State *L)
 {
-    return luasofia_proxy_create(L, "luasofia_sip_contact_t");
+    return luasofia_proxy_create(L, SIP_CONTACT_TABLE_NAME);
 }
 
 static int luasofia_sip_get_proxy_request(lua_State *L)
 {
-    return luasofia_proxy_create(L, "luasofia_sip_request_t");
+    return luasofia_proxy_create(L, SIP_REQUEST_TABLE_NAME);
 }
 
 static int luasofia_sip_get_proxy_via(lua_State *L)
 {
-    return luasofia_proxy_create(L, "luasofia_sip_via_t");
+    return luasofia_proxy_create(L, SIP_VIA_TABLE_NAME);
 }
 
 static int luasofia_sip_get_proxy_status(lua_State *L)
 {
-    return luasofia_proxy_create(L, "luasofia_sip_status_t");
+    return luasofia_proxy_create(L, SIP_STATUS_TABLE_NAME);
 }
 
 static const luaL_Reg sip_lib[] = {
@@ -493,12 +500,12 @@ int luaopen_luasofia_sip(lua_State *L)
 
     luasofia_tags_register(L, sip_tags);
 
-    luasofia_proxy_register_info_table(L, "luasofia_sip_t", sip_info);    
-    luasofia_proxy_register_info_table(L, "luasofia_sip_addr_t", sip_addr_info);    
-    luasofia_proxy_register_info_table(L, "luasofia_sip_contact_t", sip_contact_info);    
-    luasofia_proxy_register_info_table(L, "luasofia_sip_request_t", sip_request_info);
-    luasofia_proxy_register_info_table(L, "luasofia_sip_via_t", sip_via_info);
-    luasofia_proxy_register_info_table(L, "luasofia_sip_status_t", sip_status_info);
+    luasofia_proxy_register_info_table(L, SIP_TABLE_NAME, sip_info);    
+    luasofia_proxy_register_info_table(L, SIP_ADDR_TABLE_NAME, sip_addr_info);    
+    luasofia_proxy_register_info_table(L, SIP_CONTACT_TABLE_NAME, sip_contact_info);    
+    luasofia_proxy_register_info_table(L, SIP_REQUEST_TABLE_NAME, sip_request_info);
+    luasofia_proxy_register_info_table(L, SIP_VIA_TABLE_NAME, sip_via_info);
+    luasofia_proxy_register_info_table(L, SIP_STATUS_TABLE_NAME, sip_status_info);
 
     luasofia_register_constants(L, sip_constants);
 
