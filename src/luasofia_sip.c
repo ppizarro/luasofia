@@ -17,6 +17,7 @@
 #define SIP_REQUEST_TABLE_NAME "luasofia_sip_request_t"
 #define SIP_VIA_TABLE_NAME     "luasofia_sip_via_t"
 #define SIP_STATUS_TABLE_NAME  "luasofia_sip_status_t"
+#define SIP_EVENT_TABLE_NAME  "luasofia_sip_event_t"
 
 static const luasofia_proxy_info_t sip_contact_info[] = {
 {"m_next",    luasofia_proxy_get_pointer, offsetof(sip_contact_t, m_next), 0},
@@ -31,10 +32,17 @@ static const luasofia_proxy_info_t sip_contact_info[] = {
 
 static const luasofia_proxy_info_t sip_addr_info[] = {
 {"a_display", luasofia_proxy_get_string, offsetof(sip_addr_t, a_display), 0},
-{"a_url",     luasofia_proxy_get_address, offsetof(sip_contact_t, m_url),   0},
+{"a_url",     luasofia_proxy_get_address, offsetof(sip_addr_t, a_url),   0},
 {"a_params",  luasofia_proxy_get_pointer, offsetof(sip_addr_t, a_params), 0},
 {"a_comment", luasofia_proxy_get_string, offsetof(sip_addr_t, a_comment), 0},
 {"a_tag",     luasofia_proxy_get_string, offsetof(sip_addr_t, a_tag), 0},
+{NULL, NULL, 0 }
+};
+
+static const luasofia_proxy_info_t sip_event_info[] = {
+{"o_type",  luasofia_proxy_get_string,  offsetof(sip_event_t, o_type),   0},
+{"o_params",luasofia_proxy_get_pointer, offsetof(sip_event_t, o_params), 0},
+{"o_id",    luasofia_proxy_get_string,  offsetof(sip_event_t, o_id),     0},
 {NULL, NULL, 0 }
 };
 
@@ -54,7 +62,7 @@ static const luasofia_proxy_info_t sip_via_info[] = {
 {"v_comment",  luasofia_proxy_get_string,  offsetof(sip_via_t, v_comment), 0},
 {"v_ttl",      luasofia_proxy_get_string,  offsetof(sip_via_t, v_ttl),     0},
 {"v_maddr",    luasofia_proxy_get_string,  offsetof(sip_via_t, v_maddr),   0},
-{"v_received", luasofia_proxy_get_string, offsetof(sip_via_t, v_received), 0},
+{"v_received", luasofia_proxy_get_string,  offsetof(sip_via_t, v_received),0},
 {"v_branch",   luasofia_proxy_get_string,  offsetof(sip_via_t, v_branch),  0},
 {"v_rport",    luasofia_proxy_get_string,  offsetof(sip_via_t, v_rport),   0},
 {"v_comp",     luasofia_proxy_get_string,  offsetof(sip_via_t, v_comp),    0},
@@ -178,6 +186,11 @@ static int luasofia_sip_get_proxy_status(lua_State *L)
     return luasofia_proxy_create(L, SIP_STATUS_TABLE_NAME);
 }
 
+static int luasofia_sip_get_proxy_event(lua_State *L)
+{
+    return luasofia_proxy_create(L, SIP_EVENT_TABLE_NAME);
+}
+
 static const luaL_Reg sip_lib[] = {
     {"get_proxy",         luasofia_sip_get_proxy },
     {"get_proxy_addr",    luasofia_sip_get_proxy_addr },
@@ -185,6 +198,7 @@ static const luaL_Reg sip_lib[] = {
     {"get_proxy_request", luasofia_sip_get_proxy_request},
     {"get_proxy_via"    , luasofia_sip_get_proxy_via},
     {"get_proxy_status" , luasofia_sip_get_proxy_status},
+    {"get_proxy_event" ,  luasofia_sip_get_proxy_event},
     {NULL, NULL}
 };
 
@@ -506,6 +520,7 @@ int luaopen_luasofia_sip(lua_State *L)
     luasofia_proxy_register_info_table(L, SIP_REQUEST_TABLE_NAME, sip_request_info);
     luasofia_proxy_register_info_table(L, SIP_VIA_TABLE_NAME, sip_via_info);
     luasofia_proxy_register_info_table(L, SIP_STATUS_TABLE_NAME, sip_status_info);
+    luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_event_info);
 
     luasofia_register_constants(L, sip_constants);
 
