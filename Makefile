@@ -23,6 +23,9 @@ all: $(TARGET)
 
 %.o : src/%.c
 	$(CC) $(CFLAGS) -o $@ $<
+       
+%.o : src/sip/%.c
+	$(CC) -I./src $(CFLAGS) -o $@ $<
 
 $(TARGET) : $(OBJECTS)
 	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
