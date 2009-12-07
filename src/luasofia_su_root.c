@@ -6,10 +6,10 @@
 #include "luasofia_su_root.h"
 #include "luasofia_su_task.h"
 
-int lua_su_root_create(lua_State *L)
+int luasofia_su_root_create(lua_State *L)
 {
     su_root_t *root = NULL;
-    lua_su_root_t *lroot = NULL;
+    luasofia_su_root_t *lroot = NULL;
     int argc = lua_gettop(L); 
 
     if (argc > 0)
@@ -23,7 +23,7 @@ int lua_su_root_create(lua_State *L)
     su_root_threading(root, 0);
 
     /* create a su_root object */
-    lroot = (lua_su_root_t*) lua_newuserdata(L, sizeof(lua_su_root_t));
+    lroot = (luasofia_su_root_t*) lua_newuserdata(L, sizeof(luasofia_su_root_t));
     /* set Lua state */
     lroot->L = L;
     lroot->root = root;
@@ -42,12 +42,12 @@ int lua_su_root_create(lua_State *L)
     return 1;
 }
 
-static int lua_su_root_destroy(lua_State *L)
+static int luasofia_su_root_destroy(lua_State *L)
 {
-    lua_su_root_t *lroot = NULL;
+    luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     if (lroot->root) {
         su_root_destroy(lroot->root);
@@ -56,90 +56,90 @@ static int lua_su_root_destroy(lua_State *L)
     return 0;
 }
 
-static int lua_su_root_magic(lua_State *L)
+static int luasofia_su_root_magic(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_register(lua_State *L)
+static int luasofia_su_root_register(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_deregister(lua_State *L)
+static int luasofia_su_root_deregister(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_unregister(lua_State *L)
+static int luasofia_su_root_unregister(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_run(lua_State *L)
+static int luasofia_su_root_run(lua_State *L)
 {
-    lua_su_root_t *lroot = NULL;
+    luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     su_root_run(lroot->root);
     return 0;
 }
 
-static int lua_su_root_break(lua_State *L)
+static int luasofia_su_root_break(lua_State *L)
 {
-    lua_su_root_t *lroot = NULL;
+    luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     su_root_break(lroot->root);
     return 0;
 }
 
-static int lua_su_root_step(lua_State *L)
+static int luasofia_su_root_step(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_get_max_defer(lua_State *L)
+static int luasofia_su_root_get_max_defer(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_set_max_defer(lua_State *L)
+static int luasofia_su_root_set_max_defer(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_root_task(lua_State *L)
+static int luasofia_su_root_task(lua_State *L)
 {
-    lua_su_root_t *lroot = NULL;
+    luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a engine) */
-    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
-    lua_su_task_create(L, su_root_task(lroot->root));
+    luasofia_su_task_create(L, su_root_task(lroot->root));
     return 1;
 }
 
 static const luaL_Reg su_root_meths[] = {
-    {"magic", lua_su_root_magic },
-    {"register", lua_su_root_register },
-    {"deregister", lua_su_root_deregister },
-    {"unregister", lua_su_root_unregister },
-    {"run", lua_su_root_run },
-    {"quit", lua_su_root_break },
-    {"step", lua_su_root_step },
-    {"get_max_defer", lua_su_root_get_max_defer },
-    {"set_max_defer", lua_su_root_set_max_defer },
-    {"task", lua_su_root_task },
-    {"__gc", lua_su_root_destroy},
+    {"magic", luasofia_su_root_magic },
+    {"register", luasofia_su_root_register },
+    {"deregister", luasofia_su_root_deregister },
+    {"unregister", luasofia_su_root_unregister },
+    {"run", luasofia_su_root_run },
+    {"quit", luasofia_su_root_break },
+    {"step", luasofia_su_root_step },
+    {"get_max_defer", luasofia_su_root_get_max_defer },
+    {"set_max_defer", luasofia_su_root_set_max_defer },
+    {"task", luasofia_su_root_task },
+    {"__gc", luasofia_su_root_destroy},
     {NULL, NULL}
 };
 
-int luasofia_register_root_meta(lua_State *L)
+int luasofia_su_root_register_meta(lua_State *L)
 {
     luaL_newmetatable(L, SU_ROOT_MTABLE);
     /* metatable.__index = metatable */

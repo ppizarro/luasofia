@@ -6,10 +6,10 @@
 
 #include "luasofia_su_home.h"
 
-int lua_su_home_new(lua_State *L)
+int luasofia_su_home_new(lua_State *L)
 {
     su_home_t *home = NULL;
-    lua_su_home_t *lhome = NULL;
+    luasofia_su_home_t *lhome = NULL;
     int size = luaL_optint(L, 1, sizeof(su_home_t));
 
     /* create the su_home */
@@ -18,7 +18,7 @@ int lua_su_home_new(lua_State *L)
         luaL_error(L, "su_home_new failed!");
 
     /* create a su_home object */
-    lhome = (lua_su_home_t*) lua_newuserdata(L, sizeof(lua_su_home_t));
+    lhome = (luasofia_su_home_t*) lua_newuserdata(L, sizeof(luasofia_su_home_t));
     /* set Lua state */
     lhome->L = L;
     lhome->home = home;
@@ -29,24 +29,24 @@ int lua_su_home_new(lua_State *L)
     return 1;
 }
 
-static int lua_su_home_ref(lua_State *L)
+static int luasofia_su_home_ref(lua_State *L)
 {
-    lua_su_home_t *lhome = NULL;
+    luasofia_su_home_t *lhome = NULL;
    
     /* get and check first argument (should be a engine) */
-    lhome = (lua_su_home_t*)luaL_checkudata(L, 1, SU_HOME_MTABLE);
+    lhome = (luasofia_su_home_t*)luaL_checkudata(L, 1, SU_HOME_MTABLE);
 
     lhome->home  = su_home_ref(lhome->home);
     return 0;
 }
 
-static int lua_su_home_unref(lua_State *L)
+static int luasofia_su_home_unref(lua_State *L)
 {
     int freed = 0;
-    lua_su_home_t *lhome = NULL;
+    luasofia_su_home_t *lhome = NULL;
 
     /* get and check first argument (should be a engine) */
-    lhome = (lua_su_home_t*)luaL_checkudata(L, 1, SU_HOME_MTABLE);
+    lhome = (luasofia_su_home_t*)luaL_checkudata(L, 1, SU_HOME_MTABLE);
 
     if (lhome->home) {
         freed = su_home_unref(lhome->home);
@@ -58,13 +58,13 @@ static int lua_su_home_unref(lua_State *L)
 }
 
 static const luaL_Reg su_home_meths[] = {
-    {"ref",  lua_su_home_ref },
-    {"unref", lua_su_home_unref },
-    {"__gc", lua_su_home_unref },
+    {"ref",  luasofia_su_home_ref },
+    {"unref", luasofia_su_home_unref },
+    {"__gc", luasofia_su_home_unref },
     {NULL, NULL}
 };
 
-int luasofia_register_home_meta(lua_State *L)
+int luasofia_su_home_register_meta(lua_State *L)
 {
     luaL_newmetatable(L, SU_HOME_MTABLE);
     /* metatable.__index = metatable */

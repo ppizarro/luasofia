@@ -202,14 +202,14 @@ static void nua_event_callback(nua_event_t event,
 
 static int lua_nua_create(lua_State *L)
 {
-    lua_su_root_t *lroot = NULL;
+    luasofia_su_root_t *lroot = NULL;
     lua_nua_t *lnua = NULL;
     nua_t *nua = NULL;
     tagi_t *tags = NULL;
     su_home_t *home = su_home_create();
 
     /* get and check first argument (should be a root_t) */
-    lroot = (lua_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     /* check the callback table */
     luaL_checktype(L, 2, LUA_TTABLE);

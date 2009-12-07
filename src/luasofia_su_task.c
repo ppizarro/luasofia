@@ -5,12 +5,12 @@
 
 #include "luasofia_su_task.h"
 
-int lua_su_task_init(lua_State *L)
+int luasofia_su_task_init(lua_State *L)
 {
-    lua_su_task_t *ltask = NULL;
+    luasofia_su_task_t *ltask = NULL;
 
     /* create a su_task object */
-    ltask = (lua_su_task_t*) lua_newuserdata(L, sizeof(lua_su_task_t));
+    ltask = (luasofia_su_task_t*) lua_newuserdata(L, sizeof(luasofia_su_task_t));
     /* set Lua state */
     ltask->L = L;
     ltask->ptask = su_task_init(ltask->task);
@@ -21,12 +21,12 @@ int lua_su_task_init(lua_State *L)
     return 1;
 }
 
-int lua_su_task_create(lua_State *L, _su_task_r ptask)
+int luasofia_su_task_create(lua_State *L, _su_task_r ptask)
 {
-    lua_su_task_t *ltask = NULL;
+    luasofia_su_task_t *ltask = NULL;
 
     /* create a su_task object */
-    ltask = (lua_su_task_t*) lua_newuserdata(L, sizeof(lua_su_task_t));
+    ltask = (luasofia_su_task_t*) lua_newuserdata(L, sizeof(luasofia_su_task_t));
     /* set Lua state */
     ltask->L = L;
     ltask->ptask = ptask;
@@ -37,12 +37,12 @@ int lua_su_task_create(lua_State *L, _su_task_r ptask)
     return 1;
 }
 
-static int lua_su_task_destroy(lua_State *L)
+static int luasofia_su_task_destroy(lua_State *L)
 {
-    lua_su_task_t *ltask = NULL;
+    luasofia_su_task_t *ltask = NULL;
    
     /* get and check first argument (should be a engine) */
-    ltask = (lua_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
+    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
 
     if (ltask->ptask == (_su_task_t*)&(ltask->task)) {
         su_task_deinit(ltask->task);
@@ -51,49 +51,49 @@ static int lua_su_task_destroy(lua_State *L)
     return 0;
 }
 
-static int lua_su_task_deinit(lua_State *L)
+static int luasofia_su_task_deinit(lua_State *L)
 {
-    lua_su_task_t *ltask = NULL;
+    luasofia_su_task_t *ltask = NULL;
    
     /* get and check first argument (should be a engine) */
-    ltask = (lua_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
+    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
 
     su_task_deinit(ltask->task);
     return 0;
 }
 
-static int lua_su_task_copy(lua_State *L)
+static int luasofia_su_task_copy(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_task_move(lua_State *L)
+static int luasofia_su_task_move(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_task_cmp(lua_State *L)
+static int luasofia_su_task_cmp(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_task_is_running(lua_State *L)
+static int luasofia_su_task_is_running(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_task_root(lua_State *L)
+static int luasofia_su_task_root(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_task_wakeup(lua_State *L)
+static int luasofia_su_task_wakeup(lua_State *L)
 {
-    lua_su_task_t *ltask = NULL;
+    luasofia_su_task_t *ltask = NULL;
     int ret = -1;
    
     /* get and check first argument (should be a engine) */
-    ltask = (lua_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
+    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
 
     //ret = su_task_wakeup(ltask->task);
     /* FIXME 1.12.10 does not have su_task_wakeup */
@@ -102,18 +102,18 @@ static int lua_su_task_wakeup(lua_State *L)
 }
 
 static const luaL_Reg su_task_meths[] = {
-    {"deinit",     lua_su_task_deinit },
-    {"copy",       lua_su_task_copy },
-    {"move",       lua_su_task_move },
-    {"cmp",        lua_su_task_cmp },
-    {"is_running", lua_su_task_is_running },
-    {"root",       lua_su_task_root },
-    {"wakeup",     lua_su_task_wakeup },
-    {"__gc",       lua_su_task_destroy },
+    {"deinit",     luasofia_su_task_deinit },
+    {"copy",       luasofia_su_task_copy },
+    {"move",       luasofia_su_task_move },
+    {"cmp",        luasofia_su_task_cmp },
+    {"is_running", luasofia_su_task_is_running },
+    {"root",       luasofia_su_task_root },
+    {"wakeup",     luasofia_su_task_wakeup },
+    {"__gc",       luasofia_su_task_destroy },
     {NULL, NULL}
 };
 
-int luasofia_register_task_meta(lua_State *L)
+int luasofia_su_task_register_meta(lua_State *L)
 {
     luaL_newmetatable(L, SU_TASK_MTABLE);
     /* metatable.__index = metatable */

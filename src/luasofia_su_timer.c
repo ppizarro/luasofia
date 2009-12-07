@@ -7,16 +7,16 @@
 #include "luasofia_su_task.h"
 #include "luasofia_weak_table.h"
 
-int lua_su_timer_create(lua_State *L)
+int luasofia_su_timer_create(lua_State *L)
 {
     su_timer_t *timer = NULL;
-    lua_su_timer_t *ltimer = NULL;
-    lua_su_task_t *ltask = NULL;
+    luasofia_su_timer_t *ltimer = NULL;
+    luasofia_su_task_t *ltask = NULL;
     //su_task_r const task = NULL;
     su_duration_t msec = 0;
 
     /* get first argument (a task) */
-    ltask = (lua_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
+    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
 
     /* get second argument (a duration int) */
     msec = luaL_checkinteger(L, 2);
@@ -27,7 +27,7 @@ int lua_su_timer_create(lua_State *L)
         luaL_error(L, "su_timer_create failed!");
 
     /* create a su_timer object */
-    ltimer = (lua_su_timer_t*) lua_newuserdata(L, sizeof(lua_su_timer_t));
+    ltimer = (luasofia_su_timer_t*) lua_newuserdata(L, sizeof(luasofia_su_timer_t));
     /* set Lua state */
     ltimer->L = L;
     ltimer->timer = timer;
@@ -41,12 +41,12 @@ int lua_su_timer_create(lua_State *L)
     return 1;
 }
 
-static int lua_su_timer_destroy(lua_State *L)
+static int luasofia_su_timer_destroy(lua_State *L)
 {
-    lua_su_timer_t *ltimer = NULL;
+    luasofia_su_timer_t *ltimer = NULL;
    
     /* get and check first argument (should be a engine) */
-    ltimer = (lua_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
+    ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
 
     if (ltimer->timer) {
         /* remove timer of the luasofia weak table */
@@ -58,11 +58,11 @@ static int lua_su_timer_destroy(lua_State *L)
     return 0;
 }
 
-static void lua_su_timer_callback(su_root_magic_t *magic,
+static void luasofia_su_timer_callback(su_root_magic_t *magic,
                                   su_timer_t *t,
                                   su_timer_arg_t *arg)
 {
-    lua_su_timer_t *ltimer = (lua_su_timer_t*)arg;
+    luasofia_su_timer_t *ltimer = (luasofia_su_timer_t*)arg;
     lua_State *L = ltimer->L;
 
     // put userdatum at stack and check if it is ok.
@@ -88,12 +88,12 @@ static void lua_su_timer_callback(su_root_magic_t *magic,
     lua_pop(L, 2);
 }
 
-static int lua_su_timer_set(lua_State *L)
+static int luasofia_su_timer_set(lua_State *L)
 {
-    lua_su_timer_t *ltimer = NULL;
+    luasofia_su_timer_t *ltimer = NULL;
    
     /* get and check first argument (should be a timer) */
-    ltimer = (lua_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
+    ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
 
     /* check the callback table */
     luaL_checktype(L, -1, LUA_TTABLE);
@@ -101,31 +101,31 @@ static int lua_su_timer_set(lua_State *L)
     /* set callback table as environment for udata */
     lua_setfenv(L, -2);
 
-    su_timer_set(ltimer->timer, lua_su_timer_callback, ltimer);
+    su_timer_set(ltimer->timer, luasofia_su_timer_callback, ltimer);
     return 0;
 }
 
-static int lua_su_timer_set_interval(lua_State *L)
+static int luasofia_su_timer_set_interval(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_timer_set_at(lua_State *L)
+static int luasofia_su_timer_set_at(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_timer_run(lua_State *L)
+static int luasofia_su_timer_run(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_timer_set_for_ever(lua_State *L)
+static int luasofia_su_timer_set_for_ever(lua_State *L)
 {
-    lua_su_timer_t *ltimer = NULL;
+    luasofia_su_timer_t *ltimer = NULL;
    
     /* get and check first argument (should be a timer) */
-    ltimer = (lua_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
+    ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
 
     /* check the callback table */
     luaL_checktype(L, -1, LUA_TTABLE);
@@ -133,42 +133,42 @@ static int lua_su_timer_set_for_ever(lua_State *L)
     /* set callback table as environment for udata */
     lua_setfenv(L, -2);
 
-    su_timer_set_for_ever(ltimer->timer, lua_su_timer_callback, ltimer);
+    su_timer_set_for_ever(ltimer->timer, luasofia_su_timer_callback, ltimer);
     return 0;
 }
 
-static int lua_su_timer_reset(lua_State *L)
+static int luasofia_su_timer_reset(lua_State *L)
 {
     /* get and check first argument (should be a timer) */
-    lua_su_timer_t *ltimer = (lua_su_timer_t*)luaL_checkudata(L, -1, SU_TIMER_MTABLE);
+    luasofia_su_timer_t *ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -1, SU_TIMER_MTABLE);
     su_timer_reset(ltimer->timer);
     return 0;
 }
 
-static int lua_su_timer_root(lua_State *L)
+static int luasofia_su_timer_root(lua_State *L)
 {
     return 0;
 }
 
-static int lua_su_timer_expire(lua_State *L)
+static int luasofia_su_timer_expire(lua_State *L)
 {
     return 0;
 }
 
 static const luaL_Reg su_timer_meths[] = {
-    {"set",          lua_su_timer_set },
-    {"set_interval", lua_su_timer_set_interval },
-    {"set_at",       lua_su_timer_set_at },
-    {"run",          lua_su_timer_run },
-    {"set_for_ever", lua_su_timer_set_for_ever },
-    {"reset",        lua_su_timer_reset },
-    {"root",         lua_su_timer_root },
-    {"expire",       lua_su_timer_expire },
-    {"__gc",         lua_su_timer_destroy},
+    {"set",          luasofia_su_timer_set },
+    {"set_interval", luasofia_su_timer_set_interval },
+    {"set_at",       luasofia_su_timer_set_at },
+    {"run",          luasofia_su_timer_run },
+    {"set_for_ever", luasofia_su_timer_set_for_ever },
+    {"reset",        luasofia_su_timer_reset },
+    {"root",         luasofia_su_timer_root },
+    {"expire",       luasofia_su_timer_expire },
+    {"__gc",         luasofia_su_timer_destroy},
     {NULL, NULL}
 };
 
-int luasofia_register_timer_meta(lua_State *L)
+int luasofia_su_timer_register_meta(lua_State *L)
 {
     luaL_newmetatable(L, SU_TIMER_MTABLE);
     /* metatable.__index = metatable */
