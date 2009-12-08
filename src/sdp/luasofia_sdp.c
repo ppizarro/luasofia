@@ -19,6 +19,9 @@
 #include "luasofia_sdp_media_private.h"
 #include "luasofia_sdp_rtpmap_private.h"
 #include "luasofia_sdp_list_private.h"
+#include "luasofia_sdp_origin_private.h"
+#include "luasofia_sdp_repeat_private.h"
+#include "luasofia_sdp_time_private.h"
 
 
 static const luaL_Reg sdp_lib[] = {
@@ -30,6 +33,9 @@ static const luaL_Reg sdp_lib[] = {
     {"get_proxy_media"      , luasofia_sdp_get_proxy_media},
     {"get_proxy_rtpmap"     , luasofia_sdp_get_proxy_rtpmap},
     {"get_proxy_list"       , luasofia_sdp_get_proxy_list},
+    {"get_proxy_origin"     , luasofia_sdp_get_proxy_origin},
+    {"get_proxy_repeat"     , luasofia_sdp_get_proxy_repeat},
+    {"get_proxy_time"       , luasofia_sdp_get_proxy_time},
     {NULL, NULL}
 };
 
@@ -102,6 +108,9 @@ int luaopen_luasofia_sdp(lua_State *L)
     luasofia_proxy_register_info_table(L, SDP_MEDIA_TABLE_NAME,     sdp_media_info);
     luasofia_proxy_register_info_table(L, SDP_RTPMAP_TABLE_NAME,    sdp_rtpmap_info);
     luasofia_proxy_register_info_table(L, SDP_LIST_TABLE_NAME,      sdp_list_info);
+    luasofia_proxy_register_info_table(L, SDP_REPEAT_TABLE_NAME,    sdp_repeat_info);
+    luasofia_proxy_register_info_table(L, SDP_ORIGIN_TABLE_NAME,    sdp_origin_info);
+    luasofia_proxy_register_info_table(L, SDP_TIME_TABLE_NAME,      sdp_time_info);
 
     luasofia_register_constants(L, sdp_constants);
 
