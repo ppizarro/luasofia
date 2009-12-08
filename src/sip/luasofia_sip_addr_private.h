@@ -4,7 +4,7 @@
 
 #define SIP_ADDR_TABLE_NAME    "luasofia_sip_addr_t" 
 
-const luasofia_proxy_info_t sip_addr_info[] = {
+static const luasofia_proxy_info_t sip_addr_info[] = {
 {"a_display", luasofia_proxy_get_string, offsetof(sip_addr_t, a_display), 0},
 {"a_url",     luasofia_proxy_get_address, offsetof(sip_addr_t, a_url),   0},
 {"a_params",  luasofia_proxy_get_pointer, offsetof(sip_addr_t, a_params), 0},
@@ -13,7 +13,7 @@ const luasofia_proxy_info_t sip_addr_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_sip_get_proxy_addr(lua_State *L)
+static int luasofia_sip_get_proxy_addr(lua_State *L)
 {
     return luasofia_proxy_create(L, SIP_ADDR_TABLE_NAME);
 }

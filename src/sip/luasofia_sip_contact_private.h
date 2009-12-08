@@ -4,7 +4,7 @@
 
 #define SIP_CONTACT_TABLE_NAME "luasofia_sip_contact_t" 
 
-const luasofia_proxy_info_t sip_contact_info[] = {
+static const luasofia_proxy_info_t sip_contact_info[] = {
 {"m_next",    luasofia_proxy_get_pointer, offsetof(sip_contact_t, m_next), 0},
 {"m_display", luasofia_proxy_get_string, offsetof(sip_contact_t, m_display), 0},
 {"m_url",     luasofia_proxy_get_address, offsetof(sip_contact_t, m_url),   0},
@@ -15,7 +15,7 @@ const luasofia_proxy_info_t sip_contact_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_sip_get_proxy_contact(lua_State *L)
+static int luasofia_sip_get_proxy_contact(lua_State *L)
 {
     return luasofia_proxy_create(L, SIP_CONTACT_TABLE_NAME);
 }

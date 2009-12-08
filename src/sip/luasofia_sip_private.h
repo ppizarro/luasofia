@@ -4,7 +4,7 @@
 
 #define SIP_TABLE_NAME "luasofia_sip_t"
 
-const luasofia_proxy_info_t sip_info[] = {
+static const luasofia_proxy_info_t sip_info[] = {
 {"sip_user", luasofia_proxy_get_pointer, offsetof(sip_t, sip_user), 0},
 {"sip_size", luasofia_proxy_get_int, offsetof(sip_t, sip_size), 0},
 {"sip_flags", luasofia_proxy_get_int, offsetof(sip_t, sip_flags), 0},
@@ -83,7 +83,7 @@ const luasofia_proxy_info_t sip_info[] = {
 {NULL, NULL, 0 }
 };
 
-int luasofia_sip_get_proxy(lua_State *L)
+static int luasofia_sip_get_proxy(lua_State *L)
 {
     return luasofia_proxy_create(L, SIP_TABLE_NAME);
 }

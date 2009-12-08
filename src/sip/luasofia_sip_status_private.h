@@ -4,7 +4,7 @@
 
 #define SIP_STATUS_TABLE_NAME  "luasofia_sip_status_t"
 
-const luasofia_proxy_info_t sip_status_info[] = {
+static const luasofia_proxy_info_t sip_status_info[] = {
 {"st_version", luasofia_proxy_get_string, offsetof(sip_status_t, st_version),0},
 {"st_status",  luasofia_proxy_get_int,    offsetof(sip_status_t, st_status), 0},
 {"st_phrase",  luasofia_proxy_get_string, offsetof(sip_status_t, st_phrase), 0},
