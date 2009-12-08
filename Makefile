@@ -20,19 +20,24 @@ CFLAGS += `pkg-config --cflags sofia-sip-ua lua5.1`
 
 LDFLAGS += `pkg-config --libs sofia-sip-ua lua5.1`
 
-all: $(TARGET)
+DIR_OBJS = $(addprefix .objs/, $(OBJECTS))
 
-%.o : src/%.c
+all: mkobjs $(TARGET)
+
+mkobjs:
+	@mkdir -p .objs
+
+.objs/%.o : src/%.c
 	$(CC) $(CFLAGS) -o $@ $<
        
-%.o : src/sip/%.c
+.objs/%.o : src/sip/%.c
 	$(CC) -I./src $(CFLAGS) -o $@ $<
 
-%.o : src/sdp/%.c
+.objs/%.o : src/sdp/%.c
 	$(CC) -I./src $(CFLAGS) -o $@ $<
 
-$(TARGET) : $(OBJECTS)
-	$(CC) -shared -o $@ $(OBJECTS) $(LDFLAGS)
+$(TARGET) : $(DIR_OBJS)
+	$(CC) -shared -o $@ $(DIR_OBJS) $(LDFLAGS)
 
 check: all check_su check_nua
 
@@ -43,5 +48,5 @@ check_nua:
 	lua test/nua.lua
 
 clean:
-	rm -f *.o *.so *~ *.out core $(TARGET)
+	@rm -rf .objs *.so *~ *.out core $(TARGET)
 
