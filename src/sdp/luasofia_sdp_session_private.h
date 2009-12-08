@@ -7,7 +7,6 @@
 static const luasofia_proxy_info_t sdp_session_info[] = {
 {"sdp_size",        luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_size),        0},
 {"sdp_next",        luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_next),        0},
-{"sdp_version",     luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_version),     0},
 {"sdp_origin",      luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_origin),      0},
 {"sdp_subject",     luasofia_proxy_get_string,  offsetof(sdp_session_t, sdp_subject),     0},
 {"sdp_information", luasofia_proxy_get_string,  offsetof(sdp_session_t, sdp_information), 0},
@@ -21,6 +20,7 @@ static const luasofia_proxy_info_t sdp_session_info[] = {
 {"sdp_attributes",  luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_attributes),  0},
 {"sdp_charset",     luasofia_proxy_get_string,  offsetof(sdp_session_t, sdp_charset),     0},
 {"sdp_media",       luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_media),       0},
+// FIXME {"sdp_version",     luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_version),     0},
 {NULL, NULL, 0 }
 };
 
