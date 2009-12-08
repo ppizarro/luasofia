@@ -14,11 +14,13 @@
 #include "luasofia_sdp_session_private.h"
 #include "luasofia_sdp_attribute_private.h"
 #include "luasofia_sdp_bandwidth_private.h"
+#include "luasofia_sdp_connection_private.h"
 
 static const luaL_Reg sdp_lib[] = {
     {"get_proxy_session",    luasofia_sdp_get_proxy_session},
     {"get_proxy_attribute" , luasofia_sdp_get_proxy_attribute},
     {"get_proxy_bandwidth" , luasofia_sdp_get_proxy_bandwidth},
+    {"get_proxy_connection" ,luasofia_sdp_get_proxy_connection},
     {NULL, NULL}
 };
 
@@ -86,6 +88,7 @@ int luaopen_luasofia_sdp(lua_State *L)
     luasofia_proxy_register_info_table(L, SDP_SESSION_TABLE_NAME,   sdp_session_info);    
     luasofia_proxy_register_info_table(L, SDP_ATTRIBUTE_TABLE_NAME, sdp_attribute_info);    
     luasofia_proxy_register_info_table(L, SDP_BANDWIDTH_TABLE_NAME, sdp_bandwidth_info);
+    luasofia_proxy_register_info_table(L, SDP_CONNECTION_TABLE_NAME,sdp_connection_info);
 
     luasofia_register_constants(L, sdp_constants);
 

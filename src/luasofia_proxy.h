@@ -20,6 +20,8 @@ int luasofia_proxy_create(lua_State *L, const char* name);
 
 int luasofia_proxy_get_int(lua_State *L, void *v);
 
+int luasofia_proxy_get_boolean(lua_State *L, void *v);
+
 int luasofia_proxy_get_number(lua_State *L, void *v);
 
 int luasofia_proxy_get_string(lua_State *L, void *v);

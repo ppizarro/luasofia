@@ -77,6 +77,12 @@ int luasofia_proxy_get_int (lua_State *L, void *v)
     return 1;
 }
 
+int luasofia_proxy_get_boolean (lua_State *L, void *v)
+{
+    lua_pushboolean(L, *(int*)v);
+    return 1;
+}
+
 int luasofia_proxy_get_short (lua_State *L, void *v)
 {
     lua_pushnumber(L, *(short*)v);
