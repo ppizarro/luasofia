@@ -4,7 +4,7 @@
 
 #define SDP_SESSION_TABLE_NAME "luasofia_sdp_session_t"
 
-const luasofia_proxy_info_t sdp_session_info[] = {
+static const luasofia_proxy_info_t sdp_session_info[] = {
 {"sdp_size",        luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_size),        0},
 {"sdp_next",        luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_next),        0},
 {"sdp_version",     luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_version),     0},
