@@ -23,7 +23,7 @@ static const luasofia_reg_const_t sdp_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_sip(lua_State *L)
+int luaopen_luasofia_sdp(lua_State *L)
 {
     luaopen_luasofia(L);
 
