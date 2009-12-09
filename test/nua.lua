@@ -20,14 +20,11 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_r_shutdown] = f_shutdown
 
-    callbacks["event_default"] = function (event, status, phrase, ua, sip, tags)
+    callbacks["event_default"] = function (event, status, phrase, ua, sip, ts)
                                      print("event_default: event["..nua:event_name(event)..
                                            "] status["..status.."] phrase["..phrase.."]")
-                                     if (#tags > 0) then
-                                         print("\ttags size[" .. #tags .. "]:")
-                                         for i=1, #tags do
-                                             print("\t\t" .. tags[i])
-                                         end
+                                     for k in pairs(ts) do
+                                         print("\ttag["..k.."]")
                                      end
                                  end
 
@@ -56,8 +53,12 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                       print("nua_r_invite: status["..status.."] phrase["..phrase.."]")
                                   end
   
-    callbacks[nua.nua_i_state] = function (event, status, phrase, ua, sip, tags)
+    callbacks[nua.nua_i_state] = function (event, status, phrase, ua, sip, ts)
                                      print("nua_i_state: status["..status.."] phrase["..phrase.."]")
+                                     for k,v in pairs(ts) do
+                                         print("\ttag["..k.."]")
+                                         --print("\ttag["..k.."]="..v)
+                                     end
                                  end
 
     callbacks[nua.nua_i_active] = function (event, status, phrase, ua, sip, tags)
@@ -102,7 +103,6 @@ shutdown_a = function (event, status, phrase, ua, sip, tags)
                     a_quit = true
                  end
                  if (a_quit and b_quit) then
-                    print("Terminate root!")
                     root:quit()
                  end
              end
@@ -115,7 +115,6 @@ shutdown_b = function (event, status, phrase, ua, sip, tags)
                     b_quit = true
                  end
                  if (a_quit and b_quit) then
-                    print("Terminate root!")
                     root:quit()
                  end
              end

@@ -39,7 +39,7 @@ static int lua_nua_set_params(lua_State *L)
     lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
     tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    tl_print(stdout, "lua_nua_set_params:\n", tags);
+    //tl_print(stdout, "lua_nua_set_params:\n", tags);
     nua_set_params(lnua->nua, TAG_NEXT(tags));
     su_home_unref(home);
     return 0;
@@ -53,7 +53,7 @@ static int lua_nua_handle_invite(lua_State *L)
     lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
 
     tags = luasofia_tags_table_to_taglist(L, 2, home);
-    tl_print(stdout, "lua_nua_invite:\n", tags);
+    //tl_print(stdout, "lua_nua_invite:\n", tags);
     nua_invite(lnh->nh, TAG_NEXT(tags));
     su_home_unref(home);
     return 0;
@@ -102,7 +102,7 @@ static int lua_nua_handle_create(lua_State *L)
 
     tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    tl_print(stdout, "lua_nua_handle:\n", tags);
+    //tl_print(stdout, "lua_nua_handle:\n", tags);
 
     /* create a nua object */
     lnh = (lua_nua_handle_t*) lua_newuserdata(L, sizeof(lua_nua_handle_t));
@@ -216,7 +216,7 @@ static int lua_nua_create(lua_State *L)
 
     tags = luasofia_tags_table_to_taglist(L, 3, home);
 
-    tl_print(stdout, "lua_nua_create:\n", tags);
+    //tl_print(stdout, "lua_nua_create:\n", tags);
 
     /* create a nua object */
     lnua = (lua_nua_t*) lua_newuserdata(L, sizeof(lua_nua_t));
@@ -405,6 +405,7 @@ static const luasofia_tag_reg_t nua_tags[] = {
     {"NUTAG_ALLOW_EVENTS_REF", nutag_allow_events_ref },
     {"NUTAG_CALLSTATE", nutag_callstate },
     {"NUTAG_CALLSTATE_REF", nutag_callstate_ref },
+    {"callstate_REF", nutag_callstate_ref },
     {"NUTAG_SUBSTATE", nutag_substate },
     {"NUTAG_SUBSTATE_REF", nutag_substate_ref },
     {"NUTAG_SUB_EXPIRES", nutag_sub_expires },

@@ -101,15 +101,24 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
 
 void luasofia_tags_taglist_to_table(lua_State *L, tagi_t tags[])
 {
+    char buffer[4096];
+    size_t size = sizeof(buffer);
     int i = 0;
-
+    tagi_t* tag = NULL;
+ 
     if(!tags) return;
-
+ 
     lua_newtable(L);
     while(tags[i].t_tag) {
-        lua_pushstring(L, tags[i].t_tag->tt_name);
-        lua_pushlightuserdata(L, (void*)(tags[i++].t_tag));
-        lua_rawset(L,-3);
+        tag = &tags[i];
+        if (tag->t_tag && tag->t_tag->tt_name && tag->t_tag->tt_class && tag->t_tag->tt_class->tc_snprintf) {
+            lua_pushstring(L, tag->t_tag->tt_name);
+            //lua_pushlightuserdata(L, (void*)(tags[i++].t_tag));
+            tag->t_tag->tt_class->tc_snprintf(tag, buffer, size);
+            lua_pushstring(L, buffer);
+            lua_rawset(L,-3);
+        }
+        i++;
     }
 }
 
