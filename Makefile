@@ -28,12 +28,15 @@ mkobjs:
 	@mkdir -p .objs
 
 .objs/%.o : src/%.c
-	$(CC) -I./src/utils $(CFLAGS) -o $@ $<
+	$(CC) -I./src/su -I./src/utils $(CFLAGS) -o $@ $<
        
 .objs/%.o : src/sip/%.c
 	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
 
 .objs/%.o : src/sdp/%.c
+	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
+
+.objs/%.o : src/su/%.c
 	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
 
 .objs/%.o : src/utils/%.c
