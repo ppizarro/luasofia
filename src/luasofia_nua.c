@@ -7,7 +7,7 @@
 #include "luasofia_weak_table.h"
 #include "luasofia_su_root.h"
 #include "luasofia_tags.h"
-#include "luasofia_utils.h"
+#include "luasofia_const.h"
 
 #include <sofia-sip/nua.h>
 #include <sofia-sip/nua_tag.h>
@@ -529,7 +529,7 @@ int luaopen_luasofia_nua(lua_State *L)
     luaL_register(L, NULL, nua_meths);
     lua_pop(L, 1);
 
-    luasofia_tags_register(L, nua_tags);
+    luasofia_tags_register_tags(L, nua_tags);
 
     luaopen_luasofia(L);
 
@@ -539,7 +539,7 @@ int luaopen_luasofia_nua(lua_State *L)
     lua_setfield(L, -3, "nua");
     luaL_register(L, NULL, nua_lib);
 
-    luasofia_register_constants(L, nua_constants);
+    luasofia_const_register_constants(L, nua_constants);
 
     return 1;
 }

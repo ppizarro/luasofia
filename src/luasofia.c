@@ -24,8 +24,7 @@ int luaopen_luasofia(lua_State *L)
     /* create luasofia tag table at REGISTRYINDEX */
     luasofia_tags_create(L);
 
-    /* create luasofia proxy info table at REGISTRYINDEX */
-    luasofia_proxy_register(L);
+    luasofia_proxy_init(L);
 
     luaL_register(L, "luasofia", core_lib);
     return 1;

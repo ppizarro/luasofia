@@ -5,7 +5,7 @@
 
 #include "luasofia.h"
 #include "luasofia_tags.h"
-#include "luasofia_utils.h"
+#include "luasofia_const.h"
 #include "luasofia_proxy.h"
 
 #include <sofia-sip/sdp.h>
@@ -17,6 +17,12 @@
 #include "luasofia_sdp_connection_private.h"
 #include "luasofia_sdp_key_private.h"
 #include "luasofia_sdp_media_private.h"
+#include "luasofia_sdp_rtpmap_private.h"
+#include "luasofia_sdp_list_private.h"
+#include "luasofia_sdp_origin_private.h"
+#include "luasofia_sdp_repeat_private.h"
+#include "luasofia_sdp_time_private.h"
+
 
 static const luaL_Reg sdp_lib[] = {
     {"get_proxy_session"    , luasofia_sdp_get_proxy_session},
@@ -25,6 +31,11 @@ static const luaL_Reg sdp_lib[] = {
     {"get_proxy_connection" , luasofia_sdp_get_proxy_connection},
     {"get_proxy_key"        , luasofia_sdp_get_proxy_key},
     {"get_proxy_media"      , luasofia_sdp_get_proxy_media},
+    {"get_proxy_rtpmap"     , luasofia_sdp_get_proxy_rtpmap},
+    {"get_proxy_list"       , luasofia_sdp_get_proxy_list},
+    {"get_proxy_origin"     , luasofia_sdp_get_proxy_origin},
+    {"get_proxy_repeat"     , luasofia_sdp_get_proxy_repeat},
+    {"get_proxy_time"       , luasofia_sdp_get_proxy_time},
     {NULL, NULL}
 };
 
@@ -87,7 +98,7 @@ int luaopen_luasofia_sdp(lua_State *L)
     lua_setfield(L, -3, "sdp");
     luaL_register(L, NULL, sdp_lib);
 
-    luasofia_tags_register(L, sdp_tags);
+    luasofia_tags_register_tags(L, sdp_tags);
 
     luasofia_proxy_register_info_table(L, SDP_SESSION_TABLE_NAME,   sdp_session_info);    
     luasofia_proxy_register_info_table(L, SDP_ATTRIBUTE_TABLE_NAME, sdp_attribute_info);    
@@ -95,8 +106,13 @@ int luaopen_luasofia_sdp(lua_State *L)
     luasofia_proxy_register_info_table(L, SDP_CONNECTION_TABLE_NAME,sdp_connection_info);
     luasofia_proxy_register_info_table(L, SDP_KEY_TABLE_NAME,       sdp_key_info);
     luasofia_proxy_register_info_table(L, SDP_MEDIA_TABLE_NAME,     sdp_media_info);
+    luasofia_proxy_register_info_table(L, SDP_RTPMAP_TABLE_NAME,    sdp_rtpmap_info);
+    luasofia_proxy_register_info_table(L, SDP_LIST_TABLE_NAME,      sdp_list_info);
+    luasofia_proxy_register_info_table(L, SDP_REPEAT_TABLE_NAME,    sdp_repeat_info);
+    luasofia_proxy_register_info_table(L, SDP_ORIGIN_TABLE_NAME,    sdp_origin_info);
+    luasofia_proxy_register_info_table(L, SDP_TIME_TABLE_NAME,      sdp_time_info);
 
-    luasofia_register_constants(L, sdp_constants);
+    luasofia_const_register_constants(L, sdp_constants);
 
     return 1;
 }
