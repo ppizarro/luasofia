@@ -24,7 +24,7 @@ void luasofia_tags_create(lua_State *L)
     tag_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 
-void luasofia_tags_register(lua_State *L, const luasofia_tag_reg_t *tags)
+void luasofia_tags_register_tags(lua_State *L, const luasofia_tag_reg_t *tags)
 {
     if (!tags)
         return;

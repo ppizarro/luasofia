@@ -98,7 +98,7 @@ int luaopen_luasofia_sdp(lua_State *L)
     lua_setfield(L, -3, "sdp");
     luaL_register(L, NULL, sdp_lib);
 
-    luasofia_tags_register(L, sdp_tags);
+    luasofia_tags_register_tags(L, sdp_tags);
 
     luasofia_proxy_register_info_table(L, SDP_SESSION_TABLE_NAME,   sdp_session_info);    
     luasofia_proxy_register_info_table(L, SDP_ATTRIBUTE_TABLE_NAME, sdp_attribute_info);    
@@ -112,7 +112,7 @@ int luaopen_luasofia_sdp(lua_State *L)
     luasofia_proxy_register_info_table(L, SDP_ORIGIN_TABLE_NAME,    sdp_origin_info);
     luasofia_proxy_register_info_table(L, SDP_TIME_TABLE_NAME,      sdp_time_info);
 
-    luasofia_register_constants(L, sdp_constants);
+    luasofia_utils_register_constants(L, sdp_constants);
 
     return 1;
 }

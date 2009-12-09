@@ -58,11 +58,11 @@ int luaopen_luasofia_url(lua_State *L)
     lua_setfield(L, -3, "url");
     luaL_register(L, NULL, url_lib);
 
-    luasofia_tags_register(L, url_tags);
+    luasofia_tags_register_tags(L, url_tags);
 
     luasofia_proxy_register_info_table(L, "luasofia_url_t", url_info);
 
-    luasofia_register_constants(L, url_constants);
+    luasofia_utils_register_constants(L, url_constants);
 
     return 1;
 }

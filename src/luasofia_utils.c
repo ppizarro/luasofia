@@ -5,7 +5,7 @@
 
 #include "luasofia_utils.h"
 
-void luasofia_register_constants(lua_State *L, const luasofia_reg_const_t *consts)
+void luasofia_utils_register_constants(lua_State *L, const luasofia_reg_const_t *consts)
 {
     if (!consts) return;
 

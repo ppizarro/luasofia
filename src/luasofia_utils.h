@@ -7,7 +7,7 @@ typedef struct luasofia_reg_const_s {
   int value;
 } luasofia_reg_const_t;
 
-void luasofia_register_constants(lua_State *L, const luasofia_reg_const_t *consts);
+void luasofia_utils_register_constants(lua_State *L, const luasofia_reg_const_t *consts);
 
 void stack_dump(lua_State *L);
 
