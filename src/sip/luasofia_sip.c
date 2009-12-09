@@ -5,7 +5,7 @@
 
 #include "luasofia.h"
 #include "luasofia_tags.h"
-#include "luasofia_utils.h"
+#include "luasofia_const.h"
 #include "luasofia_proxy.h"
 
 #include <sofia-sip/sip.h>
@@ -351,7 +351,7 @@ int luaopen_luasofia_sip(lua_State *L)
     luasofia_proxy_register_info_table(L, SIP_STATUS_TABLE_NAME, sip_status_info);
     luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_event_info);
 
-    luasofia_utils_register_constants(L, sip_constants);
+    luasofia_const_register_constants(L, sip_constants);
 
     return 1;
 }

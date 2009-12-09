@@ -5,7 +5,7 @@
 
 #include "luasofia.h"
 #include "luasofia_tags.h"
-#include "luasofia_utils.h"
+#include "luasofia_const.h"
 #include "luasofia_proxy.h"
 
 #include <sofia-sip/url.h>
@@ -62,7 +62,7 @@ int luaopen_luasofia_url(lua_State *L)
 
     luasofia_proxy_register_info_table(L, "luasofia_url_t", url_info);
 
-    luasofia_utils_register_constants(L, url_constants);
+    luasofia_const_register_constants(L, url_constants);
 
     return 1;
 }

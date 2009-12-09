@@ -3,7 +3,7 @@ TARGET = luasofia.so
 OBJECTS = luasofia.o \
 	  luasofia_weak_table.o \
 	  luasofia_tags.o \
-	  luasofia_utils.o \
+	  luasofia_const.o \
 	  luasofia_proxy.o \
           luasofia_su.o \
 	  luasofia_su_root.o \
@@ -28,13 +28,16 @@ mkobjs:
 	@mkdir -p .objs
 
 .objs/%.o : src/%.c
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) -I./src/utils $(CFLAGS) -o $@ $<
        
 .objs/%.o : src/sip/%.c
-	$(CC) -I./src $(CFLAGS) -o $@ $<
+	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
 
 .objs/%.o : src/sdp/%.c
-	$(CC) -I./src $(CFLAGS) -o $@ $<
+	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
+
+.objs/%.o : src/utils/%.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 $(TARGET) : $(DIR_OBJS)
 	$(CC) -shared -o $@ $(DIR_OBJS) $(LDFLAGS)

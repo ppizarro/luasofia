@@ -5,7 +5,7 @@
 
 #include "luasofia.h"
 #include "luasofia_tags.h"
-#include "luasofia_utils.h"
+#include "luasofia_const.h"
 #include "luasofia_proxy.h"
 
 #include <sofia-sip/sdp.h>
@@ -112,7 +112,7 @@ int luaopen_luasofia_sdp(lua_State *L)
     luasofia_proxy_register_info_table(L, SDP_ORIGIN_TABLE_NAME,    sdp_origin_info);
     luasofia_proxy_register_info_table(L, SDP_TIME_TABLE_NAME,      sdp_time_info);
 
-    luasofia_utils_register_constants(L, sdp_constants);
+    luasofia_const_register_constants(L, sdp_constants);
 
     return 1;
 }

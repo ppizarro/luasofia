@@ -5,7 +5,7 @@
 
 #include "luasofia.h"
 #include "luasofia_tags.h"
-#include "luasofia_utils.h"
+#include "luasofia_const.h"
 
 #include <sofia-sip/soa.h>
 #include <sofia-sip/soa_tag.h>
@@ -106,7 +106,7 @@ int luaopen_luasofia_soa(lua_State *L)
     lua_setfield(L, -3, "soa");
     luaL_register(L, NULL, soa_lib);
 
-    luasofia_utils_register_constants(L, soa_constants);
+    luasofia_const_register_constants(L, soa_constants);
 
     return 1;
 }
