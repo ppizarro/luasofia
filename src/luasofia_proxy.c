@@ -25,10 +25,12 @@ int luasofia_proxy_register_info_table(lua_State *L, const char* name, const lua
     lua_pushstring(L, name);
     lua_newtable(L);
     for (; l->name; l++) {
+        /* new_table[l->name] = l */
         lua_pushstring(L, l->name);
         lua_pushlightuserdata(L, (void*)l);
         lua_rawset(L, -3);
     }
+    /* proxy_table[name] = new_table*/
     lua_rawset(L, -3);
     lua_pop(L, 1);
     return 0;
@@ -40,33 +42,37 @@ int luasofia_proxy_create(lua_State *L, const char* name)
     void *p = lua_touserdata(L, -1);
     luaL_argcheck(L, p != NULL, -1, "lightuserdata expected");
 
-    /* put the tables of info tables at the stack */
+    /* put the proxy_table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, proxy_table_ref);
     if (lua_isnil(L, -1))
         luaL_error(L, "Failed to get proxy info table!");
 
-    /* put the info table at the stack */
+    /* put the info_table of the given proxy name at the stack. stach.push(proxy_table[name]) */
     lua_pushstring(L, name);
     lua_rawget(L, -2);
 
-    /* check the proxy_info table at stack top */
+    /* check the info_table at stack top */
     if (lua_isnil(L, -1))
         luaL_error(L, "Failed to get info table!");
     
-    /* remove tables of info tables from the stack */
+    /* remove proxy_table from the stack */
     lua_remove(L, -2);
 
     /* create a userdata struct */
     ust = (void**)lua_newuserdata(L, sizeof(void*));
     *ust = p;
 
+    /* set the proxy_metatable as the metatable for the userdata */
     luaL_getmetatable(L, LUASOFIA_PROXY_META);
     lua_setmetatable(L, -2);
 
-    /* set struct info table as environment for udata */
+    /* push the info_table at the top of the stack */
     lua_pushvalue(L, -2);
+
+    /* set the info_table as environment var for this userdata */
     lua_setfenv(L, -2);
 
+    /* remove the info_table from the stack, returning the userdata at the lua_State L stack*/
     lua_remove(L, -2);
     return 1;
 }
@@ -153,7 +159,7 @@ static int luasofia_proxy_tostring(lua_State *L)
     return 0;
 }
 
-void luasofia_proxy_register(lua_State *L)
+void luasofia_proxy_init(lua_State *L)
 {
     /* create userdata table */
     lua_newtable(L);
