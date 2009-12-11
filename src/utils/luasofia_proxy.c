@@ -154,8 +154,14 @@ static int luasofia_proxy_index(lua_State *L)
 
 static int luasofia_proxy_tostring(lua_State *L)
 {
-    // TODO
-    return 0;
+    /* stack has userdata */
+    void** ust = luaL_checkudata(L, 1, LUASOFIA_PROXY_META);
+
+    if (ust)
+        lua_pushfstring(L, "proxy: %p", *ust);
+    else
+        lua_pushstring(L, "proxy: nil");
+    return 1;
 }
 
 void luasofia_proxy_init(lua_State *L)
