@@ -4,6 +4,7 @@ nua = require "luasofia.nua"
 sip = require "luasofia.sip"
 soa = require "luasofia.soa"
 url = require "luasofia.url"
+sdp = require "luasofia.sdp"
 
 function make_call(ua, uri, from, to)
     print("gera_chamada: uri["..uri.."] from["..from.."] to["..to.."]")
@@ -56,6 +57,9 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                      print ("callstate:" .. t.NUTAG_CALLSTATE)
                                      local local_sdp = t.SOATAG_LOCAL_SDP
                                      if local_sdp then 
+                                        s = sdp:get_proxy_session(local_sdp)
+                                        c = sdp:get_proxy_connection(s.sdp_connection)
+                                        print("c=" .. c.c_address)
                                         print ("local SDP:\n" .. t.SOATAG_LOCAL_SDP_STR)
                                      end
                                      local remote_sdp = t.SOATAG_REMOTE_SDP
