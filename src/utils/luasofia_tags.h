@@ -15,7 +15,7 @@ void luasofia_tags_register_tags(lua_State *L, const luasofia_tag_reg_t *tags);
 
 tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home);
 
-void luasofia_tags_taglist_to_table(lua_State *L, tagi_t tags[]);
+tag_type_t luasofia_tags_find(lua_State *L);
 
 #endif //__LUASOFIA_TAGS
 

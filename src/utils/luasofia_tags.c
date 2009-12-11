@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "luasofia_tags.h"
+#include "luasofia_utils.h"
 
 #define TAGS_LIST_SIZE 32
 
@@ -99,26 +100,25 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
     return tags;
 }
 
-void luasofia_tags_taglist_to_table(lua_State *L, tagi_t tags[])
+tag_type_t luasofia_tags_find(lua_State *L)
 {
-    char buffer[4096];
-    size_t size = sizeof(buffer);
-    int i = 0;
-    tagi_t* tag = NULL;
- 
-    if(!tags) return;
- 
-    lua_newtable(L);
-    while(tags[i].t_tag) {
-        tag = &tags[i];
-        if (tag->t_tag && tag->t_tag->tt_name && tag->t_tag->tt_class && tag->t_tag->tt_class->tc_snprintf) {
-            lua_pushfstring(L, "%s_%s", tag->t_tag->tt_ns, tag->t_tag->tt_name);
-            //lua_pushlightuserdata(L, (void*)(tags[i++].t_tag));
-            tag->t_tag->tt_class->tc_snprintf(tag, buffer, size);
-            lua_pushstring(L, buffer);
-            lua_rawset(L,-3);
-        }
-        i++;
-    }
+    tag_type_t t_tag = NULL;
+
+    /* put the tag table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
+    if (lua_isnil(L, -1))
+        luaL_error(L, "Failed to get tag table!");
+
+    lua_pushvalue(L, -2);
+
+    // lookup key on the tag table
+    lua_rawget(L, -2);
+
+    if (!lua_islightuserdata(L, -1))
+        luaL_error(L, "Failed to get tag object '%s'", lua_tostring(L, 2));
+
+    t_tag = (tag_type_t)lua_touserdata(L, -1);
+    lua_pop(L, 2);
+    return t_tag;
 }
 

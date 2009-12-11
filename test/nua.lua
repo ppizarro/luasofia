@@ -51,9 +51,17 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                   end
   
     callbacks[nua.nua_i_state] = function (event, status, phrase, ua, sip, tags)
-                                     print("nua_i_state: status["..status.."] phrase["..phrase.."]")
                                      local t = su.get_proxy_tags(tags)
-                                     print ("callstate:" .. (t.NUTAG_CALLSTATE or ""))
+                                     print("nua_i_state: status["..status.."] phrase["..phrase.."]")
+                                     print ("callstate:" .. t.NUTAG_CALLSTATE)
+                                     local local_sdp = t.SOATAG_LOCAL_SDP
+                                     if local_sdp then 
+                                        print ("local SDP:\n" .. t.SOATAG_LOCAL_SDP_STR)
+                                     end
+                                     local remote_sdp = t.SOATAG_REMOTE_SDP
+                                     if remote_sdp then 
+                                        print ("remote SDP:\n" .. t.SOATAG_REMOTE_SDP_STR)
+                                     end
                                  end
 
     callbacks[nua.nua_i_active] = function (event, status, phrase, ua, sip, tags)

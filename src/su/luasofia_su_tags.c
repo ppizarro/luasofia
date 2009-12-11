@@ -3,7 +3,11 @@
 #include <lua.h>
 #include <lualib.h>
 
+#include <sofia-sip/su_tag_io.h>
+#include <sofia-sip/su_tag_class.h>
+
 #include "luasofia_su_tags.h"
+#include "luasofia_tags.h"
 
 #define LUASOFIA_TAGS_META "luasofia_tags"
 
@@ -25,10 +29,57 @@ int luasofia_su_tags_get_proxy(lua_State *L)
 
 static int luasofia_su_tags_index(lua_State *L)
 {
-    /* stack has userdata, index */
-    //void** ust = luaL_checkudata(L, 1, LUASOFIA_TAGS_META);
+    tag_type_t t_tag = NULL;
+    tagi_t *tags = NULL;
 
-    lua_pushnil(L);
+    /* stack has userdata, index */
+    void** ust = luaL_checkudata(L, 1, LUASOFIA_TAGS_META);
+    tags = *ust;
+
+    if(!tags)
+        luaL_error(L, "Tag list is NULL!");
+
+    t_tag = luasofia_tags_find(L);
+
+    /* find the tag in the tag list */
+    while(tags->t_tag) {
+        if (tags->t_tag == t_tag)
+            break;
+        tags++;
+    }
+
+    if(!tags->t_tag) {
+        /* TAG not found */
+        lua_pushnil(L);
+        return 1;
+    }
+
+    if(!t_tag->tt_class) {
+        /* TAG has no class tag */
+        lua_pushnil(L);
+        return 1;
+    }
+
+    if(t_tag->tt_class == int_tag_class)
+        lua_pushinteger(L, (int)tags->t_value);
+    else if(t_tag->tt_class == uint_tag_class)
+        lua_pushnumber(L, (lua_Number)tags->t_value);
+    else if(t_tag->tt_class == usize_tag_class)
+        lua_pushnumber(L, (lua_Number)tags->t_value);
+    else if(t_tag->tt_class == size_tag_class)
+        lua_pushnumber(L, (lua_Number)tags->t_value);
+    else if(t_tag->tt_class == bool_tag_class)
+        lua_pushboolean(L, (int)tags->t_value);
+    else if(t_tag->tt_class == ptr_tag_class)
+        lua_pushlightuserdata(L, (void*)tags->t_value);
+    else if(t_tag->tt_class == socket_tag_class)
+        lua_pushlightuserdata(L, (void*)tags->t_value);
+    else if(t_tag->tt_class == cstr_tag_class)
+        lua_pushfstring(L, "%s", (char*)tags->t_value);
+    else if(t_tag->tt_class == str_tag_class)
+        lua_pushfstring(L, "%s", (char*)tags->t_value);
+    else
+        lua_pushlightuserdata(L, (void*)tags->t_value);
     return 1;
 }
 
