@@ -21,7 +21,7 @@ int luasofia_sdp_parser_parse(lua_State *L)
     /* get and check second argument (should be a integer) */
     int flags = (int) luaL_checkinteger(L, 2);
     sdp_parser_t* parser = sdp_parse(home, msg, size, flags);
-    
+   
     lua_pop(L, 2);
     if(!parser)
         return 0;
@@ -40,9 +40,15 @@ int luasofia_sdp_parser_parse(lua_State *L)
 static int luasofia_sdp_parse_get_session(lua_State *L)
 {
     /* get and check first argument (should be a sdp_parser udata) */
-    // TODO luasofia_sdp_parser_t* l_parser = (luasofia_sdp_parser_t*) luaL_checkudata(L, 1, SDP_PARSER_MTABLE);
+    luasofia_sdp_parser_t* lparser = (luasofia_sdp_parser_t*) luaL_checkudata(L, 1, SDP_PARSER_MTABLE);
+    sdp_session_t* session = sdp_session(lparser->parser);
+    
+    if(!session)
+        return 0;
 
-    return 0;
+    /* Return sdp_session as lightuserdata, to acess internal members must create the sdp_session_proxy on it*/
+    lua_pushlightuserdata (L, session);
+    return 1;
 }
 
 static int luasofia_sdp_parse_print(lua_State *L)
@@ -66,7 +72,7 @@ static int luasofia_sdp_parse_print(lua_State *L)
     }
     
     lua_pushstring(L, (const char*) msg); 
-    return 0;
+    return 1;
 }
 
 static int luasofia_sdp_parse_destroy(lua_State *L)
