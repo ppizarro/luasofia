@@ -1,5 +1,4 @@
 /* vim: set ts=8 et sw=4 sta ai cin: */
-#include <string.h>
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
@@ -9,7 +8,6 @@
 #include "luasofia_const.h"
 #include "luasofia_proxy.h"
 
-#include <sofia-sip/su_alloc.h>
 #include <sofia-sip/sdp.h>
 #include <sofia-sip/sdp_tag.h>
 
@@ -24,30 +22,11 @@
 #include "luasofia_sdp_origin_private.h"
 #include "luasofia_sdp_repeat_private.h"
 #include "luasofia_sdp_time_private.h"
-
-
-static int luasofia_sdp_parse(lua_State *L)
-{
-    su_home_t *home = su_home_create();
-    /* get and check first argument (should be a string) */
-    const char* msg = luaL_checkstring (L, 1);
-    issize_t size   = (issize_t) strlen(msg);
-    /* get and check second argument (should be a integer) */
-    int flags = (int) luaL_checkinteger(L, 2);
-    sdp_parser_t* parser = sdp_parse(home, msg, size, flags);  	
-    
-    lua_pop(L, 2);
-    if(!parser)
-        return 0;
-
-   // TODO, create a sdp_parser userdata and return it.
-
-   return 1; 
-}
+#include "luasofia_sdp_parser.h"
 
 
 static const luaL_Reg sdp_lib[] = {
-    {"parse"                , luasofia_sdp_parse},
+    {"parse"                , luasofia_sdp_parser_parse},
     {"get_proxy_session"    , luasofia_sdp_get_proxy_session},
     {"get_proxy_attribute"  , luasofia_sdp_get_proxy_attribute},
     {"get_proxy_bandwidth"  , luasofia_sdp_get_proxy_bandwidth},
@@ -136,6 +115,7 @@ int luaopen_luasofia_sdp(lua_State *L)
     luasofia_proxy_register_info_table(L, SDP_TIME_TABLE_NAME,      sdp_time_info);
 
     luasofia_const_register_constants(L, sdp_constants);
+    luasofia_sdp_parser_register_meta(L);
 
     return 1;
 }
