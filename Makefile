@@ -6,7 +6,6 @@ OBJECTS = luasofia.o \
 	  luasofia_const.o \
 	  luasofia_proxy.o \
           luasofia_su.o \
-          luasofia_su_home.o \
 	  luasofia_su_root.o \
 	  luasofia_su_timer.o \
 	  luasofia_su_task.o \
@@ -15,8 +14,9 @@ OBJECTS = luasofia.o \
 	  luasofia_sip.o \
 	  luasofia_soa.o \
 	  luasofia_url.o \
-          luasofia_sdp.o \
-          luasofia_utils.o
+	  luasofia_sdp.o \
+	  luasofia_utils.o \
+	  luasofia_sdp_parser.o
 
 CFLAGS += -O2 -c -Wall -fPIC
 CFLAGS += `pkg-config --cflags sofia-sip-ua lua5.1`
