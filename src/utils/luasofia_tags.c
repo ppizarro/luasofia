@@ -112,7 +112,7 @@ void luasofia_tags_taglist_to_table(lua_State *L, tagi_t tags[])
     while(tags[i].t_tag) {
         tag = &tags[i];
         if (tag->t_tag && tag->t_tag->tt_name && tag->t_tag->tt_class && tag->t_tag->tt_class->tc_snprintf) {
-            lua_pushstring(L, tag->t_tag->tt_name);
+            lua_pushfstring(L, "%s_%s", tag->t_tag->tt_ns, tag->t_tag->tt_name);
             //lua_pushlightuserdata(L, (void*)(tags[i++].t_tag));
             tag->t_tag->tt_class->tc_snprintf(tag, buffer, size);
             lua_pushstring(L, buffer);

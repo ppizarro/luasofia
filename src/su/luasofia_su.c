@@ -10,6 +10,7 @@
 #include "luasofia_su_home.h"
 #include "luasofia_su_timer.h"
 #include "luasofia_su_task.h"
+#include "luasofia_su_tags.h"
 
 #include <sofia-sip/su.h>
 
@@ -26,12 +27,13 @@ static int luasofia_su_deinit(lua_State *L)
 }
 
 static const luaL_Reg su_lib[] = {
-    {"init",         luasofia_su_init },
-    {"deinit",       luasofia_su_deinit },
-    {"root_create",  luasofia_su_root_create },
-    {"home_new",     luasofia_su_home_new },
-    {"timer_create", luasofia_su_timer_create },
-    {"task_init",    luasofia_su_task_init },
+    {"init",           luasofia_su_init },
+    {"deinit",         luasofia_su_deinit },
+    {"root_create",    luasofia_su_root_create },
+    {"home_new",       luasofia_su_home_new },
+    {"timer_create",   luasofia_su_timer_create },
+    {"task_init",      luasofia_su_task_init },
+    {"get_proxy_tags", luasofia_su_tags_get_proxy },
     {NULL, NULL}
 };
 
@@ -41,6 +43,7 @@ int luaopen_luasofia_su(lua_State *L)
     luasofia_su_home_register_meta(L);
     luasofia_su_timer_register_meta(L);
     luasofia_su_task_register_meta(L);
+    luasofia_su_tags_register_meta(L);
 
     luaopen_luasofia(L);
 

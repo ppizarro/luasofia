@@ -10,6 +10,7 @@ OBJECTS = luasofia.o \
 	  luasofia_su_root.o \
 	  luasofia_su_timer.o \
 	  luasofia_su_task.o \
+	  luasofia_su_tags.o \
 	  luasofia_nua.o \
 	  luasofia_sip.o \
 	  luasofia_soa.o \

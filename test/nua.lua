@@ -20,30 +20,27 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_r_shutdown] = f_shutdown
 
-    callbacks["event_default"] = function (event, status, phrase, ua, sip, ts)
+    callbacks["event_default"] = function (event, status, phrase, ua, sip, tags)
                                      print("event_default: event["..nua:event_name(event)..
                                            "] status["..status.."] phrase["..phrase.."]")
-                                     for k in pairs(ts) do
-                                         print("\ttag["..k.."]")
-                                     end
                                  end
 
     callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, lu_sip, tags)
-                                      local s = sip:get_proxy(lu_sip)
-                                      local from = sip:get_proxy_addr(s.sip_from)
-                                      local to = sip:get_proxy_addr(s.sip_to)
-                                      local contact = sip:get_proxy_contact(s.sip_contact)
-                                      local from_url = url:get_proxy(from.a_url)
-                                      local to_url = url:get_proxy(to.a_url)
-                                      local contact_url = url:get_proxy(contact.m_url)
+                                      local s = sip.get_proxy(lu_sip)
+                                      local from = sip.get_proxy_addr(s.sip_from)
+                                      local to = sip.get_proxy_addr(s.sip_to)
+                                      local contact = sip.get_proxy_contact(s.sip_contact)
+                                      local from_url = url.get_proxy(from.a_url)
+                                      local to_url = url.get_proxy(to.a_url)
+                                      local contact_url = url.get_proxy(contact.m_url)
 
                                       print("nua_i_invite: status["..status.."] phrase["..phrase.."]")
                                       print("from:    "..from_url.user.."@"..from_url.host)
                                       print("to:      "..to_url.user.."@"..to_url.host)
                                       print("contact: "..contact_url.user.."@"..contact_url.host)
 
-                                      local req = sip:get_proxy_request(s.sip_request)
-                                      local req_url = url:get_proxy(req.rq_url)
+                                      local req = sip.get_proxy_request(s.sip_request)
+                                      local req_url = url.get_proxy(req.rq_url)
                                       print("Request method name: "..req.rq_method_name)
                                       print("Request version: "..req.rq_version)
                                       print("Request url: "..req_url.user.."@"..req_url.host)
@@ -53,12 +50,10 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                       print("nua_r_invite: status["..status.."] phrase["..phrase.."]")
                                   end
   
-    callbacks[nua.nua_i_state] = function (event, status, phrase, ua, sip, ts)
+    callbacks[nua.nua_i_state] = function (event, status, phrase, ua, sip, tags)
                                      print("nua_i_state: status["..status.."] phrase["..phrase.."]")
-                                     for k,v in pairs(ts) do
-                                         print("\ttag["..k.."]")
-                                         --print("\ttag["..k.."]="..v)
-                                     end
+                                     local t = su.get_proxy_tags(tags)
+                                     print ("callstate:" .. (t.NUTAG_CALLSTATE or ""))
                                  end
 
     callbacks[nua.nua_i_active] = function (event, status, phrase, ua, sip, tags)

@@ -194,7 +194,7 @@ static void nua_event_callback(nua_event_t event,
 
     sip ? lua_pushlightuserdata(L, (void*)sip) : lua_pushnil(L);
 
-    luasofia_tags_taglist_to_table(L, tags);
+    tags ? lua_pushlightuserdata(L, (void*)tags) : lua_pushnil(L);
 
     lua_call(L, 6, 0);
     lua_pop(L, 2);
