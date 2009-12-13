@@ -20,7 +20,7 @@ static const luasofia_proxy_info_t sdp_session_info[] = {
 {"sdp_attributes",  luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_attributes),  0},
 {"sdp_charset",     luasofia_proxy_get_string,  offsetof(sdp_session_t, sdp_charset),     0},
 {"sdp_media",       luasofia_proxy_get_pointer, offsetof(sdp_session_t, sdp_media),       0},
-// FIXME {"sdp_version",     luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_version),     0},
+// FIXME  pointer to unsigned int, how to get? {"sdp_version",     luasofia_proxy_get_int,     offsetof(sdp_session_t, sdp_version),     0},
 {NULL, NULL, 0 }
 };
 

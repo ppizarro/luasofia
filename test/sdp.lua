@@ -13,24 +13,198 @@ function test_an_sdp_parser_has_a_string_representation()
     assert_equal(sdp_parser_msg, tostring(sdp_parser))
 end
 
-function test_can_get_the_sdp_session_lightudata()
+--sdp_session tests
+function test_can_get_sdp_session_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()
     assert_not_equal(nil, sdp_session)
+    assert_equal("userdata", type(sdp_session))
 end
 
-function test_can_get_the_sdp_session_proxy()
+function test_can_get_sdp_session_proxy()
     local sdp_session = sdp_parser:get_sdp_session()
     assert_not_equal(nil, sdp_session)
     local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     assert_not_equal(nil, sdp_session_proxy)
+    assert_equal("userdata", type(sdp_session_proxy))
 end
 
-function test_can_access_the_sdp_session_proxy_members()
+function test_can_access_sdp_session_proxy_members()
     local sdp_session = sdp_parser:get_sdp_session()
     assert_not_equal(nil, sdp_session)
     local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     assert_not_equal(nil, sdp_session_proxy)
-    --TODO acess members and test values
+    
+    assert_equal(128, sdp_session_proxy.sdp_size)
+    assert_equal("-", sdp_session_proxy.sdp_subject)
+    assert_equal(nil, sdp_session_proxy.sdp_information)
+    assert_equal(nil, sdp_session_proxy.sdp_uri)
+    assert_equal(nil, sdp_session_proxy.sdp_charset)
+    assert_equal("userdata", type(sdp_session_proxy.sdp_origin))
+    assert_equal(nil, sdp_session_proxy.sdp_emails)
+    assert_equal(nil, sdp_session_proxy.sdp_phones)
+    assert_equal("userdata", type(sdp_session_proxy.sdp_connection))
+    assert_equal(nil, sdp_session_proxy.sdp_bandwidths)
+    assert_equal("userdata", type(sdp_session_proxy.sdp_time))
+    assert_equal(nil, sdp_session_proxy.sdp_key)
+    assert_equal(nil, sdp_session_proxy.sdp_attributes)
+    assert_equal("userdata", type(sdp_session_proxy.sdp_media))
+end
+
+
+--sdp_origin tests
+function test_can_get_sdp_origin_lightudata()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_origin = sdp_session_proxy.sdp_origin
+    assert_not_equal(nil, sdp_origin)
+    assert_equal("userdata", type(sdp_origin))
+end
+
+function test_can_get_sdp_origin_proxy()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_origin = sdp_session_proxy.sdp_origin
+    assert_not_equal(nil, sdp_origin)
+    local sdp_origin_proxy = sdp.get_proxy_origin(sdp_origin)
+    assert_not_equal(nil, sdp_origin_proxy)
+    assert_equal("userdata", type(sdp_origin_proxy))
+end
+
+function test_can_access_sdp_origin_proxy_members()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_origin = sdp_session_proxy.sdp_origin
+    assert_not_equal(nil, sdp_origin)
+    local sdp_origin_proxy = sdp.get_proxy_origin(sdp_origin)
+    assert_not_equal(nil, sdp_origin_proxy)   
+     
+    assert_equal(40, sdp_origin_proxy.o_size)
+    assert_equal("-", sdp_origin_proxy.o_username)
+    --how to test this? assert_equal(1.2701222966836e-278, sdp_origin_proxy.o_id)
+    --how to test this? assert_equal(6.1412919304867e-301, sdp_origin_proxy.o_version)
+    assert_not_equal(nil, sdp_origin_proxy.o_address)
+    assert_equal("userdata", type(sdp_origin_proxy.o_address))
+ 
+end
+
+--sdp_connection tests
+function test_can_get_sdp_connection_lightudata()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_connection = sdp_session_proxy.sdp_connection
+    assert_not_equal(nil, sdp_connection)
+    assert_equal("userdata", type(sdp_connection))
+end
+
+function test_can_get_sdp_connection_proxy()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_connection = sdp_session_proxy.sdp_connection
+    assert_not_equal(nil, sdp_connection)
+    local sdp_connection_proxy = sdp.get_proxy_connection(sdp_connection)
+    assert_not_equal(nil, sdp_connection_proxy)
+    assert_equal("userdata", type(sdp_connection_proxy))
+end
+
+function test_can_access_sdp_connection_proxy_members()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_connection = sdp_session_proxy.sdp_connection
+    assert_not_equal(nil, sdp_connection)
+    local sdp_connection_proxy = sdp.get_proxy_connection(sdp_connection)
+    assert_not_equal(nil, sdp_connection_proxy)
+    assert_equal("userdata", type(sdp_connection_proxy))
+
+    assert_equal(40, sdp_connection_proxy.c_size)
+    assert_equal(nil, sdp_connection_proxy.c_next)
+    assert_equal(sdp.sdp_net_in,    sdp_connection_proxy.c_nettype)
+    assert_equal(sdp.sdp_addr_ip4,  sdp_connection_proxy.c_addrtype)
+    assert_equal("192.168.170.145", sdp_connection_proxy.c_address)
+    assert_equal(1, sdp_connection_proxy.c_groups)
+end
+
+
+--sdp_time tests
+function test_can_get_sdp_time_lightudata()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_time = sdp_session_proxy.sdp_time
+    assert_not_equal(nil, sdp_time)
+    assert_equal("userdata", type(sdp_time))
+end
+
+function test_can_get_sdp_time_proxy()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_time = sdp_session_proxy.sdp_time
+    assert_not_equal(nil, sdp_time)
+    local sdp_time_proxy = sdp.get_proxy_time(sdp_time)
+    assert_not_equal(nil, sdp_time_proxy)
+    assert_equal("userdata", type(sdp_time_proxy))
+end
+
+function test_can_access_sdp_time_proxy_members()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_time = sdp_session_proxy.sdp_time
+    assert_not_equal(nil, sdp_time)
+    local sdp_time_proxy = sdp.get_proxy_time(sdp_time)
+    assert_not_equal(nil, sdp_time_proxy)
+    assert_equal("userdata", type(sdp_time_proxy))
+
+    assert_equal(48,  sdp_time_proxy.t_size)
+    assert_equal(nil, sdp_time_proxy.t_next)
+    assert_equal(0,   sdp_time_proxy.t_start)
+    assert_equal(0,   sdp_time_proxy.t_stop)
+    assert_equal(nil, sdp_time_proxy.t_repeat)
+end
+
+
+--sdp_media tests
+function test_can_get_sdp_media_lightudata()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_media = sdp_session_proxy.sdp_media
+    assert_not_equal(nil, sdp_media)
+    assert_equal("userdata", type(sdp_media))
+end
+
+function test_can_get_sdp_media_proxy()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_media = sdp_session_proxy.sdp_media
+    assert_not_equal(nil, sdp_media)
+    local sdp_media_proxy = sdp.get_proxy_media(sdp_media)
+    assert_not_equal(nil, sdp_media_proxy)
+    assert_equal("userdata", type(sdp_media_proxy))
+end
+
+function test_can_access_sdp_media_proxy_members()
+    local sdp_session = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_media = sdp_session_proxy.sdp_media
+    assert_not_equal(nil, sdp_media)
+    local sdp_media_proxy = sdp.get_proxy_media(sdp_media)
+    assert_not_equal(nil, sdp_media_proxy)
+    assert_equal("userdata", type(sdp_media_proxy))
+
+    assert_equal(144, sdp_media_proxy.m_size) 
+    assert_equal(nil, sdp_media_proxy.m_next)
+    assert_equal(sdp_session, sdp_media_proxy.m_session)
+    assert_equal(sdp.sdp_media_audio, sdp_media_proxy.m_type)
+    assert_equal("audio", sdp_media_proxy.m_type_name)
+    assert_equal(5000, sdp_media_proxy.m_port)
+    assert_equal(0, sdp_media_proxy.m_number_of_ports)
+    assert_equal(sdp.sdp_proto_rtp,sdp_media_proxy.m_proto)
+    assert_equal("RTP/AVP", sdp_media_proxy.m_proto_name)
+    assert_equal(nil, sdp_media_proxy.m_format)
+    assert_equal("userdata", type(sdp_media_proxy.m_rtpmaps))
+    assert_equal(nil, sdp_media_proxy.m_information)
+    assert_equal(nil, sdp_media_proxy.m_connections)
+    assert_equal(nil, sdp_media_proxy.m_bandwidths)
+    assert_equal(nil, sdp_media_proxy.m_key)
+    assert_equal(nil, sdp_media_proxy.m_attributes)
+    assert_equal(nil, sdp_media_proxy.m_user)
 end
 
 
