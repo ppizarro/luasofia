@@ -1,7 +1,3 @@
-#include <string.h>
-#include <sofia-sip/sdp.h>
-#include <sofia-sip/su_alloc.h>
-#include "luasofia_sdp_parser.h"
 /*
  * Copyright (C) 2009 Digitro Corporation <www.digitro.com.br>
  *
@@ -24,6 +20,10 @@
  * along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <string.h>
+#include <sofia-sip/sdp.h>
+#include <sofia-sip/su_alloc.h>
+#include "luasofia_sdp_parser.h"
 #define SDP_PARSER_MTABLE "luasofia_sdp_parser_t"
 
 typedef struct luasofia_sdp_parser_s {
@@ -67,7 +67,7 @@ static int luasofia_sdp_parse_get_session(lua_State *L)
     if(!session)
         return 0;
 
-    /* Return sdp_session as lightuserdata, to acess internal members must create the sdp_session_proxy on it*/
+    /* Return sdp_session as lightuserdata*/
     lua_pushlightuserdata (L, session);
     return 1;
 }
