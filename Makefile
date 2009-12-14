@@ -57,13 +57,16 @@ mkobjs:
 $(TARGET) : $(DIR_OBJS)
 	$(CC) -shared -o $@ $(DIR_OBJS) $(LDFLAGS)
 
-check: all check_su check_nua
+check: all check_su check_nua check_sdp
 
 check_su:
 	lua test/su.lua
 
 check_nua:
 	lua test/nua.lua
+
+check_sdp:
+	lua test/sdp.lua
 
 clean:
 	@rm -rf .objs *.so *~ *.out core $(TARGET)
