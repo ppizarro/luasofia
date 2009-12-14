@@ -4,9 +4,9 @@
 #include <lualib.h>
 
 #include "luasofia.h"
-#include "luasofia_tags.h"
-#include "luasofia_const.h"
-#include "luasofia_proxy.h"
+#include "utils/luasofia_tags.h"
+#include "utils/luasofia_const.h"
+#include "utils/luasofia_proxy.h"
 
 #include <sofia-sip/url.h>
 #include <sofia-sip/url_tag.h>

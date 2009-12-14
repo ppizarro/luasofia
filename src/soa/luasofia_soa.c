@@ -4,8 +4,8 @@
 #include <lualib.h>
 
 #include "luasofia.h"
-#include "luasofia_tags.h"
-#include "luasofia_const.h"
+#include "utils/luasofia_tags.h"
+#include "utils/luasofia_const.h"
 
 #include <sofia-sip/soa.h>
 #include <sofia-sip/soa_tag.h>

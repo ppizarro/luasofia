@@ -4,9 +4,9 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_weak_table.h"
-#include "luasofia_tags.h"
-#include "luasofia_proxy.h"
+#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_tags.h"
+#include "utils/luasofia_proxy.h"
 
 static const struct luaL_reg core_lib[] = {
   {NULL, NULL},

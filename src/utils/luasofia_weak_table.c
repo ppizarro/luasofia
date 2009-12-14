@@ -2,6 +2,7 @@
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
+#include "utils/luasofia_weak_table.h"
 
 static int weak_table_ref = LUA_REFNIL;
 

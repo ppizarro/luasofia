@@ -3,7 +3,7 @@
 #include <lua.h>
 #include <lualib.h>
  
-#include "luasofia_utils.h"
+#include "utils/luasofia_utils.h"
 
 void stack_dump(lua_State *L)
 {

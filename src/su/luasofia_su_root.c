@@ -3,8 +3,8 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_su_root.h"
-#include "luasofia_su_task.h"
+#include "su/luasofia_su_root.h"
+#include "su/luasofia_su_task.h"
 
 int luasofia_su_root_create(lua_State *L)
 {

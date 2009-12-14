@@ -6,7 +6,7 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_proxy.h"
+#include "utils/luasofia_proxy.h"
 
 static int proxy_table_ref = LUA_REFNIL;
 

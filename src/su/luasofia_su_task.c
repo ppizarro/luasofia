@@ -3,7 +3,7 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_su_task.h"
+#include "su/luasofia_su_task.h"
 
 int luasofia_su_task_init(lua_State *L)
 {

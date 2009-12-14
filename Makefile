@@ -18,7 +18,7 @@ OBJECTS = luasofia.o \
 	  luasofia_utils.o \
 	  luasofia_sdp_parser.o
 
-CFLAGS += -O2 -c -Wall -fPIC
+CFLAGS += -O2 -c -Wall -fPIC -I./src
 CFLAGS += `pkg-config --cflags sofia-sip-ua lua5.1`
 
 LDFLAGS += `pkg-config --libs sofia-sip-ua lua5.1`
@@ -31,16 +31,25 @@ mkobjs:
 	@mkdir -p .objs
 
 .objs/%.o : src/%.c
-	$(CC) -I./src/su -I./src/utils $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
        
 .objs/%.o : src/sip/%.c
-	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
+
+.objs/%.o : src/url/%.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+.objs/%.o : src/soa/%.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+.objs/%.o : src/nua/%.c
+	$(CC) $(CFLAGS) -o $@ $<
 
 .objs/%.o : src/sdp/%.c
-	$(CC) -I./src -I./src/su -I./src/utils $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
 
 .objs/%.o : src/su/%.c
-	$(CC) -I./src -I./src/utils $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
 
 .objs/%.o : src/utils/%.c
 	$(CC) $(CFLAGS) -o $@ $<

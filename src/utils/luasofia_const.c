@@ -3,7 +3,7 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_const.h"
+#include "utils/luasofia_const.h"
 
 void luasofia_const_register_constants(lua_State *L, const luasofia_reg_const_t *consts)
 {

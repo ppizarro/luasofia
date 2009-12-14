@@ -4,10 +4,10 @@
 #include <lualib.h>
 
 #include "luasofia.h"
-#include "luasofia_weak_table.h"
-#include "luasofia_su_root.h"
-#include "luasofia_tags.h"
-#include "luasofia_const.h"
+#include "utils/luasofia_weak_table.h"
+#include "su/luasofia_su_root.h"
+#include "utils/luasofia_tags.h"
+#include "utils/luasofia_const.h"
 
 #include <sofia-sip/nua.h>
 #include <sofia-sip/nua_tag.h>

@@ -6,8 +6,8 @@
 #include <sofia-sip/su_tag_io.h>
 #include <sofia-sip/su_tag_class.h>
 
-#include "luasofia_su_tags.h"
-#include "luasofia_tags.h"
+#include "su/luasofia_su_tags.h"
+#include "utils/luasofia_tags.h"
 
 #define LUASOFIA_TAGS_META "luasofia_tags"
 

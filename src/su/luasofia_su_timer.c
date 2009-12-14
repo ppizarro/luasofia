@@ -3,9 +3,9 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "luasofia_su_timer.h"
-#include "luasofia_su_task.h"
-#include "luasofia_weak_table.h"
+#include "su/luasofia_su_timer.h"
+#include "su/luasofia_su_task.h"
+#include "utils/luasofia_weak_table.h"
 
 int luasofia_su_timer_create(lua_State *L)
 {

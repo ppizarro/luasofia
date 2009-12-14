@@ -5,12 +5,12 @@
 #include <lualib.h>
 
 #include "luasofia.h"
-#include "luasofia_weak_table.h"
-#include "luasofia_su_root.h"
+#include "utils/luasofia_weak_table.h"
+#include "su/luasofia_su_root.h"
 //#include "luasofia_su_home.h"
-#include "luasofia_su_timer.h"
-#include "luasofia_su_task.h"
-#include "luasofia_su_tags.h"
+#include "su/luasofia_su_timer.h"
+#include "su/luasofia_su_task.h"
+#include "su/luasofia_su_tags.h"
 
 #include <sofia-sip/su.h>
 
