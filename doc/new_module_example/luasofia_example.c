@@ -9,13 +9,13 @@
 #include "utils/luasofia_proxy.h"  /* Needed by the proxy pattern used on the bind. See: http://en.wikipedia.org/wiki/Proxy_pattern */
 
 #include "luasofia_example_proxy_private.h" /* The proxy example, it is good practice to make it as a private data, it should only be used on the module it is registered */
+
 /* 
    This is an example of how to build a new module on luasofia, it tries to describe how to use every facility that
    luasofia offers to anyone who wants to extend luasofia, binding more Sofia code. It explains:
    - how to register enumerators to use on lua code. 
    - how to register the Sofia Tags, so it can be used on lua code.
    - how to build proxy to Sofia objects that cant be completely copied to lua as full userdata.
-   - how to build full userdata that has its own methods and its own __gc method.
    
    We used the ideas given on the book Programming in Lua, chapters 24-29, on how to bind C code to Lua. Reading this chapters is recommended.
    But because of some features and designs of Sofia, some tweaks had to be made on the glue code (the proxy for example).
@@ -78,7 +78,9 @@ int luaopen_luasofia_example(lua_State *L)
     
     /* The main module must register all the full userdata that is part of this module, so every
        full userdata must have its own register_meta function, that must be called here */
-    luasofia_example_obj_register_meta(L);
+    luasofia_example_foo_register_meta(L);
+    /* What will you register will depend on the object you are creating, more details on how to create object-oriented like
+       bind code can be found on Programming in lua chapter 28, full userdata on luasofia usually uses object-oriented usage*/
 
     return 1;
 }
