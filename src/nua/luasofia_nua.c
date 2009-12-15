@@ -30,35 +30,27 @@
 #include "su/luasofia_su_root.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
+#include "nua/luasofia_nua_handle.h"
 
 #include <sofia-sip/nua.h>
 #include <sofia-sip/nua_tag.h>
 #include <sofia-sip/soa_tag.h>
 #include <sofia-sip/su_tag_io.h>
 
-typedef struct lua_nua_handle_s lua_nua_handle_t;
+typedef struct luasofia_nua_s luasofia_nua_t;
 
-#define NUA_HANDLE_MTABLE "lua_nua_handle_t"
+#define NUA_MTABLE "luasofia_nua_t"
 
-typedef struct lua_nua_s lua_nua_t;
-
-#define NUA_MTABLE "lua_nua_t"
-
-struct lua_nua_handle_s {
-    nua_handle_t *nh;
-    lua_State *L;
-};
-
-struct lua_nua_s {
+struct luasofia_nua_s {
     nua_t *nua;
     lua_State *L;
 };
 
 static int lua_nua_set_params(lua_State *L)
 {
-    /* get and check first argument (should be a lua_nua_t) */
+    /* get and check first argument (should be a luasofia_nua_t) */
     su_home_t *home = su_home_create();
-    lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+    luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
     tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
     //tl_print(stdout, "lua_nua_set_params:\n", tags);
@@ -67,92 +59,20 @@ static int lua_nua_set_params(lua_State *L)
     return 0;
 }
 
-static int lua_nua_handle_invite(lua_State *L)
+static int lua_nua_create_handle(lua_State *L)
 {
-    tagi_t *tags = NULL;
-    su_home_t *home = su_home_create();
-    /* get and check first argument (should be a lua_nua_handle_t) */
-    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-
-    tags = luasofia_tags_table_to_taglist(L, 2, home);
-    //tl_print(stdout, "lua_nua_invite:\n", tags);
-    nua_invite(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
-    return 0;
-}
-
-static int lua_nua_handle_ref(lua_State *L)
-{
-    /* get and check first argument (should be a lua_nua_handle_t) */
-    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    nua_handle_ref(lnh->nh);
-    return 0;
-}
-
-static int lua_nua_handle_unref(lua_State *L)
-{
-    /* get and check first argument (should be a lua_nua_handle_t) */
-    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    nua_handle_unref(lnh->nh);
-    return 0;
-}
-
-static int lua_nua_handle_destroy(lua_State *L)
-{
-    /* get and check first argument (should be a lua_nua_handle_t) */
-    lua_nua_handle_t *lnh = (lua_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-
-    if (lnh->nh) {
-        /* remove lnh of the luasofia weak table */
-        luasofia_weak_table_remove(L, lnh->nh);
-        nua_handle_destroy(lnh->nh);
-        lnh->nh = NULL;
-    }
-    return 0;
-}
-
-static int lua_nua_handle_create(lua_State *L)
-{
-    lua_nua_t *lnua = NULL;
-    lua_nua_handle_t *lnh = NULL;
-    nua_handle_t *nh = NULL;
-    tagi_t *tags = NULL;
-    su_home_t *home = su_home_create();
+    luasofia_nua_t *lnua = NULL;
 
     /* get and check first argument (should be a nua_t) */
-    lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+    lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
-    tags = luasofia_tags_table_to_taglist(L, 2, home);
-
-    //tl_print(stdout, "lua_nua_handle:\n", tags);
-
-    /* create a nua object */
-    lnh = (lua_nua_handle_t*) lua_newuserdata(L, sizeof(lua_nua_handle_t));
-
-    /* create the nua_handle_t */
-    nh = nua_handle(lnua->nua, lnh, TAG_NEXT(tags));
-    if (!nh)
-        luaL_error(L, "nua_handle failed!");
-
-    /* set Lua state */
-    lnh->L = L;
-    lnh->nh = nh;
-
-    /* set its metatable */
-    luaL_getmetatable(L, NUA_HANDLE_MTABLE);
-    lua_setmetatable(L, -2);
-
-    /* store nua handle at luasofia weak table */
-    luasofia_weak_table_set(L, nh);
-
-    su_home_unref(home);
-    return 1;
+    return luasofia_nua_handle_create(L, lnua->nua);
 }
 
 static int lua_nua_destroy(lua_State *L)
 {
-    /* get and check first argument (should be a lua_nua_t) */
-    lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+    /* get and check first argument (should be a luasofia_nua_t) */
+    luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
     if (lnua->nua) {
         /* remove lnua of the luasofia weak table */
@@ -166,8 +86,8 @@ static int lua_nua_destroy(lua_State *L)
 
 static int lua_nua_shutdown(lua_State *L)
 {
-    /* get and check first argument (should be a lua_nua_t) */
-    lua_nua_t *lnua = (lua_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+    /* get and check first argument (should be a luasofia_nua_t) */
+    luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
     nua_shutdown(lnua->nua);
     return 0;
 }
@@ -180,7 +100,7 @@ static void nua_event_callback(nua_event_t event,
                                sip_t const *sip,
                                tagi_t tags[])
 {
-    lua_nua_t *lnua = (lua_nua_t*)magic;
+    luasofia_nua_t *lnua = (luasofia_nua_t*)magic;
     lua_State *L = lnua->L;
 
     //printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] sip[%p] tags[%p]\n",
@@ -225,7 +145,7 @@ static void nua_event_callback(nua_event_t event,
 static int lua_nua_create(lua_State *L)
 {
     luasofia_su_root_t *lroot = NULL;
-    lua_nua_t *lnua = NULL;
+    luasofia_nua_t *lnua = NULL;
     nua_t *nua = NULL;
     tagi_t *tags = NULL;
     su_home_t *home = su_home_create();
@@ -241,7 +161,7 @@ static int lua_nua_create(lua_State *L)
     //tl_print(stdout, "lua_nua_create:\n", tags);
 
     /* create a nua object */
-    lnua = (lua_nua_t*) lua_newuserdata(L, sizeof(lua_nua_t));
+    lnua = (luasofia_nua_t*) lua_newuserdata(L, sizeof(luasofia_nua_t));
 
     /* create the nua_t */
     nua = nua_create(lroot->root, nua_event_callback, lnua, TAG_NEXT(tags));
@@ -275,17 +195,9 @@ static int lua_nua_event_name(lua_State *L)
     return 1;
 }
 
-static const luaL_Reg nua_handle_meths[] = {
-    {"ref",    lua_nua_handle_ref },
-    {"unref",  lua_nua_handle_unref },
-    {"invite", lua_nua_handle_invite },
-    {"__gc",   lua_nua_handle_destroy },
-    {NULL, NULL}
-};
-
 static const luaL_Reg nua_meths[] = {
     {"set_params",    lua_nua_set_params },
-    {"handle_create", lua_nua_handle_create },
+    {"handle_create", lua_nua_create_handle },
     {"shutdown",      lua_nua_shutdown },
     {"__gc",          lua_nua_destroy },
     {NULL, NULL}
@@ -537,19 +449,14 @@ static const luasofia_reg_const_t nua_constants[] = {
 
 int luaopen_luasofia_nua(lua_State *L)
 {
-    luaL_newmetatable(L, NUA_HANDLE_MTABLE);
-    /* metatable.__index = metatable */
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, nua_handle_meths);
-    lua_pop(L, 1);
-
     luaL_newmetatable(L, NUA_MTABLE);
     /* metatable.__index = metatable */
     lua_pushvalue(L, -1);
     lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, nua_meths);
     lua_pop(L, 1);
+
+    luasofia_nua_handle_register_meta(L);
 
     luasofia_tags_register_tags(L, nua_tags);
 
