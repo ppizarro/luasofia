@@ -73,7 +73,6 @@ function test_can_access_sdp_session_proxy_members()
     assert_equal("userdata", type(sdp_session_proxy.sdp_media))
 end
 
-
 --sdp_origin tests
 function test_can_get_sdp_origin_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()

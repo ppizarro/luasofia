@@ -46,20 +46,20 @@ struct luasofia_nua_s {
     lua_State *L;
 };
 
-static int lua_nua_set_params(lua_State *L)
+static int luasofia_nua_set_params(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_t) */
     su_home_t *home = su_home_create();
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
     tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    //tl_print(stdout, "lua_nua_set_params:\n", tags);
+    //tl_print(stdout, "luasofia_nua_set_params:\n", tags);
     nua_set_params(lnua->nua, TAG_NEXT(tags));
     su_home_unref(home);
     return 0;
 }
 
-static int lua_nua_create_handle(lua_State *L)
+static int luasofia_nua_create_handle(lua_State *L)
 {
     luasofia_nua_t *lnua = NULL;
 
@@ -69,7 +69,7 @@ static int lua_nua_create_handle(lua_State *L)
     return luasofia_nua_handle_create(L, lnua->nua);
 }
 
-static int lua_nua_destroy(lua_State *L)
+static int luasofia_nua_destroy(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_t) */
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
@@ -84,7 +84,7 @@ static int lua_nua_destroy(lua_State *L)
     return 0;
 }
 
-static int lua_nua_shutdown(lua_State *L)
+static int luasofia_nua_shutdown(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_t) */
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
@@ -142,7 +142,7 @@ static void nua_event_callback(nua_event_t event,
     lua_pop(L, 2);
 }
 
-static int lua_nua_create(lua_State *L)
+static int luasofia_nua_create(lua_State *L)
 {
     luasofia_su_root_t *lroot = NULL;
     luasofia_nua_t *lnua = NULL;
@@ -158,7 +158,7 @@ static int lua_nua_create(lua_State *L)
 
     tags = luasofia_tags_table_to_taglist(L, 3, home);
 
-    //tl_print(stdout, "lua_nua_create:\n", tags);
+    //tl_print(stdout, "luasofia_nua_create:\n", tags);
 
     /* create a nua object */
     lnua = (luasofia_nua_t*) lua_newuserdata(L, sizeof(luasofia_nua_t));
@@ -187,7 +187,7 @@ static int lua_nua_create(lua_State *L)
     return 1;
 }
 
-static int lua_nua_event_name(lua_State *L)
+static int luasofia_nua_event_name(lua_State *L)
 {
     nua_event_t event = lua_tointeger(L, -1);
     char const *name = nua_event_name(event);
@@ -196,16 +196,16 @@ static int lua_nua_event_name(lua_State *L)
 }
 
 static const luaL_Reg nua_meths[] = {
-    {"set_params",    lua_nua_set_params },
-    {"handle_create", lua_nua_create_handle },
-    {"shutdown",      lua_nua_shutdown },
-    {"__gc",          lua_nua_destroy },
+    {"set_params",    luasofia_nua_set_params },
+    {"handle_create", luasofia_nua_create_handle },
+    {"shutdown",      luasofia_nua_shutdown },
+    {"__gc",          luasofia_nua_destroy },
     {NULL, NULL}
 };
 
 static const luaL_Reg nua_lib[] = {
-    {"create", lua_nua_create },
-    {"event_name", lua_nua_event_name },
+    {"create", luasofia_nua_create },
+    {"event_name", luasofia_nua_event_name },
     {NULL, NULL}
 };
 

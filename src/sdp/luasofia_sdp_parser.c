@@ -24,6 +24,7 @@
 #include <sofia-sip/sdp.h>
 #include <sofia-sip/su_alloc.h>
 #include "luasofia_sdp_parser.h"
+
 #define SDP_PARSER_MTABLE "luasofia_sdp_parser_t"
 
 typedef struct luasofia_sdp_parser_s {
@@ -40,7 +41,7 @@ int luasofia_sdp_parser_parse(lua_State *L)
     const char* msg = luaL_checkstring (L, 1);
     issize_t size   = (issize_t) strlen(msg);
     /* get and check second argument (should be a integer) */
-    int flags = (int) luaL_checkinteger(L, 2);
+    int flags = luaL_checkinteger(L, 2);
     sdp_parser_t* parser = sdp_parse(home, msg, size, flags);
    
     lua_pop(L, 2);
@@ -101,7 +102,6 @@ static int luasofia_sdp_parse_destroy(lua_State *L)
     /* get and check first argument (should be a sdp_parser udata) */
     luasofia_sdp_parser_t* lparser = (luasofia_sdp_parser_t*) luaL_checkudata(L, 1, SDP_PARSER_MTABLE);  
     int freed = 0;
-    
     if (lparser->home) {
         freed = su_home_unref(lparser->home);
         if (freed){
