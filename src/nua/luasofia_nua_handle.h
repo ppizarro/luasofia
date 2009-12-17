@@ -23,10 +23,13 @@
 
 #ifndef __LUASOFIA_NUA_HANDLE_H__
 #define __LUASOFIA_NUA_HANDLE_H__
+
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
 #include <sofia-sip/nua.h>
+
+#define NUA_HANDLE_MTABLE "luasofia_nua_handle_t"
 
 int luasofia_nua_handle_register_meta(lua_State* L);
 

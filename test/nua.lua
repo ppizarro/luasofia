@@ -42,12 +42,12 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_r_shutdown] = f_shutdown
 
-    callbacks["event_default"] = function (event, status, phrase, ua, sip, tags)
+    callbacks["event_default"] = function (event, status, phrase, ua, nh, sip, tags)
                                      print("event_default: event["..nua:event_name(event)..
                                            "] status["..status.."] phrase["..phrase.."]")
                                  end
 
-    callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, lu_sip, tags)
+    callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, nh, lu_sip, tags)
                                       local s = sip.get_proxy(lu_sip)
                                       local from = sip.get_proxy_addr(s.sip_from)
                                       local to = sip.get_proxy_addr(s.sip_to)
@@ -69,11 +69,11 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
                                   end
   
-    callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, sip, tags)
+    callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, nh, sip, tags)
                                       print("nua_r_invite: status["..status.."] phrase["..phrase.."]")
                                   end
   
-    callbacks[nua.nua_i_state] = function (event, status, phrase, ua, sip, tags)
+    callbacks[nua.nua_i_state] = function (event, status, phrase, ua, nh, sip, tags)
                                      local t = su.get_proxy_tags(tags)
                                      print("nua_i_state: status["..status.."] phrase["..phrase.."]")
                                      print ("callstate:" .. t.NUTAG_CALLSTATE)
@@ -90,11 +90,11 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                      end
                                  end
 
-    callbacks[nua.nua_i_active] = function (event, status, phrase, ua, sip, tags)
+    callbacks[nua.nua_i_active] = function (event, status, phrase, ua, nh, sip, tags)
                                       print("nua_i_active: status["..status.."] phrase["..phrase.."]")
                                   end
 
-    callbacks[nua.nua_i_terminated] = function (event, status, phrase, ua, sip, tags)
+    callbacks[nua.nua_i_terminated] = function (event, status, phrase, ua, nh, sip, tags)
                                          print("nua_i_terminated: status["..status.."] phrase["..phrase.."]")
                                       end
 

@@ -23,8 +23,6 @@
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_weak_table.h"
 
-#define NUA_HANDLE_MTABLE "luasofia_nua_handle_t"
-
 typedef struct luasofia_nua_handle_s {
     nua_handle_t *nh;
     lua_State *L;
