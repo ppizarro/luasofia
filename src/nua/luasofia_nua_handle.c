@@ -49,22 +49,6 @@ static int luasofia_nua_handle_invite(lua_State *L)
     return 0;
 }
 
-static int luasofia_nua_handle_ref(lua_State *L)
-{
-    /* get and check first argument (should be a luasofia_nua_handle_t) */
-    luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    nua_handle_ref(lnh->nh);
-    return 0;
-}
-
-static int luasofia_nua_handle_unref(lua_State *L)
-{
-    /* get and check first argument (should be a luasofia_nua_handle_t) */
-    luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    nua_handle_unref(lnh->nh);
-    return 0;
-}
-
 static int luasofia_nua_handle_destroy(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
@@ -391,8 +375,6 @@ static int luasofia_nua_handle_respond(lua_State *L)
 */
 
 static const luaL_Reg nua_handle_meths[] = {
-    {"ref",          luasofia_nua_handle_ref },
-    {"unref",        luasofia_nua_handle_unref },
     {"invite",       luasofia_nua_handle_invite },
     {"register",     luasofia_nua_handle_register },
     {"unregister",   luasofia_nua_handle_unregister },

@@ -158,8 +158,6 @@ static int luasofia_nua_create(lua_State *L)
 
     tags = luasofia_tags_table_to_taglist(L, 3, home);
 
-    //tl_print(stdout, "luasofia_nua_create:\n", tags);
-
     /* create a nua object */
     lnua = (luasofia_nua_t*) lua_newuserdata(L, sizeof(luasofia_nua_t));
 
