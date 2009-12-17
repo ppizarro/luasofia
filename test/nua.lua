@@ -66,6 +66,7 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                       print("Request method name: "..req.rq_method_name)
                                       print("Request version: "..req.rq_version)
                                       print("Request url: "..req_url.user.."@"..req_url.host)
+
                                   end
   
     callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, sip, tags)
@@ -125,27 +126,27 @@ root = su.root_create()
 local a_quit = false
 local b_quit = false
 
-shutdown_a = function (event, status, phrase, ua, sip, tags)
-                 print("User Agent A shutdown: status["..status.."] phrase["..phrase.."]")
-                 if (status == 200) then
-                    a_quit = true
-                 end
-                 if (a_quit and b_quit) then
-                    root:quit()
-                 end
-             end
+function shutdown_a (event, status, phrase, ua, sip, tags)
+    print("User Agent A shutdown: status["..status.."] phrase["..phrase.."]")
+    if (status == 200) then
+        a_quit = true
+    end
+    if (a_quit and b_quit) then
+        root:quit()
+    end
+end
 
 ua_a = make_user_agent("1000", 5060, 4000, shutdown_a)
 
-shutdown_b = function (event, status, phrase, ua, sip, tags)
-                 print("User Agent B shutdown: status["..status.. "] phrase["..phrase.."]")
-                 if (status == 200) then
-                    b_quit = true
-                 end
-                 if (a_quit and b_quit) then
-                    root:quit()
-                 end
-             end
+function shutdown_b (event, status, phrase, ua, sip, tags)
+    print("User Agent B shutdown: status["..status.. "] phrase["..phrase.."]")
+    if (status == 200) then
+        b_quit = true
+    end
+    if (a_quit and b_quit) then
+        root:quit()
+    end
+end
 
 ua_b = make_user_agent("1001", 5080, 5000, shutdown_b)
 
