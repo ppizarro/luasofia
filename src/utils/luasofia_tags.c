@@ -71,8 +71,11 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
     int maxtags = TAGS_LIST_SIZE;
     tagi_t* tags = su_zalloc(home, sizeof(tagi_t) * maxtags);
 
-    if(!lua_istable(L, index))
+    if(!lua_istable(L, index)) {
+        tags[0].t_tag = NULL;
+        tags[0].t_value = 0;
         return tags;
+    }
 
     /* put the tag table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
