@@ -42,10 +42,10 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
 
     callbacks[nua.nua_r_shutdown] = f_shutdown
 
-    callbacks["event_default"] = function (event, status, phrase, ua, nh, sip, tags)
-                                     print("event_default: event["..nua:event_name(event)..
-                                           "] status["..status.."] phrase["..phrase.."]")
-                                 end
+    callbacks[nua.nua_event_default] = function (event, status, phrase, ua, nh, sip, tags)
+                                           print("event_default: event["..nua:event_name(event)..
+                                            "] status["..status.."] phrase["..phrase.."]")
+                                       end
 
     callbacks[nua.nua_i_invite] = function (event, status, phrase, ua, nh, lu_sip, tags)
                                       local s = sip.get_proxy(lu_sip)

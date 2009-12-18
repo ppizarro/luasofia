@@ -29,6 +29,12 @@ typedef struct luasofia_reg_const_s {
   int value;
 } luasofia_reg_const_t;
 
+/**
+    Given a consts list, register all then on the table that is on the top of the stack of the lua_State. 
+    Table_at_stack_top[const.name] = const.value. There MUST be a table on the top of the stack.
+    @param L      - lua state.
+    @param consts - NULL terminated array of consts.
+*/
 void luasofia_const_register_constants(lua_State *L, const luasofia_reg_const_t *consts);
 
 #endif //__LUASOFIA_UTILS

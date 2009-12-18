@@ -39,7 +39,8 @@
 
 typedef struct luasofia_nua_s luasofia_nua_t;
 
-#define NUA_MTABLE "luasofia_nua_t"
+#define NUA_MTABLE              "luasofia_nua_t"
+#define NUA_EVENT_DEFAULT_VALUE -10
 
 struct luasofia_nua_s {
     nua_t *nua;
@@ -121,7 +122,7 @@ static void nua_event_callback(nua_event_t event,
     if (lua_isnil(L, -1)) {
         lua_pop(L, 1);
         /* get default callback */
-        lua_getfield(L, -1, "event_default");
+        lua_rawgeti(L, -1, NUA_EVENT_DEFAULT_VALUE);
         if (lua_isnil(L, -1)) {
             lua_pop(L, 3);
             return;
@@ -351,7 +352,6 @@ static const luasofia_tag_reg_t nua_tags[] = {
     {"NUTAG_ALLOW_EVENTS_REF", nutag_allow_events_ref },
     {"NUTAG_CALLSTATE", nutag_callstate },
     {"NUTAG_CALLSTATE_REF", nutag_callstate_ref },
-    {"callstate_REF", nutag_callstate_ref },
     {"NUTAG_SUBSTATE", nutag_substate },
     {"NUTAG_SUBSTATE_REF", nutag_substate_ref },
     {"NUTAG_SUB_EXPIRES", nutag_sub_expires },
@@ -405,7 +405,7 @@ static const luasofia_tag_reg_t nua_tags[] = {
 };
 
 static const luasofia_reg_const_t nua_constants[] = {
-    { "nua_i_none", nua_i_none },
+    { "nua_event_default", NUA_EVENT_DEFAULT_VALUE },
     { "nua_i_error", nua_i_error },
     { "nua_i_invite", nua_i_invite },
     { "nua_i_cancel", nua_i_cancel },
