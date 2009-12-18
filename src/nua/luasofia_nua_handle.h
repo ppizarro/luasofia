@@ -35,4 +35,6 @@ int luasofia_nua_handle_register_meta(lua_State* L);
 
 int luasofia_nua_handle_create(lua_State *L, nua_t *nua);
 
+int luasofia_nua_handle_create_userdata(lua_State *L, nua_handle_t *nh);
+
 #endif /* __LUASOFIA_NUA_HANDLE_H__ */

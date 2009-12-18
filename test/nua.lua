@@ -66,7 +66,10 @@ function make_user_agent(username, sip_port, rtp_port, f_shutdown)
                                       print("Request method name: "..req.rq_method_name)
                                       print("Request version: "..req.rq_version)
                                       print("Request url: "..req_url.user.."@"..req_url.host)
-
+                                      nh:respond(200, "OK",
+                                                 { SOATAG_USER_SDP_STR = "m=audio "..rtp_port.." RTP/AVP 0 8\r\n"..
+                                                                         "a=rtpmap:0 PCMU/8000\r\n"..
+                                                                         "a=rtpmap:8 PCMA/8000\r\n" })
                                   end
   
     callbacks[nua.nua_r_invite] = function (event, status, phrase, ua, nh, sip, tags)

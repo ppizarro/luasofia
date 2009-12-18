@@ -401,6 +401,29 @@ static const luaL_Reg nua_handle_meths[] = {
     {NULL, NULL}
 };
 
+int luasofia_nua_handle_create_userdata(lua_State *L, nua_handle_t *nh)
+{
+    luasofia_nua_handle_t *lnh = NULL;
+
+    if (!nh)
+        luaL_error(L, "nua_handle is nil!");
+
+    /* create a nua_handle object */
+    lnh = (luasofia_nua_handle_t*)lua_newuserdata(L, sizeof(luasofia_nua_handle_t));
+
+    /* set Lua state */
+    lnh->L = L;
+    lnh->nh = nh;
+
+    /* set its metatable */
+    luaL_getmetatable(L, NUA_HANDLE_MTABLE);
+    lua_setmetatable(L, -2);
+
+    /* store nua handle at luasofia weak table */
+    luasofia_weak_table_set(L, nh);
+    return 1;
+}
+
 int luasofia_nua_handle_create(lua_State *L, nua_t *nua)
 {
     luasofia_nua_handle_t *lnh = NULL;
@@ -411,7 +434,7 @@ int luasofia_nua_handle_create(lua_State *L, nua_t *nua)
     tags = luasofia_tags_table_to_taglist(L, 2, home);
 
     /* create a nua_handle object */
-    lnh = (luasofia_nua_handle_t*) lua_newuserdata(L, sizeof(luasofia_nua_handle_t));
+    lnh = (luasofia_nua_handle_t*)lua_newuserdata(L, sizeof(luasofia_nua_handle_t));
 
     /* create the nua_handle_t */
     nh = nua_handle(nua, lnh, TAG_NEXT(tags));

@@ -134,10 +134,20 @@ static void nua_event_callback(nua_event_t event,
     lua_pushstring(L, phrase);
     lua_pushvalue(L, -6);
 
-    // put nua_handle userdatum at stack and check if it is ok.
-    luasofia_weak_table_get(L, nh);
-    if (!lua_isnil(L, -1))
-        luaL_checkudata(L, -1, NUA_HANDLE_MTABLE);
+    if (nh) { 
+        // put nua_handle userdatum at stack
+        luasofia_weak_table_get(L, nh);
+        if (lua_isnil(L, -1)) {
+            // create a new nua_handle userdatum
+            lua_pop(L, 1);
+            luasofia_nua_handle_create_userdata(L, nh);
+        } else {
+            // check if it is a nua_handle
+            luaL_checkudata(L, -1, NUA_HANDLE_MTABLE);
+        }
+    } else {
+        lua_pushnil(L);
+    }
 
     sip ? lua_pushlightuserdata(L, (void*)sip) : lua_pushnil(L);
 
