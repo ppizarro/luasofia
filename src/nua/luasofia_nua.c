@@ -53,7 +53,6 @@ static int luasofia_nua_set_params(lua_State *L)
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
     tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    //tl_print(stdout, "luasofia_nua_set_params:\n", tags);
     nua_set_params(lnua->nua, TAG_NEXT(tags));
     su_home_unref(home);
     return 0;
@@ -457,6 +456,26 @@ static const luasofia_reg_const_t nua_constants[] = {
     { "nua_r_authenticate", nua_r_authenticate },
     { "nua_i_network_changed", nua_i_network_changed },
     { "nua_i_register", nua_i_register },
+    { "nua_callstate_init", nua_callstate_init},
+    { "nua_callstate_authenticating", nua_callstate_authenticating},
+    { "nua_callstate_calling", nua_callstate_calling},
+    { "nua_callstate_proceeding", nua_callstate_proceeding},
+    { "nua_callstate_completing", nua_callstate_completing},
+    { "nua_callstate_received ", nua_callstate_received},
+    { "nua_callstate_early", nua_callstate_early},
+    { "nua_callstate_completed", nua_callstate_completed},
+    { "nua_callstate_ready", nua_callstate_ready},
+    { "nua_callstate_terminating", nua_callstate_terminating},
+    { "nua_callstate_terminated", nua_callstate_terminated},
+    { "nua_no_refresher", nua_no_refresher},
+    { "nua_local_refresher", nua_local_refresher},
+    { "nua_remote_refresher", nua_remote_refresher},
+    { "nua_any_refresher", nua_any_refresher},
+    { "nua_substate_extended", nua_substate_extended},
+    { "nua_substate_embryonic", nua_substate_embryonic},
+    { "nua_substate_pending", nua_substate_pending},
+    { "nua_substate_active", nua_substate_active},
+    { "nua_substate_terminated", nua_substate_terminated},
     {NULL, 0 }
 };
 
