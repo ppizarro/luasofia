@@ -1,6 +1,11 @@
 lib_LTLIBRARIES = libsofia.la
-libsofia_la_CFLAGS = $(LUA_CFLAGS) $(SOFIA_CFLAGS)
-libsofia_la_LDFLAGS = $(LUA_LDFLAGS) $(SOFIA_LDFLAGS)
+
+##INCLUDES = -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
+ 	
+libsofia_la_CFLAGS = -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
+
+libsofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) $(LUA_LIBS)
+
 libsofia_la_SOURCES = luasofia.c \
 	luasofia.h \
 	nua/luasofia_nua.c \
