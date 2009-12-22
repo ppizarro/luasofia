@@ -157,6 +157,7 @@ static const luaL_Reg su_root_meths[] = {
     {"get_max_defer", luasofia_su_root_get_max_defer },
     {"set_max_defer", luasofia_su_root_set_max_defer },
     {"task", luasofia_su_root_task },
+    {"destroy", luasofia_su_root_destroy },
     {"__gc", luasofia_su_root_destroy },
     {NULL, NULL}
 };
