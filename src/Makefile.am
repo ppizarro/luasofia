@@ -1,12 +1,10 @@
-lib_LTLIBRARIES = libsofia.la
+lib_LTLIBRARIES = libluasofia.la
 
-##INCLUDES = -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
- 	
-libsofia_la_CFLAGS = -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
+libluasofia_la_CFLAGS = -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
 
-libsofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) $(LUA_LIBS)
+libluasofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) $(LUA_LIBS)
 
-libsofia_la_SOURCES = luasofia.c \
+libluasofia_la_SOURCES = luasofia.c \
 	luasofia.h \
 	nua/luasofia_nua.c \
 	nua/luasofia_nua_handle.c \
@@ -56,4 +54,9 @@ libsofia_la_SOURCES = luasofia.c \
 	utils/luasofia_utils.h \
 	utils/luasofia_weak_table.c \
 	utils/luasofia_weak_table.h
+
+install-exec-hook:
+	echo @libdir@
+	mkdir -p @libdir@/lua/5.1
+	ln -s @libdir@/libluasofia.so @libdir@/lua/5.1/luasofia.so
 
