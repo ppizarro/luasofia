@@ -142,7 +142,7 @@ static int luasofia_su_root_task(lua_State *L)
     /* get and check first argument (should be a engine) */
     lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
-    luasofia_su_task_create(L, su_root_task(lroot->root));
+    luasofia_su_task_init(L, su_root_task(lroot->root));
     return 1;
 }
 

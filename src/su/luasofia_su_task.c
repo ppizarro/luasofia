@@ -27,7 +27,7 @@
 
 #include "su/luasofia_su_task.h"
 
-int luasofia_su_task_init(lua_State *L)
+int luasofia_su_task_create(lua_State *L)
 {
     luasofia_su_task_t *ltask = NULL;
 
@@ -43,7 +43,7 @@ int luasofia_su_task_init(lua_State *L)
     return 1;
 }
 
-int luasofia_su_task_create(lua_State *L, _su_task_r ptask)
+int luasofia_su_task_init(lua_State *L, _su_task_r ptask)
 {
     luasofia_su_task_t *ltask = NULL;
 

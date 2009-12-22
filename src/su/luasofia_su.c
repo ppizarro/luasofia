@@ -53,7 +53,7 @@ static const luaL_Reg su_lib[] = {
     {"root_create",  luasofia_su_root_create },
 //    {"home_new",     luasofia_su_home_new },
     {"timer_create", luasofia_su_timer_create },
-    {"task_init",    luasofia_su_task_init },
+    {"task_create",    luasofia_su_task_create },
     {"get_proxy_tags", luasofia_su_tags_get_proxy },
     {NULL, NULL}
 };

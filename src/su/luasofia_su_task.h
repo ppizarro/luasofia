@@ -36,9 +36,9 @@ typedef struct luasofia_su_task_s {
 
 int luasofia_su_task_register_meta(lua_State *L);
 
-int luasofia_su_task_init(lua_State *L);
+int luasofia_su_task_create(lua_State *L);
 
-int luasofia_su_task_create(lua_State *L, _su_task_r ptask);
+int luasofia_su_task_init(lua_State *L, _su_task_r ptask);
 
 #endif //__LUASOFIA_SU_TASK_H_
 
