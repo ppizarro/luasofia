@@ -35,9 +35,5 @@ timer:set({ timer_handler = function (t)
 
 root:run()
 
-timer = nil
-
-root = nil
-
 su.deinit()
 

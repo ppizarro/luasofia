@@ -67,7 +67,7 @@ int luasofia_su_root_create(lua_State *L)
 static int luasofia_su_root_destroy(lua_State *L)
 {
     luasofia_su_root_t *lroot = NULL;
-   
+
     /* get and check first argument (should be a root) */
     lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
@@ -157,7 +157,7 @@ static const luaL_Reg su_root_meths[] = {
     {"get_max_defer", luasofia_su_root_get_max_defer },
     {"set_max_defer", luasofia_su_root_set_max_defer },
     {"task", luasofia_su_root_task },
-    {"__gc", luasofia_su_root_destroy},
+    {"__gc", luasofia_su_root_destroy },
     {NULL, NULL}
 };
 

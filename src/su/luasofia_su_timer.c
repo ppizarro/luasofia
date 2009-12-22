@@ -66,7 +66,7 @@ int luasofia_su_timer_create(lua_State *L)
 static int luasofia_su_timer_destroy(lua_State *L)
 {
     luasofia_su_timer_t *ltimer = NULL;
-   
+
     /* get and check first argument (should be a engine) */
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
 
@@ -186,7 +186,8 @@ static const luaL_Reg su_timer_meths[] = {
     {"reset",        luasofia_su_timer_reset },
     {"root",         luasofia_su_timer_root },
     {"expire",       luasofia_su_timer_expire },
-    {"__gc",         luasofia_su_timer_destroy},
+    {"destroy",      luasofia_su_timer_destroy },
+    {"__gc",         luasofia_su_timer_destroy },
     {NULL, NULL}
 };
 
