@@ -16,6 +16,7 @@ AC_PROG_CC
 AC_PROG_LN_S
 AC_PROG_LIBTOOL
 AC_PROG_INSTALL
+PKG_PROG_PKG_CONFIG
 
 # lib: sofia-sip
 # ----------------------------------------------------------------------------
@@ -24,9 +25,12 @@ AC_SUBST(SOFIA_SIP_UA_LIBS)
 AC_SUBST(SOFIA_SIP_UA_CFLAGS)
 AC_SUBST(SOFIA_SIP_UA_VERSION)
 
-PKG_CHECK_MODULES(LUA, lua5.1)
+# lib: lua
+# ----------------------------------------------------------------------------
+PKG_CHECK_MODULES(LUA, lua5.1, [LUA_CMODULE=`$PKG_CONFIG lua5.1 --variable=INSTALL_CMOD`])
 AC_SUBST(LUA_LIBS)
 AC_SUBST(LUA_CFLAGS)
+AC_SUBST(LUA_CMODULE)
 
 # Create files
 # ----------------------------------------------------------------------------
