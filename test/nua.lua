@@ -173,10 +173,5 @@ make_call(ua_a, "sip:1001@127.0.0.1:5080",
 
 root:run()
 
-ua_a = nil
-ua_b = nil
-timer = nil
-root = nil
-
 su.deinit()
 
