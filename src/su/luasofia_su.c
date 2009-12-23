@@ -37,8 +37,8 @@
 
 static int luasofia_su_init(lua_State *L)
 {
-    su_init();
-    return 0;
+    lua_pushinteger(L, su_init());
+    return 1;
 }
 
 static int luasofia_su_deinit(lua_State *L)
