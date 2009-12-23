@@ -161,11 +161,11 @@ ua_b = make_user_agent("1001", 5080, 5000, shutdown_b)
 
 timer = su.timer_create(root:task(), 500)
 
-timer:set( { timer_handler = function (t)
-                                 print("timer fired: shutdown...")
-                                 ua_a:shutdown()
-                                 ua_b:shutdown()
-                             end })
+timer:set(function (t)
+              print("timer fired: shutdown...")
+              ua_a:shutdown()
+              ua_b:shutdown()
+          end)
 
 make_call(ua_a, "sip:1001@127.0.0.1:5080",
                 "<sip:1000@127.0.0.1>",

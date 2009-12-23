@@ -91,15 +91,15 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     luasofia_weak_table_get(L, ltimer->timer);
     luaL_checkudata(L, -1, SU_TIMER_MTABLE);
 
-    /* put callback table at stack */
+    /* put enviroment table at stack */
     lua_getfenv(L, -1);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
         return;
     }
 
-    /* get callback */
-    lua_getfield(L, -1, "timer_handler");
+    /* get callback function */
+    lua_rawgeti(L, -1, 1);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 3);
         return;
@@ -110,6 +110,24 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     lua_pop(L, 2);
 }
 
+static void luasofia_su_timer_set_function_env(lua_State *L)
+{
+    /* check the callback function */
+    luaL_checktype(L, -1, LUA_TFUNCTION);
+
+    /* create environment table */
+    lua_createtable(L, 1, 0);
+
+    /* put callback function at top */
+    lua_pushvalue(L, -2);
+
+    /* t[1] = function */
+    lua_rawseti(L, -2, 1);
+
+    /* set callback table as environment for udata */
+    lua_setfenv(L, -3);
+}
+
 static int luasofia_su_timer_set(lua_State *L)
 {
     luasofia_su_timer_t *ltimer = NULL;
@@ -117,11 +135,8 @@ static int luasofia_su_timer_set(lua_State *L)
     /* get and check first argument (should be a timer) */
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
 
-    /* check the callback table */
-    luaL_checktype(L, -1, LUA_TTABLE);
-
-    /* set callback table as environment for udata */
-    lua_setfenv(L, -2);
+    /* set callback function as environment for udata */
+    luasofia_su_timer_set_function_env(L);
 
     su_timer_set(ltimer->timer, luasofia_su_timer_callback, ltimer);
     return 0;
@@ -149,11 +164,8 @@ static int luasofia_su_timer_set_for_ever(lua_State *L)
     /* get and check first argument (should be a timer) */
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
 
-    /* check the callback table */
-    luaL_checktype(L, -1, LUA_TTABLE);
-
-    /* set callback table as environment for udata */
-    lua_setfenv(L, -2);
+    /* set callback function as environment for udata */
+    luasofia_su_timer_set_function_env(L);
 
     su_timer_set_for_ever(ltimer->timer, luasofia_su_timer_callback, ltimer);
     return 0;
