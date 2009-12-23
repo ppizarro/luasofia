@@ -32,10 +32,6 @@ int luasofia_su_root_create(lua_State *L)
 {
     su_root_t *root = NULL;
     luasofia_su_root_t *lroot = NULL;
-    int argc = lua_gettop(L); 
-
-    if (argc > 0)
-        luaL_checktype(L, 1, LUA_TTABLE);
 
     /* create the su_root */
     root = su_root_create(NULL);
@@ -53,14 +49,6 @@ int luasofia_su_root_create(lua_State *L)
     /* set its metatable */
     luaL_getmetatable(L, SU_ROOT_MTABLE);
     lua_setmetatable(L, -2);
-
-    // FIXME guardamos a table no registry e setamos o magic com o ref ou
-    // guardamos a table no environment do lroot e setamos o magic como NULL?
-    if (argc > 0) {
-        /* set callback table as environment for udata */
-        lua_pushvalue(L, 1);
-        lua_setfenv(L, -2);
-    }
     return 1;
 }
 
@@ -75,11 +63,6 @@ static int luasofia_su_root_destroy(lua_State *L)
         su_root_destroy(lroot->root);
         lroot->root = NULL;
     }
-    return 0;
-}
-
-static int luasofia_su_root_magic(lua_State *L)
-{
     return 0;
 }
 
@@ -147,7 +130,6 @@ static int luasofia_su_root_task(lua_State *L)
 }
 
 static const luaL_Reg su_root_meths[] = {
-    {"magic", luasofia_su_root_magic },
     {"register", luasofia_su_root_register },
     {"deregister", luasofia_su_root_deregister },
     {"unregister", luasofia_su_root_unregister },
