@@ -212,7 +212,6 @@ static const luaL_Reg nua_meths[] = {
     {"set_params",    luasofia_nua_set_params },
     {"handle_create", luasofia_nua_create_handle },
     {"shutdown",      luasofia_nua_shutdown },
-    {"destroy",       luasofia_nua_destroy },
     {"__gc",          luasofia_nua_destroy },
     {NULL, NULL}
 };
