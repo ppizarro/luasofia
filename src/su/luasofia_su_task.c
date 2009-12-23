@@ -73,17 +73,6 @@ static int luasofia_su_task_destroy(lua_State *L)
     return 0;
 }
 
-static int luasofia_su_task_deinit(lua_State *L)
-{
-    luasofia_su_task_t *ltask = NULL;
-   
-    /* get and check first argument (should be a engine) */
-    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
-
-    su_task_deinit(ltask->task);
-    return 0;
-}
-
 static int luasofia_su_task_copy(lua_State *L)
 {
     return 0;
@@ -124,7 +113,6 @@ static int luasofia_su_task_wakeup(lua_State *L)
 }
 
 static const luaL_Reg su_task_meths[] = {
-    {"deinit",     luasofia_su_task_deinit },
     {"copy",       luasofia_su_task_copy },
     {"move",       luasofia_su_task_move },
     {"cmp",        luasofia_su_task_cmp },
