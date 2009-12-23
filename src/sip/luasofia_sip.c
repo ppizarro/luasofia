@@ -43,6 +43,7 @@
 #include "luasofia_sip_content_type_private.h"
 #include "luasofia_sip_content_length_private.h"
 #include "luasofia_sip_accept_private.h"
+#include "luasofia_sip_allow_private.h"
 
 
 static const luaL_Reg sip_lib[] = {
@@ -56,6 +57,7 @@ static const luaL_Reg sip_lib[] = {
     {"get_proxy_content_type",   luasofia_sip_get_proxy_content_type },
     {"get_proxy_content_length", luasofia_sip_get_proxy_content_length },
     {"get_proxy_accept",         luasofia_sip_get_proxy_accept },
+    {"get_proxy_allow",          luasofia_sip_get_proxy_allow },
     {NULL, NULL}
 };
 
@@ -236,6 +238,7 @@ int luaopen_luasofia_sip(lua_State *L)
     luasofia_proxy_register_info_table(L, SIP_CONTENT_TYPE_TABLE_NAME, sip_content_type_info);    
     luasofia_proxy_register_info_table(L, SIP_CONTENT_LENGTH_TABLE_NAME, sip_content_length_info);    
     luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_accept_info);
+    luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_allow_info);
 
     luasofia_const_register_constants(L, sip_constants);
 
