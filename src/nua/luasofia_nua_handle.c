@@ -397,7 +397,6 @@ static const luaL_Reg nua_handle_meths[] = {
     {"authorize",    luasofia_nua_handle_authorize },
     {"method",       luasofia_nua_handle_method },
     {"respond",      luasofia_nua_handle_respond },
-    {"destroy",      luasofia_nua_handle_destroy },
     {"__gc",         luasofia_nua_handle_destroy },
     {NULL, NULL}
 };
