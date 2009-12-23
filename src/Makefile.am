@@ -33,12 +33,10 @@ libluasofia_la_SOURCES = luasofia.c \
 	sip/luasofia_sip_via_private.h \
 	soa/luasofia_soa.c \
 	su/luasofia_su.c \
-	su/luasofia_su_home.h \
 	su/luasofia_su_root.h \
 	su/luasofia_su_tags.h \
 	su/luasofia_su_task.h \
 	su/luasofia_su_timer.h \
-	su/luasofia_su_home.c \
 	su/luasofia_su_root.c \
 	su/luasofia_su_tags.c \
 	su/luasofia_su_task.c \

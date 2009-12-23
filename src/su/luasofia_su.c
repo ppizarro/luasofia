@@ -28,7 +28,6 @@
 #include "luasofia.h"
 #include "utils/luasofia_weak_table.h"
 #include "su/luasofia_su_root.h"
-//#include "luasofia_su_home.h"
 #include "su/luasofia_su_timer.h"
 #include "su/luasofia_su_task.h"
 #include "su/luasofia_su_tags.h"
@@ -51,7 +50,6 @@ static const luaL_Reg su_lib[] = {
     {"init",         luasofia_su_init },
     {"deinit",       luasofia_su_deinit },
     {"root_create",  luasofia_su_root_create },
-//    {"home_new",     luasofia_su_home_new },
     {"timer_create", luasofia_su_timer_create },
     {"task_create",    luasofia_su_task_create },
     {"get_proxy_tags", luasofia_su_tags_get_proxy },
@@ -61,7 +59,6 @@ static const luaL_Reg su_lib[] = {
 int luaopen_luasofia_su(lua_State *L)
 {
     luasofia_su_root_register_meta(L);
-//    luasofia_su_home_register_meta(L);
     luasofia_su_timer_register_meta(L);
     luasofia_su_task_register_meta(L);
     luasofia_su_tags_register_meta(L);
