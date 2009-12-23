@@ -186,7 +186,6 @@ static const luaL_Reg su_timer_meths[] = {
     {"reset",        luasofia_su_timer_reset },
     {"root",         luasofia_su_timer_root },
     {"expire",       luasofia_su_timer_expire },
-    {"destroy",      luasofia_su_timer_destroy },
     {"__gc",         luasofia_su_timer_destroy },
     {NULL, NULL}
 };
