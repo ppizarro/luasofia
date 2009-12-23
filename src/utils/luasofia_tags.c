@@ -85,23 +85,22 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
     if (index < 0)
         index--;
 
-    /* primeira chave */
+    /* first key */
     lua_pushnil(L);
     while(lua_next(L, index) != 0) {
-        /* usa 'key' (no índice -2) e 'value' (no índice -1) */
+        /* 'key' at index -2 and 'value' at index -1 */
         tag_type_t t_tag = NULL;
         tag_value_t return_value;
         char const *s = lua_tostring(L, -1);
 
-        // Procura chave na tabela de tags
-        // e retorna o tag_type_t equivalente
+        /* lookup key in the tag table and push tag_type_t */
         lua_pushvalue(L, -2);
         lua_rawget(L, -4);
         t_tag = lua_touserdata(L, -1);
         lua_pop(L, 1);
 
         if(t_scan(t_tag, home, s, &return_value) < 0) {
-            /* remove 'value'; guarda 'key'  para a próxima iteração */
+            /* remove 'value' and 'key' is used on the next iteration */
             lua_pop(L, 1);
             continue;
         }
@@ -114,7 +113,7 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
             tags = su_realloc(home, tags, sizeof(tagi_t) * maxtags);
         }
 
-        /* remove 'value'; guarda 'key'  para a próxima iteração */
+        /* remove 'value' and 'key' is used on the next iteration */
         lua_pop(L, 1);
     }
     /* remove tag table from stack */
@@ -136,7 +135,7 @@ tag_type_t luasofia_tags_find(lua_State *L)
 
     lua_pushvalue(L, -2);
 
-    // lookup key on the tag table
+    /* lookup key on the tag table */
     lua_rawget(L, -2);
 
     if (!lua_islightuserdata(L, -1))

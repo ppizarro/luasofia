@@ -67,7 +67,7 @@ static int luasofia_su_timer_destroy(lua_State *L)
 {
     luasofia_su_timer_t *ltimer = NULL;
 
-    /* get and check first argument (should be a engine) */
+    /* get and check first argument (should be a timer) */
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
 
     if (ltimer->timer) {
