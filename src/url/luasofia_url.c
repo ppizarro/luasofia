@@ -62,7 +62,6 @@ static const luaL_Reg url_lib[] = {
 static const luasofia_tag_reg_t url_tags[] = {
     { "URLTAG_ANY", urltag_any },
     { "URLTAG_URL", urltag_url },
-    { "URLTAG_URL_REF", urltag_url_ref },
     { NULL, NULL}
 };
 
