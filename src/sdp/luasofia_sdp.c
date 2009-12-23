@@ -64,6 +64,8 @@ static const luaL_Reg sdp_lib[] = {
 };
 
 static const luasofia_tag_reg_t sdp_tags[] = {
+    {"SDPTAG_ANY", sdptag_any },
+    {"SDPTAG_SESSION", sdptag_session },
     { NULL, NULL}
 };
 
