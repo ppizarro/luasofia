@@ -1,2 +1,49 @@
+=============================================================
+README / LuaSofia is a Lua binding of Sofia-Sip library
+=============================================================
+
+Introduction
+------------
+
 LuaSofia is a Lua binding of Sofia-Sip library.
-Sofia-SIP is an open-source SIP User-Agent library, compliant with the IETF RFC3261 specification.
+Sofia-SIP is an open-source SIP User-Agent library, compliant
+with the IETF RFC3261 specification. It can be used as
+a building block for SIP client software for uses such as VoIP,
+IM, and many other real-time and person-to-person communication
+services. The primary target platform for LuaSofia is
+GNU/Linux. LuaSofia is licensed under the LGPL.
+
+
+Quick start
+-----------
+
+LuaSofia uses the GNU autotools, so building procedure
+is the usual:
+
+sh> sh autogen.sh (if building from git)
+sh> ./configure
+sh> make
+sh> make install
+
+
+References
+----------
+
+Project website:
+- http://wiki.github.com/ppizarro/luasofia
+- http://luasofia.sourceforge.net/
+
+Mailing list:
+- luasofia-devel@lists.sourceforge.net
+- http://sourceforge.net/mailarchive/forum.php?forum_name=luasofia-devel
+
+Version control repositories:
+- http://github.com/ppizarro/luasofia
+
+
+Licensing
+---------
+
+LuaSofia is licensed under terms of the GNU LGPL.
+See the file "COPYING" for more information.
+                                                                 
