@@ -98,27 +98,12 @@ static int luasofia_su_task_root(lua_State *L)
     return 0;
 }
 
-static int luasofia_su_task_wakeup(lua_State *L)
-{
-    luasofia_su_task_t *ltask = NULL;
-    int ret = -1;
-   
-    /* get and check first argument (should be a engine) */
-    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
-
-    //ret = su_task_wakeup(ltask->task);
-    /* FIXME 1.12.10 does not have su_task_wakeup */
-    lua_pushinteger(L, ret);
-    return 1;
-}
-
 static const luaL_Reg su_task_meths[] = {
     {"copy",       luasofia_su_task_copy },
     {"move",       luasofia_su_task_move },
     {"cmp",        luasofia_su_task_cmp },
     {"is_running", luasofia_su_task_is_running },
     {"root",       luasofia_su_task_root },
-    {"wakeup",     luasofia_su_task_wakeup },
     {"__gc",       luasofia_su_task_destroy },
     {NULL, NULL}
 };
