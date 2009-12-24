@@ -54,6 +54,5 @@ libluasofia_la_SOURCES = luasofia.c \
 	utils/luasofia_weak_table.h
 
 install-exec-hook:
-	rm @LUA_CMODULE@/luasofia.so
 	ln -s -f @libdir@/libluasofia.so @LUA_CMODULE@/luasofia.so
 
