@@ -31,6 +31,11 @@ libluasofia_la_SOURCES = luasofia.c \
 	sip/luasofia_sip_event_private.h \
 	sip/luasofia_sip_request_private.h \
 	sip/luasofia_sip_via_private.h \
+	sip/luasofia_sip_accept_private.h \
+	sip/luasofia_sip_allow_private.h \
+	sip/luasofia_sip_call_id_private.h \
+	sip/luasofia_sip_content_length_private.h \
+	sip/luasofia_sip_content_type_private.h \
 	soa/luasofia_soa.c \
 	su/luasofia_su.c \
 	su/luasofia_su_root.h \
