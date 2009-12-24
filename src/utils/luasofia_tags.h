@@ -31,12 +31,33 @@ typedef struct luasofia_tag_reg_s {
   tag_type_t t_tag;
 } luasofia_tag_reg_t;
 
+/** 
+    Create the Luasofia Tags table, must be called ONLY once, it is already called by Luasofia main module, never use this.
+    @param L - The Lua state.
+*/
 void luasofia_tags_create(lua_State *L);
 
+/** 
+    Register an array of tags on Luasofia Tags table.
+    @param L     - The Lua state.
+    @param tags  - NULL terminated array of tags to be registered on Luasofia Tags table.
+*/
 void luasofia_tags_register_tags(lua_State *L, const luasofia_tag_reg_t *tags);
 
+/** 
+    Converts a Luasofia Tags table to a Sofia-SIP tag list.
+    @param L      - The Lua state.
+    @param index  - The position of the Tags table on the stack.
+    @param home   - Sofia su_home_t.
+    @return         The Sofia-SIP tag list, or an error if something goes wrong.
+*/
 tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home);
 
+/** 
+    Given a tag (on the top of the stack) gets it type, if the tag is found on the Tags table.
+    @param   L - Lua state.
+    @return      The type of the given tag or an error if it unable to find it on the Tags table.
+*/
 tag_type_t luasofia_tags_find(lua_State *L);
 
 #endif //__LUASOFIA_TAGS

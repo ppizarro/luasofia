@@ -40,6 +40,9 @@ static int tag_table_ref = LUA_REFNIL;
 
 void luasofia_tags_create(lua_State *L)
 {
+    if(tag_table_ref != LUA_REFNIL)
+        return;
+
     /* create userdata table */
     lua_newtable(L);
    

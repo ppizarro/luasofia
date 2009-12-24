@@ -77,6 +77,9 @@ void luasofia_weak_table_set(lua_State *L, void* key)
 
 void luasofia_weak_table_create(lua_State *L)
 {
+    if(weak_table_ref != LUA_REFNIL)
+        return;
+
     /* create userdata table */
     lua_newtable(L);
    

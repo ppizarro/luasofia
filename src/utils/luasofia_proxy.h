@@ -31,12 +31,12 @@
 
 typedef int (*struct_func) (lua_State *L, void *v);
 
-/* member info for get handlers */
+/** member info for get handlers */
 typedef struct luasofia_proxy_info_s {
-    const char *name;     /* member name */
-    struct_func get_func; /* get function for type of member */
-    size_t offset;        /* offset of member within struct */
-    int lenght;           /* fixed array size. Example: int point[2]  */
+    const char *name;     /** member name */
+    struct_func get_func; /** get function for type of member */
+    size_t offset;        /** offset of member within struct */
+    int lenght;           /** fixed array size. Example: int point[2]  */
 } luasofia_proxy_info_t;
 
 /**

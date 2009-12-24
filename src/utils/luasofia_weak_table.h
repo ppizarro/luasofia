@@ -24,12 +24,37 @@
 #ifndef __LUASOFIA_WEAK_TABLE_H__
 #define __LUASOFIA_WEAK_TABLE_H__
 
+/**
+    @brief This module was created to build tables that hold weak references of its values.
+           It is usually used to hold userdata that will have to be used on a callback, its a way
+           to put the userdata back on the stack using the lighuserdata as key, and not messing up with the Lua GC.
+*/
+
+/**
+    Create the Luasofia weak table, must be called ONLY once, it is already called by Luasofia main module, never use this
+    @param L - The Lua State. 
+*/
 void luasofia_weak_table_create(lua_State *L);
 
+/**
+    Given an userdata at the top of the lua stack, inserts it on the weaktable, weaktable[key] = userdata. 
+    @param L   - The Lua State. 
+    @param key - The key that will map to the userdata.
+*/
 void luasofia_weak_table_set(lua_State *L, void* key);
 
+/**
+    If there is a entry weaktable[key] it will put the userdata mapped by key on the top of the stack.
+    @param L   - The Lua State. 
+    @param key - The key that maps to the userdata.
+*/
 void luasofia_weak_table_get(lua_State *L, void* key);
 
+/**
+    Removes the entry key from the weaktable.
+    @param L   - The Lua State. 
+    @param key - The key to remove from the table.
+*/
 void luasofia_weak_table_remove(lua_State *L, void* key);
 
 #endif //__LUASOFIA_WEAK_TABLE

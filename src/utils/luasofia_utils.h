@@ -23,7 +23,11 @@
 
 #ifndef __LUASOFIA_UTILS_H__
 #define __LUASOFIA_UTILS_H__
- 
+
+/**
+    Prints all the content of the stack, usefull for debugging.
+    @param L - The lua_State that holds the stack.
+*/ 
 void stack_dump(lua_State *L);
  
 #endif //__LUASOFIA_UTILS
