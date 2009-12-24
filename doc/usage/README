@@ -1,0 +1,9 @@
+This is the documentation of how to use Luasofia, 
+it is updated every time a release is made.
+
+To see how to develop new features to Luasofia take a look
+at the utils module, and to the devel documentation. 
+
+for up-to-date documentation see: http://wiki.github.com/ppizarro/luasofia
+
+The documentation is made using textile, see http://textile.thresholdstate.com/
