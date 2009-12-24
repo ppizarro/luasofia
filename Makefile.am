@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = doc
+EXTRA_DIST = doc test
 
 SUBDIRS = src
 
