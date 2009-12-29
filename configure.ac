@@ -18,12 +18,19 @@ AC_PROG_LIBTOOL
 AC_PROG_INSTALL
 PKG_PROG_PKG_CONFIG
 
-# lib: sofia-sip
+# lib: sofia-sip-ua
 # ----------------------------------------------------------------------------
 PKG_CHECK_MODULES(SOFIA_SIP_UA, sofia-sip-ua >= 1.12.10)
 AC_SUBST(SOFIA_SIP_UA_LIBS)
 AC_SUBST(SOFIA_SIP_UA_CFLAGS)
 AC_SUBST(SOFIA_SIP_UA_VERSION)
+
+# lib: sofia-sip-ua-glib
+# ----------------------------------------------------------------------------
+PKG_CHECK_MODULES(SOFIA_SIP_UA_GLIB, sofia-sip-ua-glib >= 1.12.10)
+AC_SUBST(SOFIA_SIP_UA_GLIB_LIBS)
+AC_SUBST(SOFIA_SIP_UA_GLIB_CFLAGS)
+AC_SUBST(SOFIA_SIP_UA_GLIB_VERSION)
 
 # lib: lua
 # ----------------------------------------------------------------------------

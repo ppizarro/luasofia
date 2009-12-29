@@ -129,6 +129,11 @@ static int luasofia_su_root_task(lua_State *L)
     return 1;
 }
 
+static int luasofia_su_root_gsource(lua_State *L)
+{
+    return 0;
+}
+
 static const luaL_Reg su_root_meths[] = {
     {"register", luasofia_su_root_register },
     {"deregister", luasofia_su_root_deregister },
@@ -139,19 +144,20 @@ static const luaL_Reg su_root_meths[] = {
     {"get_max_defer", luasofia_su_root_get_max_defer },
     {"set_max_defer", luasofia_su_root_set_max_defer },
     {"task", luasofia_su_root_task },
+    {"gsource", luasofia_su_root_gsource },
     {"__gc", luasofia_su_root_destroy },
     {NULL, NULL}
 };
 
 int luasofia_su_root_register_meta(lua_State *L)
 {
-    luaL_newmetatable(L, SU_ROOT_MTABLE);
-    /* metatable.__index = metatable */
-    lua_pushvalue(L, -1);
-    lua_setfield(L, -2, "__index");
-    luaL_register(L, NULL, su_root_meths);
-    lua_pop(L, 1);
-
+    if (luaL_newmetatable(L, SU_ROOT_MTABLE) != 0) {
+        /* metatable.__index = metatable */
+        lua_pushvalue(L, -1);
+        lua_setfield(L, -2, "__index");
+        luaL_register(L, NULL, su_root_meths);
+        lua_pop(L, 1);
+    }
     return 0;
 }
 
