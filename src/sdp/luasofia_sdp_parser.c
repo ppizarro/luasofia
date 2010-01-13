@@ -1,6 +1,4 @@
 /*
- * Copyright (C) 2009 Digitro Corporation <www.digitro.com.br>
- *
  * @author Paulo Pizarro  <paulo.pizarro@gmail.com>
  * @author Tiago Katcipis <tiagokatcipis@gmail.com>
  *

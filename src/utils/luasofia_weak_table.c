@@ -1,7 +1,5 @@
 /* vim: set ts=8 et sw=4 sta ai cin: */
 /*
- * Copyright (C) 2009 Digitro Corporation <www.digitro.com.br>
- *
  * @author Paulo Pizarro  <paulo.pizarro@gmail.com>
  * @author Tiago Katcipis <tiagokatcipis@gmail.com>
  *
