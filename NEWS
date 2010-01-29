@@ -1,1 +1,7 @@
-DUMMY
+=============
+Version 0.1.0
+=============
+NTA module
+        * registered NTA tags
+NuaHandle
+        * Add destroy method
