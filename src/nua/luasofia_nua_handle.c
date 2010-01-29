@@ -34,14 +34,14 @@ typedef struct luasofia_nua_handle_s {
 
 static int luasofia_nua_handle_invite(lua_State *L)
 {
-    tagi_t *tags = NULL;
-    su_home_t *home = su_home_create();
     /* get and check first argument (should be a luasofia_nua_handle_t) */
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-
-    tags = luasofia_tags_table_to_taglist(L, 2, home);
-    nua_invite(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+        nua_invite(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
@@ -62,304 +62,349 @@ static int luasofia_nua_handle_destroy(lua_State *L)
 static int luasofia_nua_handle_register(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_register(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_register(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_unregister(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_unregister(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_unregister(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_ack(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_ack(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_ack(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_prack(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_prack(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_prack(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_options(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_options(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_options(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_publish(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_publish(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_publish(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_unpublish(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_unpublish(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_unpublish(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_message(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_message(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_message(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_chat(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_chat(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_chat(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_info(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_info(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_info(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_subscribe(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_subscribe(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_subscribe(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_unsubscribe(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_unsubscribe(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_unsubscribe(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_notify(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_notify(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_notify(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_notifier(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_notifier(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_notifier(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_terminate(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_terminate(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_terminate(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_refer(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_refer(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_refer(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_update(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_update(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_update(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_bye(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_bye(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_bye(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_cancel(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_cancel(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_cancel(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_authenticate(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_authenticate(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_authenticate(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_authorize(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_authorize(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_authorize(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
 static int luasofia_nua_handle_method(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-    nua_method(lnh->nh, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_method(lnh->nh, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
-
 
 static int luasofia_nua_handle_respond(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    su_home_t *home = su_home_create();
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-    /* get and check second argument (should be a int) */
-    int status = luaL_checkinteger(L, 2);
-    /* get and check third argument (should be a string) */
-    char const* phrase = luaL_checkstring (L, 3);
-    /* get and check fourth argument (should be a tag table) */
-    tagi_t *tags = luasofia_tags_table_to_taglist(L, 4, home);
+    if (lnh->nh) {
+        su_home_t *home = su_home_create();
+        /* get and check second argument (should be a int) */
+        int status = luaL_checkinteger(L, 2);
+        /* get and check third argument (should be a string) */
+        char const* phrase = luaL_checkstring (L, 3);
+        /* get and check fourth argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 4, home);
 
-    nua_respond(lnh->nh, status, phrase, TAG_NEXT(tags));
-    su_home_unref(home);
+        nua_respond(lnh->nh, status, phrase, TAG_NEXT(tags));
+        su_home_unref(home);
+    }
     return 0;
 }
 
@@ -395,6 +440,7 @@ static const luaL_Reg nua_handle_meths[] = {
     {"authorize",    luasofia_nua_handle_authorize },
     {"method",       luasofia_nua_handle_method },
     {"respond",      luasofia_nua_handle_respond },
+    {"destroy",      luasofia_nua_handle_destroy },
     {"__gc",         luasofia_nua_handle_destroy },
     {NULL, NULL}
 };
@@ -426,10 +472,8 @@ int luasofia_nua_handle_create(lua_State *L, nua_t *nua)
 {
     luasofia_nua_handle_t *lnh = NULL;
     nua_handle_t *nh = NULL;
-    tagi_t *tags = NULL;
     su_home_t *home = su_home_create();
-
-    tags = luasofia_tags_table_to_taglist(L, 2, home);
+    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
     /* create a nua_handle object */
     lnh = (luasofia_nua_handle_t*)lua_newuserdata(L, sizeof(luasofia_nua_handle_t));

@@ -1,3 +1,9 @@
+
+2010-01-29  Paulo Pizarro  <paulo.pizarro@gmail.com>
+
+        * Create NTA module and registered NTA tags.
+	* Add destroy method to NuaHandle class.
+
 2009-12-29  Paulo Pizarro  <paulo.pizarro@gmail.com>, Tiago Katcipis <tiagokatcipis@gmail.com>
 
         * Glib module added (bind to su_glib.h functions).

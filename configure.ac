@@ -1,11 +1,24 @@
 ## Process this file with autoconf to produce a configure script.
-AC_INIT([Luasofia], [0.1], [luasofia-devel@lists.sourceforge.net])
+AC_INIT([LuaSofia], [0.1.1], [luasofia-devel@lists.sourceforge.net], luasofia)
 
 AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_AUX_DIR(build-aux)
 
 AM_INIT_AUTOMAKE
+
+LT_INIT([disable-static])
+
+# Before making a release, the LT_VERSION string should be modified.
+# The string is of the form C:R:A.
+# - If interfaces have been changed or added, but binary compatibility has
+#   been preserved, change to C+1:0:A+1
+# - If binary compatibility has been broken (eg removed or changed interfaces)
+#   change to C+1:0:0
+# - If the interface is the same as the previous version, change to C:R+1:A
+
+LT_VERSION=1:0:1
+AC_SUBST(LT_VERSION)
 
 AC_CONFIG_SRCDIR([src/luasofia.c])
 
