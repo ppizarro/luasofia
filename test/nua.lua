@@ -25,6 +25,7 @@ sip = require "luasofia.sip"
 soa = require "luasofia.soa"
 url = require "luasofia.url"
 sdp = require "luasofia.sdp"
+tport = require "luasofia.tport"
 
 function make_call(ua, uri, from, to)
     print("make_call: uri["..uri.."] from["..from.."] to["..to.."]")

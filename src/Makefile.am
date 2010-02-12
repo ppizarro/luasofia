@@ -37,6 +37,7 @@ libluasofia_la_SOURCES = luasofia.c \
 	sip/luasofia_sip_content_length_private.h \
 	sip/luasofia_sip_content_type_private.h \
 	soa/luasofia_soa.c \
+	tport/luasofia_tport.c \
 	su/luasofia_su.c \
 	su/luasofia_su.h \
 	su/luasofia_su_root.h \
