@@ -50,6 +50,8 @@ libluasofia_la_SOURCES = luasofia.c \
 	su/luasofia_su_timer.c \
 	url/luasofia_url.c \
 	nta/luasofia_nta.c \
+	nta/luasofia_nta_agent.c\
+	nta/luasofia_nta_agent.h\
 	utils/luasofia_const.c \
 	utils/luasofia_const.h \
 	utils/luasofia_proxy.c \
