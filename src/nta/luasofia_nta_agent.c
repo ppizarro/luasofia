@@ -22,7 +22,7 @@
 #include "utils/luasofia_weak_table.h"
 
 static const luaL_Reg nta_agent_meths[] = {
-    //{"TODO", func},
+    //TODO Release the lua callback function reference {"__gc__", gc_func},
     {NULL, NULL}
 };
 
