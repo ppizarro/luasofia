@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libluasofia.la libluasofia_glib.la
 
-libluasofia_la_CFLAGS = -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
+libluasofia_la_CFLAGS = -Werror -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
 
 libluasofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) $(LUA_LIBS) -version-info @LT_VERSION@
 

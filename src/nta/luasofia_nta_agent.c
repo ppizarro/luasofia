@@ -21,31 +21,10 @@
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_weak_table.h"
 
-typedef struct luasofia_nta_agent_s {
-    nta_agent_t *agent;
-    lua_State *L;
-} luasofia_nta_agent_t;
-
-
 static const luaL_Reg nta_agent_meths[] = {
     //{"TODO", func},
     {NULL, NULL}
 };
-
-int luasofia_nta_agent_create(lua_State *L, nta_agent_t *nta_agent)
-{
-    luasofia_nta_agent_t* agent = (luasofia_nta_agent_t *) lua_newuserdata(L, sizeof(luasofia_nta_agent_t));
-
-    /* set Lua state */
-    agent->L = L;
-    agent->agent = nta_agent;
-
-    /* set its metatable */
-    luaL_getmetatable(L, NTA_AGENT_MTABLE);
-    lua_setmetatable(L, -2);
-
-    return 1;
-}
 
 int luasofia_nta_agent_register_meta(lua_State* L)
 {

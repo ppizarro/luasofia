@@ -29,8 +29,12 @@
 
 #define NTA_AGENT_MTABLE "luasofia_nta_agent_t"
 
-int luasofia_nta_agent_register_meta(lua_State* L);
+typedef struct luasofia_nta_agent_s {
+    nta_agent_t * agent;
+    int callback_ref;
+    lua_State *L;
+} luasofia_nta_agent_t;
 
-int luasofia_nta_agent_create(lua_State *L, nta_agent_t *nta_agent);
+int luasofia_nta_agent_register_meta(lua_State* L);
 
 #endif /* __LUASOFIA_NTA_AGENT_H__ */

@@ -24,14 +24,93 @@
 #include <lualib.h>
 
 #include "luasofia.h"
+#include "utils/luasofia_weak_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
 #include "nta/luasofia_nta_agent.h"
+#include "su/luasofia_su_root.h"
 
 #include <sofia-sip/nta.h>
 #include <sofia-sip/nta_tag.h>
 
+int nta_agent_message_callback(nta_agent_magic_t *context,
+                               nta_agent_t *agent,
+                               msg_t *msg,
+                               sip_t *sip)
+{
+    luasofia_nta_agent_t* u_nta_agent = (luasofia_nta_agent_t*) context;
+    lua_State *L = u_nta_agent->L;
+
+    /* put nta_agent userdatum at stack and check if it is ok. */
+    luasofia_weak_table_get(L, agent);
+    luaL_checkudata(L, -1, NTA_AGENT_MTABLE);
+
+    /* put callback function at stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, u_nta_agent->callback_ref);
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+        return -1; //error, lets not return 0 (should always return 0).
+    }
+
+    // Lets pass the nta_agent userdata as the first parameter of the callback.
+    lua_pushvalue(L, -2);
+    lua_pushlightuserdata(L, msg);
+    lua_pushlightuserdata(L, sip);
+    
+    lua_call(L,3,0);
+    lua_pop(L, 1);
+    return 0;
+}
+
+static int luasofia_nta_agent_create(lua_State * L)
+{
+    luasofia_su_root_t *lroot = NULL;
+    url_string_t * name = NULL;    
+    luasofia_nta_agent_t* u_nta_agent = NULL;
+    su_home_t *home = su_home_create();
+    tagi_t *tags = NULL;
+
+    /* get and check first argument (should be a root_t) */
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+
+    if(lua_isuserdata (L, 2)){
+        //Since there is no metatable for url_t or url_string_t we cant perform a checkudata here.
+        name = (url_string_t *) lua_touserdata (L, 2);
+    }else{
+        name = URL_STRING_MAKE(luaL_checkstring (L, 2));
+    }
+
+    /* check the callback function */
+    if(!lua_isfunction(L, 3))
+        luaL_error(L, "nta_agent_create failed!, expected a callback function !");
+
+    /* check if there is tags */
+    tags = luasofia_tags_table_to_taglist(L, 4, home);
+
+    u_nta_agent           = (luasofia_nta_agent_t *) lua_newuserdata(L, sizeof(luasofia_nta_agent_t));
+    u_nta_agent->L        = L;
+    u_nta_agent->agent    = nta_agent_create (lroot->root, (url_string_t const *) name, nta_agent_message_callback, (nta_agent_magic_t *) u_nta_agent, TAG_NEXT(tags));
+
+    // lets hold the ref to the lua callback function.
+    lua_pushvalue(L, 3);
+    u_nta_agent->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+
+    if (!u_nta_agent->agent)
+        luaL_error(L, "nta_agent_create failed!");
+
+    /* set its metatable */
+    luaL_getmetatable(L, NTA_AGENT_MTABLE);
+    lua_setmetatable(L, -2);
+
+    /* store nta_agent at luasofia weak table */
+    luasofia_weak_table_set(L, u_nta_agent->agent);
+
+    su_home_unref(home);
+    return 1;
+}
+
 static const luaL_Reg nta_lib[] = {
+    {"agent_create", luasofia_nta_agent_create},
     {NULL, NULL}
 };
 
