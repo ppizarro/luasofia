@@ -101,9 +101,10 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
         lua_pop(L, 1);
 
         if(t_scan(t_tag, home, s, &return_value) < 0) {
-            /* remove 'value' and 'key' is used on the next iteration */
-            lua_pop(L, 1);
-            continue;
+            /* remove value, key and the tag_table from the stack */ 
+            lua_pop(L, 3);
+            su_free(home, tags);
+            luaL_error(L, "luasofia_tags_table_to_taglist failed !, failed getting tag[%s]", s);
         }
 
         tags[i].t_tag = t_tag;
