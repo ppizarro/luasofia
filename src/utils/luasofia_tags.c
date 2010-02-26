@@ -56,7 +56,7 @@ void luasofia_tags_register_tags(lua_State *L, const luasofia_tag_reg_t *tags)
     /* put the tag table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
     if (lua_isnil(L, -1))
-        luaL_error(L, "Failed to get tag table!");
+        luaL_error(L, "luasofia_tags_register_tags: Failed to get tag table !, Probably luasofia_tags_create has not been called yet or something went terribly wrong");
 
     for (; tags->tag_name; tags++) {
         lua_pushstring(L, tags->tag_name);

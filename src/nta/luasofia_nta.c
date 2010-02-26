@@ -137,10 +137,10 @@ static const luasofia_reg_const_t nta_constants[] = {
 
 int luaopen_luasofia_nta(lua_State *L)
 {
+    luaopen_luasofia(L);
+
     luasofia_tags_register_tags(L, nta_tags);
     luasofia_nta_agent_register_meta(L);
-
-    luaopen_luasofia(L);
 
     /* luasofia[nta] = table */
     lua_newtable(L);

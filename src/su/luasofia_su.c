@@ -56,12 +56,12 @@ static const luaL_Reg su_lib[] = {
 
 int luaopen_luasofia_su(lua_State *L)
 {
+    luaopen_luasofia(L);
+
     luasofia_su_root_register_meta(L);
     luasofia_su_timer_register_meta(L);
     luasofia_su_task_register_meta(L);
     luasofia_su_tags_register_meta(L);
-
-    luaopen_luasofia(L);
 
     /* luasofia[su] = table */
     lua_newtable(L);

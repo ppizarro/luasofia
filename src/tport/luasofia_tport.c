@@ -89,6 +89,8 @@ static const luasofia_reg_const_t tport_constants[] = {
 
 int luaopen_luasofia_tport(lua_State *L)
 {
+    luaopen_luasofia(L);
+
     luaL_newmetatable(L, TPORT_MTABLE);
     /* metatable.__index = metatable */
     lua_pushvalue(L, -1);
@@ -97,8 +99,6 @@ int luaopen_luasofia_tport(lua_State *L)
     lua_pop(L, 1);
 
     luasofia_tags_register_tags(L, lua_tport_tags);
-
-    luaopen_luasofia(L);
 
     /* luasofia[tport] = table */
     lua_newtable(L);
