@@ -24,13 +24,16 @@
 #include <lualib.h>
 
 #include "luasofia.h"
+#include "utils/luasofia_weak_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
+#include "nta/luasofia_nta_agent.h"
 
-#include <sofia-sip/nta.h>
 #include <sofia-sip/nta_tag.h>
 
+
 static const luaL_Reg nta_lib[] = {
+    {"agent_create", luasofia_nta_agent_create},
     {NULL, NULL}
 };
 
@@ -134,9 +137,10 @@ static const luasofia_reg_const_t nta_constants[] = {
 
 int luaopen_luasofia_nta(lua_State *L)
 {
-    luasofia_tags_register_tags(L, nta_tags);
-
     luaopen_luasofia(L);
+
+    luasofia_tags_register_tags(L, nta_tags);
+    luasofia_nta_agent_register_meta(L);
 
     /* luasofia[nta] = table */
     lua_newtable(L);

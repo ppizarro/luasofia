@@ -56,7 +56,7 @@ void luasofia_tags_register_tags(lua_State *L, const luasofia_tag_reg_t *tags)
     /* put the tag table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
     if (lua_isnil(L, -1))
-        luaL_error(L, "Failed to get tag table!");
+        luaL_error(L, "luasofia_tags_register_tags: Failed to get tag table !, Probably luasofia_tags_create has not been called yet or something went terribly wrong");
 
     for (; tags->tag_name; tags++) {
         lua_pushstring(L, tags->tag_name);
@@ -101,9 +101,10 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
         lua_pop(L, 1);
 
         if(t_scan(t_tag, home, s, &return_value) < 0) {
-            /* remove 'value' and 'key' is used on the next iteration */
-            lua_pop(L, 1);
-            continue;
+            /* remove value, key and the tag_table from the stack */ 
+            lua_pop(L, 3);
+            su_free(home, tags);
+            luaL_error(L, "luasofia_tags_table_to_taglist failed !, failed getting tag[%s]", s);
         }
 
         tags[i].t_tag = t_tag;
