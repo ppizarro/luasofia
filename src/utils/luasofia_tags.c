@@ -101,11 +101,17 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
         lua_pop(L, 1);
 
         if(t_scan(t_tag, home, s, &return_value) < 0) {
-            /* remove value, key and the tag_table from the stack */ 
-            char const *tag = lua_tostring(L, -2);
+            /* since we have to pop the string out we cant guarantee that it will be there */ 
+            size_t len = 0;
+            char *tag = (char*) lua_tolstring(L, -2, &len);
+            char tag_copy[len + 1];  
+            memcpy (tag_copy, tag, len);
+            tag_copy[len] = '\0';
+
+            /* remove value, key and the tag_table from the stack */
             lua_pop(L, 3);
             su_free(home, tags);
-            luaL_error(L, "luasofia_tags_table_to_taglist failed !, failed getting tag[%s]", tag);
+            luaL_error(L, "luasofia_tags_table_to_taglist failed !, failed getting tag[%s]", tag_copy);
         }
 
         tags[i].t_tag = t_tag;
