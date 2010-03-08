@@ -1,7 +1,22 @@
+
+=============
+Version 0.1.2
+=============
+luasofia Core
+	* If a tag does not exist we get an error.
+        * Fixing wrong order when calling luasofia_open.
+
+TPORT module
+	* registered TPORT tags
+
+NTA module
+        * Create NtaAgent class
+
 =============
 Version 0.1.1
 =============
 NTA module
         * registered NTA tags
+
 NuaHandle
         * Add destroy method

@@ -1,4 +1,15 @@
 
+2010-03-08  Paulo Pizarro  <paulo.pizarro@gmail.com>
+	* configure.in: Version 0.1.2
+	* Fixing the error msg when no tag is found.
+
+2010-02-26  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* If a tag does not exist we get an error.
+	* Fixing wrong order when calling luasofia_open.
+
+2010-02-26  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* Create NtaAgent class.
+
 2010-02-12  Paulo Pizarro  <paulo.pizarro@gmail.com>
 	* configure.in: Version 0.1.2devel
 	* Create TPORT module and registered TPORT tags 
