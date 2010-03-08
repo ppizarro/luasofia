@@ -80,8 +80,10 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
 
     /* put the tag table at the stack */
     lua_rawgeti(L, LUA_REGISTRYINDEX, tag_table_ref);
-    if (lua_isnil(L, -1))
+    if (lua_isnil(L, -1)) {
+        su_free(home, tags);
         luaL_error(L, "Failed to get tag table!");
+    }
 
     if (index < 0)
         index--;
@@ -101,17 +103,8 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
         lua_pop(L, 1);
 
         if(t_scan(t_tag, home, s, &return_value) < 0) {
-            /* since we have to pop the string out we cant guarantee that it will be there */ 
-            size_t len = 0;
-            char *tag = (char*) lua_tolstring(L, -2, &len);
-            char tag_copy[len + 1];  
-            memcpy (tag_copy, tag, len);
-            tag_copy[len] = '\0';
-
-            /* remove value, key and the tag_table from the stack */
-            lua_pop(L, 3);
             su_free(home, tags);
-            luaL_error(L, "luasofia_tags_table_to_taglist failed !, failed getting tag[%s]", tag_copy);
+            luaL_error(L, "Tag '%s' doesn't exist!", lua_tostring(L, -2));
         }
 
         tags[i].t_tag = t_tag;
