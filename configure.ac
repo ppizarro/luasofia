@@ -47,8 +47,8 @@ AC_SUBST(SOFIA_SIP_UA_GLIB_VERSION)
 
 # lib: lua
 # ----------------------------------------------------------------------------
-LUA_PKG_NAME=`$PKG_CONFIG --list-all | grep -i lua | cut -d " " -f 1`
-PKG_CHECK_MODULES(LUA, $LUA_PKG_NAME >= 5.1, [LUA_CMODULE=`$PKG_CONFIG $LUA_PKG_NAME --variable=INSTALL_CMOD`])
+PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1, [LUA_CMODULE=`$PKG_CONFIG $LUA_PKG_NAME --variable=INSTALL_CMOD`],
+[PKG_CHECK_MODULES(LUA, lua >= 5.1, [LUA_CMODULE=`$PKG_CONFIG $LUA_PKG_NAME --variable=INSTALL_CMOD`])])
 AC_SUBST(LUA_LIBS)
 AC_SUBST(LUA_CFLAGS)
 AC_SUBST(LUA_CMODULE)
