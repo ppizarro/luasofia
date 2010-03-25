@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = libluasofia.la libluasofia_glib.la
 
-libluasofia_la_CFLAGS = -Werror -Wall -I@includedir@ $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS)
+libluasofia_la_CFLAGS = -Werror -Wall $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS) -I@includedir@
 
 libluasofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) $(LUA_LIBS) -version-info @LT_VERSION@
 
@@ -64,7 +64,7 @@ libluasofia_la_SOURCES = luasofia.c \
 	utils/luasofia_weak_table.h
 
 
-libluasofia_glib_la_CFLAGS = -Wall -I@includedir@ $(SOFIA_SIP_UA_GLIB_CFLAGS) $(LUA_CFLAGS)
+libluasofia_glib_la_CFLAGS = -Wall $(SOFIA_SIP_UA_GLIB_CFLAGS) $(LUA_CFLAGS) -I@includedir@
 
 libluasofia_glib_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_GLIB_LIBS) $(LUA_LIBS) -version-info @LT_VERSION@
 
@@ -76,5 +76,6 @@ libluasofia_glib_la_SOURCES = su-glib/luasofia_su_glib.c \
 
 
 install-exec-hook:
+	mkdir -p @LUA_CMODULE@
 	ln -s -f @libdir@/libluasofia.so @LUA_CMODULE@/luasofia.so
 	ln -s -f @libdir@/libluasofia_glib.so @LUA_CMODULE@/luasofia-glib.so

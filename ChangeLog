@@ -1,4 +1,9 @@
 
+2010-03-25  Paulo Pizarro  <paulo.pizarro@gmail.com>
+	* configure.in: Version 0.1.3devel
+	* Check if installed lua5.1 package or lua package.
+	* Change Makefile to fix errors on include paths and install path.
+
 2010-03-08  Paulo Pizarro  <paulo.pizarro@gmail.com>
 	* configure.in: Version 0.1.2
 	* Fixing the error msg when no tag is found.
