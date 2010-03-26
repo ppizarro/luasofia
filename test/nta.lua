@@ -18,6 +18,23 @@
 -- along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------
 
-nta = require "luasofia.nta"
+local nta = require "luasofia.nta"
+local su = require "luasofia.su"
 
---TODO
+su.init()
+root = su.root_create()
+
+local function nta_callback(nta, msg, sip)
+    print("callback call !")
+end
+
+local nta_a = nta.agent_create(root, "sip:*:5060;transport=udp", nta_callback)
+local nta_b = nta.agent_create(root, "sip:*:5061;transport=udp", nta_callback)
+
+if(nta_a and nta_b) then
+    print("NTA agent created successfully !!")
+else
+    print("ERROR CREATING NTA Agent !!")
+end
+
+--TODO, test more :-)
