@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libluasofia.la libluasofia_glib.la
+lib_LTLIBRARIES = libluasofia.la libluasofia-glib.la
 
 libluasofia_la_CFLAGS = -Werror -Wall $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS) -I@includedir@
 
@@ -78,4 +78,4 @@ libluasofia_glib_la_SOURCES = su-glib/luasofia_su_glib.c \
 install-exec-hook:
 	mkdir -p @LUA_CMODULE@
 	ln -s -f @libdir@/libluasofia.so @LUA_CMODULE@/luasofia.so
-	ln -s -f @libdir@/libluasofia_glib.so @LUA_CMODULE@/luasofia-glib.so
+	ln -s -f @libdir@/libluasofia-glib.so @LUA_CMODULE@/luasofia-glib.so

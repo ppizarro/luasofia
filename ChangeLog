@@ -1,4 +1,7 @@
 
+2010-03-30  Paulo Pizarro  <paulo.pizarro@gmail.com>
+	* Change Makefile.am to create luasofia-glib.so.
+
 2010-03-25  Paulo Pizarro  <paulo.pizarro@gmail.com>
 	* configure.in: Version 0.1.3devel
 	* Check if installed lua5.1 package or lua package.
