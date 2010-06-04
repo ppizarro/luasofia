@@ -139,11 +139,16 @@ static void nua_event_callback(nua_event_t event,
             /* create a new nua_handle userdatum */
             lua_pop(L, 1);
             luasofia_nua_handle_create_userdata(L, nh);
+            lua_pushnil(L);
         } else {
             /* check if it is a nua_handle */
             luaL_checkudata(L, -1, NUA_HANDLE_MTABLE);
+            
+            /* put env table at stack */
+            lua_getfenv(L, -1);
         }
     } else {
+        lua_pushnil(L);
         lua_pushnil(L);
     }
 
@@ -151,7 +156,7 @@ static void nua_event_callback(nua_event_t event,
 
     tags ? lua_pushlightuserdata(L, (void*)tags) : lua_pushnil(L);
 
-    lua_call(L, 7, 0);
+    lua_call(L, 8, 0);
     lua_pop(L, 2);
 }
 

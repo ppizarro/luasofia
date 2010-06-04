@@ -32,6 +32,19 @@ typedef struct luasofia_nua_handle_s {
   ##############################
 */
 
+static int luasofia_nua_handle_bind(lua_State *L)
+{
+    /* check first argument (should be a luasofia_nua_handle_t) */
+    luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
+
+    /* check second argument is a table */
+    luaL_checktype(L, 2, LUA_TTABLE);
+
+    /* set table as environment for udata */
+    lua_setfenv(L, 1);
+    return 0;
+}
+
 static int luasofia_nua_handle_invite(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
@@ -416,6 +429,7 @@ static int luasofia_nua_handle_respond(lua_State *L)
 */
 
 static const luaL_Reg nua_handle_meths[] = {
+    {"bind",         luasofia_nua_handle_bind },
     {"invite",       luasofia_nua_handle_invite },
     {"register",     luasofia_nua_handle_register },
     {"unregister",   luasofia_nua_handle_unregister },
