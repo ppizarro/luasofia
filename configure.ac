@@ -1,5 +1,5 @@
 ## Process this file with autoconf to produce a configure script.
-AC_INIT([LuaSofia], [0.1.3], [luasofia-devel@lists.sourceforge.net], luasofia)
+AC_INIT([LuaSofia], [0.1.4devel], [luasofia-devel@lists.sourceforge.net], luasofia)
 
 AC_CONFIG_MACRO_DIR([m4])
 
