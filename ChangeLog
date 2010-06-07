@@ -1,3 +1,6 @@
+2010-06-04  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* Implemented nua_handle_bind.
+	* Callback functions returns hmagic now 
 
 2010-03-30  Paulo Pizarro  <paulo.pizarro@gmail.com>
 	* Change Makefile.am to create luasofia-glib.so.

@@ -24,8 +24,8 @@
 #include <lualib.h>
 
 #include "luasofia.h"
-#include "utils/luasofia_weak_table.h"
 #include "su/luasofia_su_root.h"
+#include "utils/luasofia_weak_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
 #include "nua/luasofia_nua_handle.h"
@@ -38,7 +38,11 @@
 typedef struct luasofia_nua_s luasofia_nua_t;
 
 #define NUA_MTABLE              "luasofia_nua_t"
-#define NUA_EVENT_DEFAULT_VALUE -10
+
+#define NUA_EVENT_DEFAULT_INDEX -10
+
+#define ENV_CALLBACK_INDEX      1
+#define ENV_MAGIC_INDEX         2
 
 struct luasofia_nua_s {
     nua_t *nua;
@@ -108,10 +112,17 @@ static void nua_event_callback(nua_event_t event,
     luasofia_weak_table_get(L, nua);
     luaL_checkudata(L, -1, NUA_MTABLE);
 
-    /* put callback table at stack */
+    /* put env table at stack */
     lua_getfenv(L, -1);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
+        return;
+    }
+
+    /* put callback table at stack */
+    lua_rawgeti(L, -1, ENV_CALLBACK_INDEX);
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 3);
         return;
     }
 
@@ -119,10 +130,10 @@ static void nua_event_callback(nua_event_t event,
     lua_rawgeti(L, -1, event);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 1);
-        /* get default callback */
-        lua_rawgeti(L, -1, NUA_EVENT_DEFAULT_VALUE);
+        /* get event default callback */
+        lua_rawgeti(L, -1, NUA_EVENT_DEFAULT_INDEX);
         if (lua_isnil(L, -1)) {
-            lua_pop(L, 3);
+            lua_pop(L, 4);
             return;
         }
     }
@@ -130,7 +141,10 @@ static void nua_event_callback(nua_event_t event,
     lua_pushinteger(L, event);
     lua_pushinteger(L, status);
     lua_pushstring(L, phrase);
-    lua_pushvalue(L, -6);
+    lua_pushvalue(L, -7);
+
+    /* get magic field */
+    lua_rawgeti(L, -7, ENV_MAGIC_INDEX);
 
     if (nh) { 
         /* put nua_handle userdatum at stack */
@@ -156,8 +170,8 @@ static void nua_event_callback(nua_event_t event,
 
     tags ? lua_pushlightuserdata(L, (void*)tags) : lua_pushnil(L);
 
-    lua_call(L, 8, 0);
-    lua_pop(L, 2);
+    lua_call(L, 9, 0);
+    lua_pop(L, 3);
 }
 
 static int luasofia_nua_create(lua_State *L)
@@ -172,9 +186,10 @@ static int luasofia_nua_create(lua_State *L)
     lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     /* check the callback table */
-    luaL_checktype(L, 2, LUA_TTABLE);
+    if (!lua_isnil(L, 2))
+        luaL_checktype(L, 2, LUA_TTABLE);
 
-    tags = luasofia_tags_table_to_taglist(L, 3, home);
+    tags = luasofia_tags_table_to_taglist(L, 4, home);
 
     /* create a nua object */
     lnua = (luasofia_nua_t*) lua_newuserdata(L, sizeof(luasofia_nua_t));
@@ -195,8 +210,22 @@ static int luasofia_nua_create(lua_State *L)
     /* store nua at luasofia weak table */
     luasofia_weak_table_set(L, nua);
 
-    /* set callback table as environment for udata */
-    lua_pushvalue(L, 2);
+    /* create env table */
+    lua_createtable(L, 2, 0);
+
+    /* save second argument (callbacks) on env table */
+    if (!lua_isnil(L, 2)) {
+        lua_pushvalue(L, 2);
+        lua_rawseti(L, -2, ENV_CALLBACK_INDEX);
+    }
+
+    /* save third argument (magic) on env table */
+    if (!lua_isnil(L, 3)) {
+        lua_pushvalue(L, 3);
+        lua_rawseti(L, -2, ENV_MAGIC_INDEX);
+    }
+
+    /* set env table as environment for udata */
     lua_setfenv(L, -2);
 
     su_home_unref(home);
@@ -321,7 +350,7 @@ static const luasofia_tag_reg_t nua_tags[] = {
 };
 
 static const luasofia_reg_const_t nua_constants[] = {
-    { "nua_event_default", NUA_EVENT_DEFAULT_VALUE },
+    { "nua_event_default", NUA_EVENT_DEFAULT_INDEX },
     { "nua_i_error", nua_i_error },
     { "nua_i_invite", nua_i_invite },
     { "nua_i_cancel", nua_i_cancel },

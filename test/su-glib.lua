@@ -1,15 +1,17 @@
 
-glib = require "luasofia-glib"
-su = require "luasofia.su"
+local glib = require "luasofia-glib"
+local su = require "luasofia.su"
 
-root = glib.root_create()
-root2 = su.root_create()
+su.init()
 
-source = root:gsource()
-source2 = root2:gsource()
+local root = glib.root_create()
+local root2 = su.root_create()
 
-task = root:task()
-task2 = root2:task()
+local source = root:gsource()
+local source2 = root2:gsource()
+
+local task = root:task()
+local task2 = root2:task()
 
 print(task)
 print(task2)

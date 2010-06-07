@@ -19,8 +19,8 @@
  * along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __LUASOFIA_UTILS_H__
-#define __LUASOFIA_UTILS_H__
+#ifndef __LUASOFIA_CONST_H__
+#define __LUASOFIA_CONST_H__
 
 typedef struct luasofia_reg_const_s {
   const char *name;
@@ -35,5 +35,5 @@ typedef struct luasofia_reg_const_s {
 */
 void luasofia_const_register_constants(lua_State *L, const luasofia_reg_const_t *consts);
 
-#endif //__LUASOFIA_UTILS
+#endif //__LUASOFIA_CONST
 
