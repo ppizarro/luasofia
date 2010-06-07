@@ -1,5 +1,5 @@
 ## Process this file with autoconf to produce a configure script.
-AC_INIT([LuaSofia], [0.1.3devel], [luasofia-devel@lists.sourceforge.net], luasofia)
+AC_INIT([LuaSofia], [0.1.3], [luasofia-devel@lists.sourceforge.net], luasofia)
 
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -17,7 +17,7 @@ LT_INIT([disable-static])
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-LT_VERSION=2:0:2
+LT_VERSION=3:0:0
 AC_SUBST(LT_VERSION)
 
 AC_CONFIG_SRCDIR([src/luasofia.c])

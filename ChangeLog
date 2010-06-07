@@ -1,6 +1,11 @@
+2010-06-07  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* configure.in: Version 0.1.3
+	* Change luasofia.nua.create function to receive a magic param.
+	* Callback function return magic value.
+
 2010-06-04  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* Implemented nua_handle_bind.
-	* Callback functions returns hmagic now 
+	* Implemented nua_handle_bind to bind nua handle with hmagic param.
+	* Callback functions returns hmagic value.
 
 2010-03-30  Paulo Pizarro  <paulo.pizarro@gmail.com>
 	* Change Makefile.am to create luasofia-glib.so.
