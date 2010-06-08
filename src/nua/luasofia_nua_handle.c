@@ -407,11 +407,15 @@ static int luasofia_nua_handle_respond(lua_State *L)
     /* get and check first argument (should be a luasofia_nua_handle_t) */
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*) luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
     if (lnh->nh) {
+        char const* phrase = NULL;
         su_home_t *home = su_home_create();
         /* get and check second argument (should be a int) */
         int status = luaL_checkinteger(L, 2);
+      
         /* get and check third argument (should be a string) */
-        char const* phrase = luaL_checkstring (L, 3);
+        if (!lua_isnoneornil(L, 3))
+            phrase = luaL_checkstring (L, 3);
+
         /* get and check fourth argument (should be a tag table) */
         tagi_t *tags = luasofia_tags_table_to_taglist(L, 4, home);
 

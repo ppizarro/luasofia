@@ -186,7 +186,7 @@ static int luasofia_nua_create(lua_State *L)
     lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
 
     /* check the callback table */
-    if (!lua_isnil(L, 2))
+    if (!lua_isnoneornil(L, 2))
         luaL_checktype(L, 2, LUA_TTABLE);
 
     tags = luasofia_tags_table_to_taglist(L, 4, home);
@@ -214,13 +214,13 @@ static int luasofia_nua_create(lua_State *L)
     lua_createtable(L, 2, 0);
 
     /* save second argument (callbacks) on env table */
-    if (!lua_isnil(L, 2)) {
+    if (!lua_isnoneornil(L, 2)) {
         lua_pushvalue(L, 2);
         lua_rawseti(L, -2, ENV_CALLBACK_INDEX);
     }
 
     /* save third argument (magic) on env table */
-    if (!lua_isnil(L, 3)) {
+    if (!lua_isnoneornil(L, 3)) {
         lua_pushvalue(L, 3);
         lua_rawseti(L, -2, ENV_MAGIC_INDEX);
     }
