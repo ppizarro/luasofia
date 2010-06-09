@@ -46,7 +46,6 @@ typedef struct luasofia_nua_s luasofia_nua_t;
 
 struct luasofia_nua_s {
     nua_t *nua;
-    lua_State *L;
 };
 
 static int luasofia_nua_set_params(lua_State *L)
@@ -80,7 +79,7 @@ static int luasofia_nua_destroy(lua_State *L)
         /* remove lnua of the luasofia weak table */
         luasofia_weak_table_remove(L, lnua->nua);
 
-        nua_destroy(lnua->nua);
+        nua_shutdown(lnua->nua);
         lnua->nua = NULL;
     }
     return 0;
@@ -102,14 +101,20 @@ static void nua_event_callback(nua_event_t event,
                                sip_t const *sip,
                                tagi_t tags[])
 {
-    luasofia_nua_t *lnua = (luasofia_nua_t*)magic;
-    lua_State *L = lnua->L;
+    lua_State *L = (lua_State *)magic;
 
     //printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] sip[%p] tags[%p]\n",
     //       event, status, phrase, nua, magic, sip, tags);
 
     /* put nua userdatum at stack and check if it is ok. */
     luasofia_weak_table_get(L, nua);
+
+    if (lua_isnil(L, -1)) {
+        if (event == nua_r_shutdown && status >= 200) {
+            nua_destroy(nua);
+        }
+        return;
+    }
     luaL_checkudata(L, -1, NUA_MTABLE);
 
     /* put env table at stack */
@@ -195,12 +200,11 @@ static int luasofia_nua_create(lua_State *L)
     lnua = (luasofia_nua_t*) lua_newuserdata(L, sizeof(luasofia_nua_t));
 
     /* create the nua_t */
-    nua = nua_create(lroot->root, nua_event_callback, lnua, TAG_NEXT(tags));
+    nua = nua_create(lroot->root, nua_event_callback, L, TAG_NEXT(tags));
     if (!nua)
         luaL_error(L, "nua_create failed!");
 
-    /* set Lua state */
-    lnua->L = L;
+    /* save nua object */
     lnua->nua = nua;
 
     /* set its metatable */
