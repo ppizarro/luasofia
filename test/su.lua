@@ -19,13 +19,13 @@ You should have received a copy of the GNU Lesser General Public License
 along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ]]--
 
-su = require "luasofia.su"
+local su = require "sofia.su"
 
 su.init()
 
-root = su.root_create()
+local root = su.root_create()
 
-timer = su.timer_create(root:task(), 200)
+local timer = su.timer_create(root:task(), 200)
 
 timer:set(function (t)
               print("Timer fired!")

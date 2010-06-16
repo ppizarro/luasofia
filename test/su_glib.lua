@@ -1,6 +1,6 @@
 
-local glib = require "luasofia-glib"
-local su = require "luasofia.su"
+local glib = require "sofia_glib"
+local su = require "sofia.su"
 
 su.init()
 

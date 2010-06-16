@@ -428,9 +428,9 @@ static const luasofia_reg_const_t nua_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_nua(lua_State *L)
+int luaopen_sofia_nua(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     luaL_newmetatable(L, NUA_MTABLE);
     /* metatable.__index = metatable */

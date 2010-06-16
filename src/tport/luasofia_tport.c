@@ -91,9 +91,9 @@ static const luasofia_reg_const_t tport_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_tport(lua_State *L)
+int luaopen_sofia_tport(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     luaL_newmetatable(L, TPORT_MTABLE);
     /* metatable.__index = metatable */

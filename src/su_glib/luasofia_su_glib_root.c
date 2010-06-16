@@ -25,7 +25,7 @@
 
 #include <sofia-sip/su_glib.h>
 
-#include "su-glib/luasofia_su_glib_root.h"
+#include "su_glib/luasofia_su_glib_root.h"
 #include "su/luasofia_su_root.h"
 
 int luasofia_su_glib_root_create(lua_State *L)

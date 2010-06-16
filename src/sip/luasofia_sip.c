@@ -216,9 +216,9 @@ static const luasofia_reg_const_t sip_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_sip(lua_State *L)
+int luaopen_sofia_sip(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     /* luasofia[sip] = table */
     lua_newtable(L);

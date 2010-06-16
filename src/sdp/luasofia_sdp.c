@@ -112,9 +112,9 @@ static const luasofia_reg_const_t sdp_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_sdp(lua_State *L)
+int luaopen_sofia_sdp(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     /* luasofia[sdp] = table */
     lua_newtable(L);

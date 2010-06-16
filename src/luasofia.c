@@ -31,9 +31,9 @@ static const struct luaL_reg core_lib[] = {
   {NULL, NULL},
 };
 
-int luaopen_luasofia(lua_State *L)
+int luaopen_sofia(lua_State *L)
 { 
-    lua_getglobal(L, "luasofia");
+    lua_getglobal(L, "sofia");
     if(!lua_isnil(L, -1))
         return 1;
 
@@ -45,7 +45,7 @@ int luaopen_luasofia(lua_State *L)
 
     luasofia_proxy_init(L);
 
-    luaL_register(L, "luasofia", core_lib);
+    luaL_register(L, "sofia", core_lib);
     return 1;
 }
 

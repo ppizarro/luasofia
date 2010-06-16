@@ -47,11 +47,13 @@ AC_SUBST(SOFIA_SIP_UA_GLIB_VERSION)
 
 # lib: lua
 # ----------------------------------------------------------------------------
-PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1, [LUA_CMODULE=`$PKG_CONFIG lua5.1 --variable=INSTALL_CMOD`],
-[PKG_CHECK_MODULES(LUA, lua >= 5.1, [LUA_CMODULE=`$PKG_CONFIG lua --variable=INSTALL_CMOD`])])
+PKG_CHECK_MODULES(LUA, lua5.2 >= 5.2, [LUA_CMODULE=`$PKG_CONFIG lua5.2 --variable=INSTALL_CMOD` LUA_VERSION="5.2"],
+[PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1, [LUA_CMODULE=`$PKG_CONFIG lua5.1 --variable=INSTALL_CMOD` LUA_VERSION="5.1"],
+[PKG_CHECK_MODULES(LUA, lua >= 5.1, [LUA_CMODULE=`$PKG_CONFIG lua --variable=INSTALL_CMOD`, LUA_VERSION=`$PKG_CONFIG lua --variable=major_version`])])])
 AC_SUBST(LUA_LIBS)
 AC_SUBST(LUA_CFLAGS)
 AC_SUBST(LUA_CMODULE)
+AC_SUBST(LUA_VERSION)
 
 # Create files
 # ----------------------------------------------------------------------------

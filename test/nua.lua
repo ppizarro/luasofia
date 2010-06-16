@@ -18,13 +18,13 @@
 -- along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------
 
-su = require "luasofia.su"
-nua = require "luasofia.nua"
-sip = require "luasofia.sip"
-soa = require "luasofia.soa"
-url = require "luasofia.url"
-sdp = require "luasofia.sdp"
-tport = require "luasofia.tport"
+su = require "sofia.su"
+nua = require "sofia.nua"
+sip = require "sofia.sip"
+soa = require "sofia.soa"
+url = require "sofia.url"
+sdp = require "sofia.sdp"
+tport = require "sofia.tport"
 
 local callbacks = {}
 

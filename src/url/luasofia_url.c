@@ -67,9 +67,9 @@ static const luasofia_reg_const_t url_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_url(lua_State *L)
+int luaopen_sofia_url(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     /* luasofia[url] = table */
     lua_newtable(L);

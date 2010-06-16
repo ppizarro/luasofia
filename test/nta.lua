@@ -18,8 +18,8 @@
 -- along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------
 
-local nta = require "luasofia.nta"
-local su = require "luasofia.su"
+local nta = require "sofia.nta"
+local su = require "sofia.su"
 
 su.init()
 root = su.root_create()

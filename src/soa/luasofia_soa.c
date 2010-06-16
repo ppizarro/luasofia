@@ -81,9 +81,9 @@ static const luasofia_reg_const_t soa_constants[] = {
     {NULL, 0 }
 };
 
-int luaopen_luasofia_soa(lua_State *L)
+int luaopen_sofia_soa(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     luaL_newmetatable(L, SOA_SESSION_MTABLE);
     /* metatable.__index = metatable */

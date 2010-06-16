@@ -54,9 +54,9 @@ static const luaL_Reg su_lib[] = {
     {NULL, NULL}
 };
 
-int luaopen_luasofia_su(lua_State *L)
+int luaopen_sofia_su(lua_State *L)
 {
-    luaopen_luasofia(L);
+    luaopen_sofia(L);
 
     luasofia_su_root_register_meta(L);
     luasofia_su_timer_register_meta(L);

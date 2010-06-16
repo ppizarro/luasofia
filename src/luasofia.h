@@ -22,7 +22,7 @@
 #ifndef __LUASOFIA_H__
 #define __LUASOFIA_H__
 
-int luaopen_luasofia(lua_State *L);
+int luaopen_sofia(lua_State *L);
 
 #endif //__LUASOFIA_H__
 

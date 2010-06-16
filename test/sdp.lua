@@ -20,7 +20,7 @@ along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ]]--
 
 require "lunit"
-sdp = require "luasofia.sdp"
+local sdp = require "sofia.sdp"
 
 module("sdp_testcase", lunit.testcase, package.seeall)
 sdp_parser_msg = "v=0\r\no=- 449464639571140607 115495315904426258 IN IP4 192.168.170.145\r\ns=-\r\nc=IN IP4 192.168.170.145\r\nt=0 0\r\nm=audio 5000 RTP/AVP 0\r\na=rtpmap:0 PCMU/8000\r\n"

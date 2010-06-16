@@ -412,12 +412,12 @@ static int luasofia_nua_handle_respond(lua_State *L)
         /* get and check second argument (should be a int) */
         int status = luaL_checkinteger(L, 2);
       
+        /* get and check fourth argument (should be a tag table) */
+        tagi_t *tags = luasofia_tags_table_to_taglist(L, 4, home);
+
         /* get and check third argument (should be a string) */
         if (!lua_isnoneornil(L, 3))
             phrase = luaL_checkstring (L, 3);
-
-        /* get and check fourth argument (should be a tag table) */
-        tagi_t *tags = luasofia_tags_table_to_taglist(L, 4, home);
 
         nua_respond(lnh->nh, status, phrase, TAG_NEXT(tags));
         su_home_unref(home);
