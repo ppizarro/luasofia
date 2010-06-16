@@ -1,4 +1,10 @@
 
+2010-06-16  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* configure.in: Version 0.1.4
+	* Changed module's name from 'luasofia' to 'sofia'
+	* Changed library's name from 'libluasofia.so' to 'liblua5.1-sofia.so'
+	* Changed library's name from 'libluasofia-glib.so' to 'liblua5.1-sofia-glib.so'
+
 2010-06-09  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.in: Version 0.1.4devel
 	* Fixed core on luasofia.nua.__gc
