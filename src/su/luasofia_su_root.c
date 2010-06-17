@@ -36,8 +36,6 @@ int luasofia_su_root_create(lua_State *L)
     if (!root)
         luaL_error(L, "su_root_create failed!");
 
-    su_root_threading(root, 0);
-
     /* create a su_root object */
     lroot = (luasofia_su_root_t*) lua_newuserdata(L, sizeof(luasofia_su_root_t));
     /* set Lua state */
