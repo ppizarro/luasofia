@@ -1,4 +1,8 @@
 
+2010-06-17  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* configure.in: Version 0.1.5devel
+	* luasofia_tags: if 'value' is nil not use this tag.
+
 2010-06-16  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.in: Version 0.1.4
 	* Changed module's name from 'luasofia' to 'sofia'
