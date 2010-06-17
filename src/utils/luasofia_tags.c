@@ -94,7 +94,15 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
         /* 'key' at index -2 and 'value' at index -1 */
         tag_type_t t_tag = NULL;
         tag_value_t return_value;
-        char const *s = lua_tostring(L, -1);
+        char const *s = NULL;
+
+        /* if 'value' is nil not use this tag */
+        if(lua_isnil(L, -1)) {
+            /* remove 'value' and 'key' is used on the next iteration */
+            lua_pop(L, 1);
+            continue;
+        }
+        s = lua_tostring(L, -1);
 
         /* lookup key in the tag table and push tag_type_t */
         lua_pushvalue(L, -2);
