@@ -1,5 +1,5 @@
 
-local glib = require "sofia_glib"
+local glib = require "sofia.glib"
 local su = require "sofia.su"
 
 su.init()

@@ -71,7 +71,7 @@ int luaopen_sofia_url(lua_State *L)
 {
     luaopen_sofia(L);
 
-    /* luasofia[url] = table */
+    /* sofia[url] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "url");

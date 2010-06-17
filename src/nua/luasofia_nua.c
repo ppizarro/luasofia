@@ -442,7 +442,7 @@ int luaopen_sofia_nua(lua_State *L)
     luasofia_nua_handle_register_meta(L);
     luasofia_tags_register_tags(L, nua_tags);
 
-    /* luasofia[nua] = table */
+    /* sofia[nua] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "nua");

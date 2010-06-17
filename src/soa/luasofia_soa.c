@@ -94,7 +94,7 @@ int luaopen_sofia_soa(lua_State *L)
 
     luasofia_tags_register_tags(L, soa_tags);
 
-    /* luasofia[soa] = table */
+    /* sofia[soa] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "soa");

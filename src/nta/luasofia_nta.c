@@ -142,7 +142,7 @@ int luaopen_sofia_nta(lua_State *L)
     luasofia_tags_register_tags(L, nta_tags);
     luasofia_nta_agent_register_meta(L);
 
-    /* luasofia[nta] = table */
+    /* sofia[nta] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "nta");

@@ -1,21 +1,23 @@
 
 2010-06-17  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.5devel
+	* configure.ac: Version 0.1.5devel
 	* luasofia_tags: if 'value' is nil not use this tag.
+	* fixed glib module name (sofia.glib).
+	* fixed configure.ac to default lua paths
 
 2010-06-16  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.4
+	* configure.ac: Version 0.1.4
 	* Changed module's name from 'luasofia' to 'sofia'
 	* Changed library's name from 'libluasofia.so' to 'liblua5.1-sofia.so'
 	* Changed library's name from 'libluasofia-glib.so' to 'liblua5.1-sofia-glib.so'
 
 2010-06-09  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.4devel
+	* configure.ac: Version 0.1.4devel
 	* Fixed core on luasofia.nua.__gc
 	* Fixed core on callback where trying to access an already colleted nua userdata.
 
 2010-06-07  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.3
+	* configure.ac: Version 0.1.3
 	* Changed luasofia.nua.create function to receive a magic param.
 	* Callback function return magic value.
 
@@ -27,12 +29,12 @@
 	* Changed Makefile.am to create luasofia-glib.so.
 
 2010-03-25  Paulo Pizarro  <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.3devel
+	* configure.ac: Version 0.1.3devel
 	* Check if installed lua5.1 package or lua package.
 	* Changed Makefile to fix errors on include paths and install path.
 
 2010-03-08  Paulo Pizarro  <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.2
+	* configure.ac: Version 0.1.2
 	* Fixing the error msg when no tag is found.
 
 2010-02-26  Tiago Katcipis <tiagokatcipis@gmail.com>
@@ -43,11 +45,11 @@
 	* Create NtaAgent class.
 
 2010-02-12  Paulo Pizarro  <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.2devel
+	* configure.ac: Version 0.1.2devel
 	* Create TPORT module and registered TPORT tags 
 
 2010-01-29  Paulo Pizarro  <paulo.pizarro@gmail.com>
-	* configure.in: Version 0.1.1
+	* configure.ac: Version 0.1.1
 	* Create NTA module and registered NTA tags.
 	* Add destroy method to NuaHandle class.
 

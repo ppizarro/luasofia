@@ -63,7 +63,7 @@ int luaopen_sofia_su(lua_State *L)
     luasofia_su_task_register_meta(L);
     luasofia_su_tags_register_meta(L);
 
-    /* luasofia[su] = table */
+    /* sofia[su] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "su");

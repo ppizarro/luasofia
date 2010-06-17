@@ -220,7 +220,7 @@ int luaopen_sofia_sip(lua_State *L)
 {
     luaopen_sofia(L);
 
-    /* luasofia[sip] = table */
+    /* sofia[sip] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "sip");

@@ -104,7 +104,7 @@ int luaopen_sofia_tport(lua_State *L)
 
     luasofia_tags_register_tags(L, lua_tport_tags);
 
-    /* luasofia[tport] = table */
+    /* sofia[tport] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "tport");

@@ -116,7 +116,7 @@ int luaopen_sofia_sdp(lua_State *L)
 {
     luaopen_sofia(L);
 
-    /* luasofia[sdp] = table */
+    /* sofia[sdp] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
     lua_setfield(L, -3, "sdp");
