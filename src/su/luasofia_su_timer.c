@@ -27,6 +27,13 @@
 #include "su/luasofia_su_task.h"
 #include "utils/luasofia_weak_table.h"
 
+typedef struct luasofia_su_timer_s {
+    su_timer_t *timer;
+    lua_State *L;
+} luasofia_su_timer_t;
+
+#define SU_TIMER_MTABLE "su_timer_t"
+
 int luasofia_su_timer_create(lua_State *L)
 {
     su_timer_t *timer = NULL;
