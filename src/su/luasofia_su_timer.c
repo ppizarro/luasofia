@@ -29,7 +29,6 @@
 
 typedef struct luasofia_su_timer_s {
     su_timer_t *timer;
-    lua_State *L;
 } luasofia_su_timer_t;
 
 #define SU_TIMER_MTABLE "su_timer_t"
@@ -50,20 +49,20 @@ int luasofia_su_timer_create(lua_State *L)
 
     /* create the su_timer */
     timer = su_timer_create(ltask->ptask, msec);
-    if (!timer)
+    if (!timer) {
         luaL_error(L, "su_timer_create failed!");
+    }
 
     /* create a su_timer object */
     ltimer = (luasofia_su_timer_t*) lua_newuserdata(L, sizeof(luasofia_su_timer_t));
     /* set Lua state */
-    ltimer->L = L;
     ltimer->timer = timer;
 
     /* set its metatable */
     luaL_getmetatable(L, SU_TIMER_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store nua at nua weak table */
+    /* store timer at timer weak table */
     luasofia_weak_table_set(L, timer);
     return 1;
 }
@@ -89,12 +88,20 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
                                   su_timer_t *t,
                                   su_timer_arg_t *arg)
 {
-    luasofia_su_timer_t *ltimer = (luasofia_su_timer_t*)arg;
-    lua_State *L = ltimer->L;
+    luasofia_su_timer_t *ltimer = NULL;
+    lua_State *L = (lua_State*) arg;
 
+    if (!L) {
+        return; /* there is no way to send an error to lua from here without a luaState. */
+    }
     // put userdatum at stack and check if it is ok.
-    luasofia_weak_table_get(L, ltimer->timer);
-    luaL_checkudata(L, -1, SU_TIMER_MTABLE);
+    luasofia_weak_table_get(L, t);
+    ltimer = luaL_checkudata(L, -1, SU_TIMER_MTABLE);
+
+    if (!ltimer) {
+        lua_pushstring (L, "Fatal error on su_timer callback, callback called but was impossible to recover the su_timer userdata !!!\0");
+        lua_error(L);     
+    }
 
     /* put enviroment table at stack */
     lua_getfenv(L, -1);
@@ -143,7 +150,7 @@ static int luasofia_su_timer_set(lua_State *L)
     /* set callback function as environment for udata */
     luasofia_su_timer_set_function_env(L);
 
-    su_timer_set(ltimer->timer, luasofia_su_timer_callback, ltimer);
+    su_timer_set(ltimer->timer, luasofia_su_timer_callback, L);
     return 0;
 }
 
