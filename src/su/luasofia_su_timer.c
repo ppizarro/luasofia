@@ -27,11 +27,12 @@
 #include "su/luasofia_su_task.h"
 #include "utils/luasofia_weak_table.h"
 
+#define SU_TIMER_MTABLE "su_timer_t"
+
 typedef struct luasofia_su_timer_s {
     su_timer_t *timer;
 } luasofia_su_timer_t;
 
-#define SU_TIMER_MTABLE "su_timer_t"
 
 int luasofia_su_timer_create(lua_State *L)
 {
@@ -67,6 +68,7 @@ int luasofia_su_timer_create(lua_State *L)
     return 1;
 }
 
+
 static int luasofia_su_timer_destroy(lua_State *L)
 {
     luasofia_su_timer_t *ltimer = NULL;
@@ -84,6 +86,7 @@ static int luasofia_su_timer_destroy(lua_State *L)
     return 0;
 }
 
+
 static void luasofia_su_timer_callback(su_root_magic_t *magic,
                                   su_timer_t *t,
                                   su_timer_arg_t *arg)
@@ -99,8 +102,7 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     ltimer = luaL_checkudata(L, -1, SU_TIMER_MTABLE);
 
     if (!ltimer) {
-        lua_pushstring (L, "Fatal error on su_timer callback, callback called but was impossible to recover the su_timer userdata !!!\0");
-        lua_error(L);     
+        luaL_error(L, "Fatal error on su_timer callback, callback called but was impossible to recover the su_timer userdata !!!");     
     }
 
     /* put enviroment table at stack */
@@ -122,6 +124,7 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     lua_pop(L, 2);
 }
 
+
 static void luasofia_su_timer_set_function_env(lua_State *L)
 {
     /* check the callback function */
@@ -140,6 +143,7 @@ static void luasofia_su_timer_set_function_env(lua_State *L)
     lua_setfenv(L, -3);
 }
 
+
 static int luasofia_su_timer_set(lua_State *L)
 {
     luasofia_su_timer_t *ltimer = NULL;
@@ -154,20 +158,27 @@ static int luasofia_su_timer_set(lua_State *L)
     return 0;
 }
 
+
 static int luasofia_su_timer_set_interval(lua_State *L)
 {
+    luaL_error(L, "Unimplemented method, feel free to colaborate :-)");
     return 0;
 }
+
 
 static int luasofia_su_timer_set_at(lua_State *L)
 {
+    luaL_error(L, "Unimplemented method, feel free to colaborate :-)");
     return 0;
 }
 
+
 static int luasofia_su_timer_run(lua_State *L)
 {
+    luaL_error(L, "Unimplemented method, feel free to colaborate :-)");
     return 0;
 }
+
 
 static int luasofia_su_timer_set_for_ever(lua_State *L)
 {
@@ -179,9 +190,10 @@ static int luasofia_su_timer_set_for_ever(lua_State *L)
     /* set callback function as environment for udata */
     luasofia_su_timer_set_function_env(L);
 
-    su_timer_set_for_ever(ltimer->timer, luasofia_su_timer_callback, ltimer);
+    su_timer_set_for_ever(ltimer->timer, luasofia_su_timer_callback, L);
     return 0;
 }
+
 
 static int luasofia_su_timer_reset(lua_State *L)
 {
@@ -191,15 +203,20 @@ static int luasofia_su_timer_reset(lua_State *L)
     return 0;
 }
 
+
 static int luasofia_su_timer_root(lua_State *L)
 {
+    luaL_error(L, "Unimplemented method, feel free to colaborate :-)");
     return 0;
 }
 
+
 static int luasofia_su_timer_expire(lua_State *L)
 {
+    luaL_error(L, "Unimplemented method, feel free to colaborate :-)");
     return 0;
 }
+
 
 static const luaL_Reg su_timer_meths[] = {
     {"set",          luasofia_su_timer_set },
@@ -213,6 +230,7 @@ static const luaL_Reg su_timer_meths[] = {
     {"__gc",         luasofia_su_timer_destroy },
     {NULL, NULL}
 };
+
 
 int luasofia_su_timer_register_meta(lua_State *L)
 {

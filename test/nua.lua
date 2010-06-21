@@ -143,6 +143,7 @@ timer:set(function (t)
               print("timer fired: shutdown...")
               ua_a:shutdown()
               ua_b:shutdown()
+              print("shutdown successfully, setting timer to quit the root!")
               t:set_for_ever(function (t)
                                  if (a_obj.quit and b_obj.quit) then
                                      t:reset() 
