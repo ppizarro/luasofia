@@ -33,7 +33,10 @@ PKG_PROG_PKG_CONFIG
 
 # lib: sofia-sip-ua
 # ----------------------------------------------------------------------------
-PKG_CHECK_MODULES(SOFIA_SIP_UA, sofia-sip-ua >= 1.12.10)
+PKG_CHECK_MODULES(SOFIA_SIP_UA, sofia-sip-ua >= 1.12.10,
+[
+    SOFIA_SIP_UA_VERSION=`pkg-config sofia-sip-ua --modversion`
+])
 AC_SUBST(SOFIA_SIP_UA_LIBS)
 AC_SUBST(SOFIA_SIP_UA_CFLAGS)
 AC_SUBST(SOFIA_SIP_UA_VERSION)
@@ -44,6 +47,15 @@ PKG_CHECK_MODULES(SOFIA_SIP_UA_GLIB, sofia-sip-ua-glib >= 1.12.10)
 AC_SUBST(SOFIA_SIP_UA_GLIB_LIBS)
 AC_SUBST(SOFIA_SIP_UA_GLIB_CFLAGS)
 AC_SUBST(SOFIA_SIP_UA_GLIB_VERSION)
+
+AC_ARG_ENABLE(sofia_devel,
+[  --enable-sofia-devel          enable sofia devel support [[disabled]]],
+ , enable_sofia_devel=no)
+
+if test x$enable_sofia_devel = xyes ; then
+  AC_DEFINE([HAVE_SOFIA_DEVEL], 1, [Define to 1 if we use sofia devel library])
+fi
+AM_CONDITIONAL([TEST_SOFIA_DEVEL], [test "x$enable_sofia_devel" = xyes])
 
 # lib: lua
 # ----------------------------------------------------------------------------

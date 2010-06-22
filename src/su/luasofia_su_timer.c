@@ -195,7 +195,7 @@ static int luasofia_su_timer_reset(lua_State *L)
     return 0;
 }
 
-
+#ifdef HAVE_SOFIA_DEVEL
 static int luasofia_su_timer_is_set(lua_State *L)
 {
     /* get and check first argument (should be a timer) */
@@ -203,7 +203,7 @@ static int luasofia_su_timer_is_set(lua_State *L)
     lua_pushboolean(L, su_timer_is_set(ltimer->timer));
     return 1;
 }
-
+#endif
 
 static int luasofia_su_timer_root(lua_State *L)
 {
@@ -217,7 +217,9 @@ static const luaL_Reg su_timer_meths[] = {
     {"set_interval", luasofia_su_timer_set_interval },
     {"set_for_ever", luasofia_su_timer_set_for_ever },
     {"reset",        luasofia_su_timer_reset },
+#ifdef HAVE_SOFIA_DEVEL
     {"is_set",       luasofia_su_timer_is_set },
+#endif
     {"run",          luasofia_su_timer_run },
     {"root",         luasofia_su_timer_root },
     {"__gc",         luasofia_su_timer_destroy },

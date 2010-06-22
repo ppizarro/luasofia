@@ -70,10 +70,12 @@ static const luasofia_tag_reg_t lua_tport_tags[] = {
     { "TPTAG_CERTIFICATE", tptag_certificate },
     { "TPTAG_TLS_VERSION", tptag_tls_version },
     { "TPTAG_TLS_VERIFY_PEER", tptag_tls_verify_peer },
-//    { "TPTAG_TLS_VERIFY_POLICY", tptag_tls_verify_policy },
-//    { "TPTAG_TLS_VERIFY_DEPTH", tptag_tls_verify_depth },
-//    { "TPTAG_TLS_VERIFY_DATE", tptag_tls_verify_date },
-//    { "TPTAG_TLS_VERIFY_SUBJECTS", tptag_tls_verify_subjects },
+#ifdef HAVE_SOFIA_DEVEL
+    { "TPTAG_TLS_VERIFY_POLICY", tptag_tls_verify_policy },
+    { "TPTAG_TLS_VERIFY_DEPTH", tptag_tls_verify_depth },
+    { "TPTAG_TLS_VERIFY_DATE", tptag_tls_verify_date },
+    { "TPTAG_TLS_VERIFY_SUBJECTS", tptag_tls_verify_subjects },
+#endif
     { "TPTAG_DEBUG_DROP", tptag_debug_drop },
     { "TPTAG_UDP_RMEM", tptag_udp_rmem },
     { "TPTAG_UDP_WMEM", tptag_udp_wmem },

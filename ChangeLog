@@ -1,6 +1,9 @@
 
 2010-06-22  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* implemented su_timer_is_set
+	* support to sofia devel (1.12.11) library (configure --enable-sofia-devel)
+	* Added more tport tags: TPTAG_TLS_VERIFY_POLICY, TPTAG_TLS_VERIFY_DEPTH, 
+	  TPTAG_TLS_VERIFY_DATE, TPTAG_TLS_VERIFY_SUBJECT. (only 1.12.11)
+	* implemented su_timer_is_set (only 1.12.11)
 
 2010-06-21  Tiago Katcipis <tiagokatcipis@gmail.com>
 	* fixed possible segfault on su_timer callback.
