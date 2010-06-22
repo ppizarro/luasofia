@@ -1,4 +1,10 @@
 
+2010-06-22  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented su_timer_is_set
+
+2010-06-21  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* fixed possible segfault on su_timer callback.
+
 2010-06-17  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.5devel
 	* luasofia_tags: if 'value' is nil not use this tag.
