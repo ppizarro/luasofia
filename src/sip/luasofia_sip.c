@@ -43,6 +43,7 @@
 #include "luasofia_sip_accept_private.h"
 #include "luasofia_sip_allow_private.h"
 #include "luasofia_sip_call_id_private.h"
+#include "luasofia_sip_authenticate_private.h"
 
 
 static const luaL_Reg sip_lib[] = {
@@ -58,6 +59,7 @@ static const luaL_Reg sip_lib[] = {
     {"get_proxy_accept",         luasofia_sip_get_proxy_accept },
     {"get_proxy_allow",          luasofia_sip_get_proxy_allow },
     {"get_proxy_call_id",        luasofia_sip_get_proxy_call_id },
+    {"get_proxy_authenticate",   luasofia_sip_get_proxy_authenticate },
     {NULL, NULL}
 };
 
@@ -237,9 +239,10 @@ int luaopen_sofia_sip(lua_State *L)
     luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_event_info);
     luasofia_proxy_register_info_table(L, SIP_CONTENT_TYPE_TABLE_NAME, sip_content_type_info);    
     luasofia_proxy_register_info_table(L, SIP_CONTENT_LENGTH_TABLE_NAME, sip_content_length_info);    
-    luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_accept_info);
-    luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_allow_info);
-    luasofia_proxy_register_info_table(L, SIP_EVENT_TABLE_NAME, sip_call_id_info);
+    luasofia_proxy_register_info_table(L, SIP_ACCEPT_TABLE_NAME, sip_accept_info);
+    luasofia_proxy_register_info_table(L, SIP_ALLOW_TABLE_NAME, sip_allow_info);
+    luasofia_proxy_register_info_table(L, SIP_CALL_ID_TABLE_NAME, sip_call_id_info);
+    luasofia_proxy_register_info_table(L, SIP_AUTHENTICATE_TABLE_NAME, sip_authenticate_info);
 
     luasofia_const_register_constants(L, sip_constants);
 

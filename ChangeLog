@@ -1,4 +1,7 @@
 
+2010-06-23  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented function get_proxy_authenticate on the module 'sip'
+
 2010-06-22  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* support to sofia devel (1.12.11) library (configure --enable-sofia-devel)
 	* Added more tport tags: TPTAG_TLS_VERIFY_POLICY, TPTAG_TLS_VERIFY_DEPTH, 
