@@ -201,9 +201,9 @@ static int luasofia_nua_create(lua_State *L)
 
     /* create the nua_t */
     nua = nua_create(lroot->root, nua_event_callback, L, TAG_NEXT(tags));
-    if (!nua)
+    if (!nua) {
         luaL_error(L, "nua_create failed!");
-
+    }
     /* save nua object */
     lnua->nua = nua;
 

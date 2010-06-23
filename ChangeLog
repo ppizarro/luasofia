@@ -1,4 +1,7 @@
 
+2010-06-23  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* created msg module with params_find function
+
 2010-06-23  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented function get_proxy_authenticate on the module 'sip'
 

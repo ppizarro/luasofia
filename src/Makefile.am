@@ -54,6 +54,7 @@ liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 	nta/luasofia_nta.c \
 	nta/luasofia_nta_agent.c\
 	nta/luasofia_nta_agent.h\
+	msg/luasofia_msg.c \
 	utils/luasofia_const.c \
 	utils/luasofia_const.h \
 	utils/luasofia_proxy.c \
