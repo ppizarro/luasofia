@@ -24,7 +24,7 @@
 #include <lualib.h>
 
 #include "luasofia.h"
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
 #include "nta/luasofia_nta_agent.h"

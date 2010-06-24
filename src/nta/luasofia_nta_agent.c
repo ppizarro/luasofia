@@ -18,7 +18,7 @@
  * along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "nta/luasofia_nta_agent.h"
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
 #include "su/luasofia_su_root.h"
 
@@ -37,8 +37,8 @@ static int luasofia_nta_agent_destroy(lua_State* L)
     luasofia_nta_agent_t *agent = (luasofia_nta_agent_t*)luaL_checkudata(L, 1, NTA_AGENT_MTABLE);
 
     if (agent->agent) {
-        /* remove weak_table[nta_agent_lightudata] = nta_agent_fulludata */
-        luasofia_weak_table_remove(L, agent->agent);
+        /* remove userdata_table[nta_agent_lightudata] = nta_agent_fulludata */
+        luasofia_userdata_table_remove(L, agent->agent);
         nta_agent_destroy(agent->agent); 	
         agent->agent = NULL;
 
@@ -64,7 +64,7 @@ static int nta_agent_message_callback(nta_agent_magic_t *context,
     lua_State *L = u_nta_agent->L;
 
     /* put nta_agent userdatum at stack and check if it is ok. */
-    luasofia_weak_table_get(L, agent);
+    luasofia_userdata_table_get(L, agent);
     luaL_checkudata(L, -1, NTA_AGENT_MTABLE);
 
     /* put callback function at stack */
@@ -125,9 +125,9 @@ int luasofia_nta_agent_create(lua_State * L)
     luaL_getmetatable(L, NTA_AGENT_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store nta_agent at luasofia weak table 
-       weak_table[nta_agent_lightudata] = nta_agent_fulludata */
-    luasofia_weak_table_set(L, u_nta_agent->agent);
+    /* store nta_agent at luasofia userdata table 
+       userdata_table[nta_agent_lightudata] = nta_agent_fulludata */
+    luasofia_userdata_table_set(L, u_nta_agent->agent);
 
     su_home_unref(home);
     return 1;

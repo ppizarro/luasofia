@@ -23,7 +23,7 @@
 #include <lua.h>
 #include <lualib.h>
 
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_proxy.h"
 
@@ -37,8 +37,8 @@ int luaopen_sofia(lua_State *L)
     if(!lua_isnil(L, -1))
         return 1;
 
-    /* create luasofia weak table at REGISTRYINDEX */
-    luasofia_weak_table_create(L);
+    /* create luasofia userdata table at REGISTRYINDEX */
+    luasofia_userdata_table_create(L);
 
     /* create luasofia tag table at REGISTRYINDEX */
     luasofia_tags_create(L);

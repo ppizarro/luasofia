@@ -63,8 +63,8 @@ liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 	utils/luasofia_tags.h \
 	utils/luasofia_utils.c \
 	utils/luasofia_utils.h \
-	utils/luasofia_weak_table.c \
-	utils/luasofia_weak_table.h
+	utils/luasofia_userdata_table.c \
+	utils/luasofia_userdata_table.h
 
 
 liblua@LUA_VERSION@_sofia_glib_la_CFLAGS = -Wall $(SOFIA_SIP_UA_GLIB_CFLAGS) $(LUA_CFLAGS) -I@includedir@

@@ -25,7 +25,7 @@
 
 #include "luasofia.h"
 #include "su/luasofia_su_root.h"
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
 #include "nua/luasofia_nua_handle.h"
@@ -76,8 +76,8 @@ static int luasofia_nua_destroy(lua_State *L)
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
     if (lnua->nua) {
-        /* remove lnua of the luasofia weak table */
-        luasofia_weak_table_remove(L, lnua->nua);
+        /* remove lnua of the luasofia userdata table */
+        luasofia_userdata_table_remove(L, lnua->nua);
 
         nua_shutdown(lnua->nua);
         lnua->nua = NULL;
@@ -107,7 +107,7 @@ static void nua_event_callback(nua_event_t event,
     //       event, status, phrase, nua, magic, sip, tags);
 
     /* put nua userdatum at stack and check if it is ok. */
-    luasofia_weak_table_get(L, nua);
+    luasofia_userdata_table_get(L, nua);
 
     if (lua_isnil(L, -1)) {
         if (event == nua_r_shutdown && status >= 200) {
@@ -153,7 +153,7 @@ static void nua_event_callback(nua_event_t event,
 
     if (nh) { 
         /* put nua_handle userdatum at stack */
-        luasofia_weak_table_get(L, nh);
+        luasofia_userdata_table_get(L, nh);
         if (lua_isnil(L, -1)) {
             /* create a new nua_handle userdatum */
             lua_pop(L, 1);
@@ -211,8 +211,8 @@ static int luasofia_nua_create(lua_State *L)
     luaL_getmetatable(L, NUA_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store nua at luasofia weak table */
-    luasofia_weak_table_set(L, nua);
+    /* store nua at luasofia userdata table */
+    luasofia_userdata_table_set(L, nua);
 
     /* create env table */
     lua_createtable(L, 2, 0);

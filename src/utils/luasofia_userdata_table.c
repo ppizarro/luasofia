@@ -22,32 +22,32 @@
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 
-static int weak_table_ref = LUA_REFNIL;
+static int userdata_table_ref = LUA_REFNIL;
 
-void luasofia_weak_table_remove(lua_State *L, void* key)
+void luasofia_userdata_table_remove(lua_State *L, void* key)
 {
-    /* put the weak table at the stack */
-    lua_rawgeti(L, LUA_REGISTRYINDEX, weak_table_ref);
+    /* put the userdata table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, userdata_table_ref);
     if (lua_isnil(L, -1))
-        luaL_error(L, "Failed to get weak table!");
+        luaL_error(L, "Failed to get userdata table!");
 
-    /* weak_table[key] = nil */
+    /* userdata_table[key] = nil */
     lua_pushlightuserdata(L, key);
     lua_pushnil(L);
     lua_rawset(L, -3);
     lua_pop(L, 1);
 }
 
-void luasofia_weak_table_get(lua_State *L, void* key)
+void luasofia_userdata_table_get(lua_State *L, void* key)
 {
-    /* put the weak table at the stack */
-    lua_rawgeti(L, LUA_REGISTRYINDEX, weak_table_ref);
+    /* put the userdata table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, userdata_table_ref);
     if (lua_isnil(L, -1))
-        luaL_error(L, "Failed to get weak table!");
+        luaL_error(L, "Failed to get userdata table!");
 
-    /* get weak_table[key] */
+    /* get userdata_table[key] */
     lua_pushlightuserdata(L, key);
     lua_rawget(L, -2);
 
@@ -55,12 +55,12 @@ void luasofia_weak_table_get(lua_State *L, void* key)
     lua_remove(L, -2);
 }
 
-void luasofia_weak_table_set(lua_State *L, void* key)
+void luasofia_userdata_table_set(lua_State *L, void* key)
 {
-   /* put the weak table at the stack */
-    lua_rawgeti(L, LUA_REGISTRYINDEX, weak_table_ref);
+   /* put the userdata table at the stack */
+    lua_rawgeti(L, LUA_REGISTRYINDEX, userdata_table_ref);
     if (lua_isnil(L, -1))
-        luaL_error(L, "Failed to get weak table!");
+        luaL_error(L, "Failed to get userdata table!");
 
     /* put key at top of the stack */
     lua_pushlightuserdata(L, key);
@@ -68,32 +68,32 @@ void luasofia_weak_table_set(lua_State *L, void* key)
     /* put userdata at top of the stack */
     lua_pushvalue(L, -3);
 
-    /* weak_table[key] = userdata */
+    /* userdata_table[key] = userdata */
     lua_rawset(L, -3);
     lua_pop(L, 1);
 }
 
-void luasofia_weak_table_create(lua_State *L)
+void luasofia_userdata_table_create(lua_State *L)
 {
-    if(weak_table_ref != LUA_REFNIL)
+    if(userdata_table_ref != LUA_REFNIL)
         return;
 
     /* create userdata table */
     lua_newtable(L);
    
     /* first create an metatable with __mode=v, */
-    /* so only values are weak references */
+    /* so only values are userdata references */
     luaL_newmetatable(L, "kws_engine_userdata_metatable");
     //luaL_newtable(L);
     lua_pushstring(L,"v");
     lua_setfield(L, -2, "__mode");
 
-    /* now lets set the metatable who holds weak values */
+    /* now lets set the metatable who holds userdata values */
     /* as the metatable of the userdata table */
     lua_setmetatable(L, -2);
 
-    /* now lets store the weak table at the LUA_REGISTRYINDEX, */
+    /* now lets store the userdata table at the LUA_REGISTRYINDEX, */
     /* so it can be acessed by the unregistered callback functions */
-    weak_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
+    userdata_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 }
 

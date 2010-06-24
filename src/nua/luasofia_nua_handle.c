@@ -19,7 +19,7 @@
  */
 #include "nua/luasofia_nua_handle.h"
 #include "utils/luasofia_tags.h"
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 
 typedef struct luasofia_nua_handle_s {
     nua_handle_t *nh;
@@ -64,8 +64,8 @@ static int luasofia_nua_handle_destroy(lua_State *L)
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
 
     if (lnh->nh) {
-        /* remove lnh of the luasofia weak table */
-        luasofia_weak_table_remove(L, lnh->nh);
+        /* remove lnh of the luasofia userdata table */
+        luasofia_userdata_table_remove(L, lnh->nh);
         nua_handle_destroy(lnh->nh);
         lnh->nh = NULL;
     }
@@ -481,8 +481,8 @@ int luasofia_nua_handle_create_userdata(lua_State *L, nua_handle_t *nh)
     luaL_getmetatable(L, NUA_HANDLE_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store nua handle at luasofia weak table */
-    luasofia_weak_table_set(L, nh);
+    /* store nua handle at luasofia userdata table */
+    luasofia_userdata_table_set(L, nh);
     return 1;
 }
 
@@ -509,8 +509,8 @@ int luasofia_nua_handle_create(lua_State *L, nua_t *nua)
     luaL_getmetatable(L, NUA_HANDLE_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store nua handle at luasofia weak table */
-    luasofia_weak_table_set(L, nh);
+    /* store nua handle at luasofia userdata table */
+    luasofia_userdata_table_set(L, nh);
 
     su_home_unref(home);
     return 1;

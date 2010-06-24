@@ -25,7 +25,7 @@
 
 #include "su/luasofia_su_timer.h"
 #include "su/luasofia_su_task.h"
-#include "utils/luasofia_weak_table.h"
+#include "utils/luasofia_userdata_table.h"
 
 #define SU_TIMER_MTABLE "su_timer_t"
 
@@ -63,8 +63,8 @@ int luasofia_su_timer_create(lua_State *L)
     luaL_getmetatable(L, SU_TIMER_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store timer at timer weak table */
-    luasofia_weak_table_set(L, timer);
+    /* store timer at timer userdata table */
+    luasofia_userdata_table_set(L, timer);
     return 1;
 }
 
@@ -77,8 +77,8 @@ static int luasofia_su_timer_destroy(lua_State *L)
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
 
     if (ltimer->timer) {
-        /* remove timer of the luasofia weak table */
-        luasofia_weak_table_remove(L, ltimer->timer);
+        /* remove timer of the luasofia userdata table */
+        luasofia_userdata_table_remove(L, ltimer->timer);
 
         su_timer_destroy(ltimer->timer);
         ltimer->timer = NULL;
@@ -94,7 +94,7 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     lua_State *L = (lua_State*)arg;
 
     // put userdatum at stack and check if it is ok.
-    luasofia_weak_table_get(L, t);
+    luasofia_userdata_table_get(L, t);
     if (lua_isnil(L, -1)) {
         su_timer_destroy(t);
         luaL_error(L, "Fatal error on su_timer callback, "
