@@ -81,17 +81,6 @@ void luasofia_userdata_table_create(lua_State *L)
     /* create userdata table */
     lua_newtable(L);
    
-    /* first create an metatable with __mode=v, */
-    /* so only values are userdata references */
-    luaL_newmetatable(L, "kws_engine_userdata_metatable");
-    //luaL_newtable(L);
-    lua_pushstring(L,"v");
-    lua_setfield(L, -2, "__mode");
-
-    /* now lets set the metatable who holds userdata values */
-    /* as the metatable of the userdata table */
-    lua_setmetatable(L, -2);
-
     /* now lets store the userdata table at the LUA_REGISTRYINDEX, */
     /* so it can be acessed by the unregistered callback functions */
     userdata_table_ref = luaL_ref(L, LUA_REGISTRYINDEX);
