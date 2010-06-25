@@ -76,6 +76,7 @@ static int luasofia_nua_destroy(lua_State *L)
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
     if (lnua->nua) {
+        // TODO test if shutdown complete before call nua_destroy
         nua_destroy(lnua->nua);
         lnua->nua = NULL;
     }
@@ -120,10 +121,6 @@ static void nua_event_callback(nua_event_t event,
 
     /* put env table at stack */
     lua_getfenv(L, -1);
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-        return;
-    }
 
     /* put callback table at stack */
     lua_rawgeti(L, -1, ENV_CALLBACK_INDEX);

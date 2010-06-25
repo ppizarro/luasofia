@@ -31,11 +31,9 @@ local timer2 = su.timer_create(root:task(), 100)
 
 timer1:set(function(t)
                print("Timer1 fired!")
-               if timer2 then
-                   timer2:reset()
-                   timer2 = nil
-                   collectgarbage("collect")
-               end
+               timer2:reset()
+               timer2 = nil
+               collectgarbage("collect")
                print("Timer1 set again!")
                t:set(function(t)
                          print("Timer1 fired again!")
@@ -48,7 +46,6 @@ timer2:set_for_ever(function(t)
                     end)
 
 timer1 = nil
---timer2 = nil
 collectgarbage("collect")
 
 root:run()

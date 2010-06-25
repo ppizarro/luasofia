@@ -41,8 +41,8 @@ static void luasofia_su_timer_set_function_env(lua_State *L)
     /* check the callback function */
     luaL_checktype(L, -1, LUA_TFUNCTION);
 
-    /* create environment table */
-    lua_createtable(L, 1, 0);
+    /* get a environment table */
+    lua_getfenv(L, -2);
 
     /* put callback function at top */
     lua_pushvalue(L, -2);
@@ -50,7 +50,8 @@ static void luasofia_su_timer_set_function_env(lua_State *L)
     /* t[1] = function */
     lua_rawseti(L, -2, 1);
 
-    lua_setfenv(L, -3);
+    /* remove environment table */
+    lua_pop(L, 1);
 }
 
 
@@ -58,10 +59,6 @@ static int luasofia_su_timer_get_function_env(lua_State *L)
 {
     /* put enviroment table at stack */
     lua_getfenv(L, -1);
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 1);
-        return 0;
-    }
 
     /* get callback function */
     lua_rawgeti(L, -1, 1);
@@ -77,10 +74,6 @@ static void luasofia_su_timer_del_function_env(lua_State *L)
 {
     /* put enviroment table at stack */
     lua_getfenv(L, -1);
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 1);
-        return;
-    }
 
     /* put nil at top */
     lua_pushnil(L);
@@ -122,6 +115,10 @@ int luasofia_su_timer_create(lua_State *L)
     /* set its metatable */
     luaL_getmetatable(L, SU_TIMER_MTABLE);
     lua_setmetatable(L, -2);
+
+    /* create environment table */
+    lua_createtable(L, 1, 0);
+    lua_setfenv(L, -2);
 
     return 1;
 }

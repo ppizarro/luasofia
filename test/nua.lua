@@ -135,6 +135,8 @@ local b_obj = { quit = false }
 
 local ua_a = make_user_agent(root, "1000", 5090, 4000, a_obj )
 
+ua_a:destroy()
+
 local ua_b = make_user_agent(root, "1001", 5080, 5000, b_obj )
 
 local timer = su.timer_create(root:task(), 500)
