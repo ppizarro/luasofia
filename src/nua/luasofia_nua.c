@@ -76,10 +76,7 @@ static int luasofia_nua_destroy(lua_State *L)
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
     if (lnua->nua) {
-        /* remove lnua of the luasofia userdata table */
-        luasofia_userdata_table_remove(L, lnua->nua);
-
-        nua_shutdown(lnua->nua);
+        nua_destroy(lnua->nua);
         lnua->nua = NULL;
     }
     return 0;
@@ -103,19 +100,23 @@ static void nua_event_callback(nua_event_t event,
 {
     lua_State *L = (lua_State *)magic;
 
-    //printf("nua_event_callback: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] sip[%p] tags[%p]\n",
+    //printf("nua: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] sip[%p] tags[%p]\n",
     //       event, status, phrase, nua, magic, sip, tags);
 
     /* put nua userdatum at stack and check if it is ok. */
     luasofia_userdata_table_get(L, nua);
 
     if (lua_isnil(L, -1)) {
-        if (event == nua_r_shutdown && status >= 200) {
-            nua_destroy(nua);
-        }
+        //printf("nua userdata not found on userdata_table!\n");
         return;
     }
+
     luaL_checkudata(L, -1, NUA_MTABLE);
+
+    if (event == nua_r_shutdown && status >= 200) {
+        /* remove nua of the luasofia userdata table */
+        luasofia_userdata_table_remove(L, nua);
+    }
 
     /* put env table at stack */
     lua_getfenv(L, -1);
