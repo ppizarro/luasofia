@@ -25,12 +25,31 @@ su.init()
 
 local root = su.root_create()
 
-local timer = su.timer_create(root:task(), 200)
+local timer1 = su.timer_create(root:task(), 1000)
 
-timer:set(function (t)
-              print("Timer fired!")
-              root:quit()
-          end)
+local timer2 = su.timer_create(root:task(), 100)
+
+timer1:set(function(t)
+               print("Timer1 fired!")
+               if timer2 then
+                   timer2:reset()
+                   timer2 = nil
+                   collectgarbage("collect")
+               end
+               print("Timer1 set again!")
+               t:set(function(t)
+                         print("Timer1 fired again!")
+                         root:quit()
+                     end)
+           end)
+
+timer2:set_for_ever(function(t)
+                        print("Timer2 fired!")
+                    end)
+
+timer1 = nil
+--timer2 = nil
+collectgarbage("collect")
 
 root:run()
 

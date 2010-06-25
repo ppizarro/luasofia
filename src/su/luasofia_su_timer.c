@@ -26,12 +26,71 @@
 #include "su/luasofia_su_timer.h"
 #include "su/luasofia_su_task.h"
 #include "utils/luasofia_userdata_table.h"
+#include "utils/luasofia_utils.h"
 
 #define SU_TIMER_MTABLE "su_timer_t"
 
 typedef struct luasofia_su_timer_s {
     su_timer_t *timer;
+    int for_ever;
 } luasofia_su_timer_t;
+
+
+static void luasofia_su_timer_set_function_env(lua_State *L)
+{
+    /* check the callback function */
+    luaL_checktype(L, -1, LUA_TFUNCTION);
+
+    /* create environment table */
+    lua_createtable(L, 1, 0);
+
+    /* put callback function at top */
+    lua_pushvalue(L, -2);
+
+    /* t[1] = function */
+    lua_rawseti(L, -2, 1);
+
+    lua_setfenv(L, -3);
+}
+
+
+static int luasofia_su_timer_get_function_env(lua_State *L)
+{
+    /* put enviroment table at stack */
+    lua_getfenv(L, -1);
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 1);
+        return 0;
+    }
+
+    /* get callback function */
+    lua_rawgeti(L, -1, 1);
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 2);
+        return 0;
+    }
+    return 1;
+}
+
+
+static void luasofia_su_timer_del_function_env(lua_State *L)
+{
+    /* put enviroment table at stack */
+    lua_getfenv(L, -1);
+    if (lua_isnil(L, -1)) {
+        lua_pop(L, 1);
+        return;
+    }
+
+    /* put nil at top */
+    lua_pushnil(L);
+
+    /* t[1] = nil */
+    lua_rawseti(L, -2, 1);
+
+    /* remove enviroment table from stack */
+    lua_pop(L, 1);
+}
 
 
 int luasofia_su_timer_create(lua_State *L)
@@ -58,13 +117,12 @@ int luasofia_su_timer_create(lua_State *L)
     ltimer = (luasofia_su_timer_t*) lua_newuserdata(L, sizeof(luasofia_su_timer_t));
     /* set Lua state */
     ltimer->timer = timer;
+    ltimer->for_ever = 0;
 
     /* set its metatable */
     luaL_getmetatable(L, SU_TIMER_MTABLE);
     lua_setmetatable(L, -2);
 
-    /* store timer at timer userdata table */
-    luasofia_userdata_table_set(L, timer);
     return 1;
 }
 
@@ -77,9 +135,6 @@ static int luasofia_su_timer_destroy(lua_State *L)
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
 
     if (ltimer->timer) {
-        /* remove timer of the luasofia userdata table */
-        luasofia_userdata_table_remove(L, ltimer->timer);
-
         su_timer_destroy(ltimer->timer);
         ltimer->timer = NULL;
     }
@@ -91,69 +146,60 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
                                        su_timer_t *t,
                                        su_timer_arg_t *arg)
 {
+    luasofia_su_timer_t *ltimer = NULL;
     lua_State *L = (lua_State*)arg;
 
     // put userdatum at stack and check if it is ok.
     luasofia_userdata_table_get(L, t);
     if (lua_isnil(L, -1)) {
-        su_timer_destroy(t);
+        lua_pop(L, 1);
         luaL_error(L, "Fatal error on su_timer callback, "
                       "callback called but was impossible "
                       "to recover the su_timer userdata !");     
     }
 
-    luaL_checkudata(L, -1, SU_TIMER_MTABLE);
+    ltimer = luaL_checkudata(L, -1, SU_TIMER_MTABLE);
 
-    /* put enviroment table at stack */
-    lua_getfenv(L, -1);
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 2);
-        return;
-    }
-
-    /* get callback function */
-    lua_rawgeti(L, -1, 1);
-    if (lua_isnil(L, -1)) {
-        lua_pop(L, 3);
-        return;
+    /* get callback function from enviroment table */
+    if(!luasofia_su_timer_get_function_env(L)) {
+        lua_pop(L, 1);
+        luaL_error(L, "Fatal error on su_timer callback, "
+                      "callback called but was impossible "
+                      "to recover lua callback function!");
     }
 
     lua_pushvalue(L, -3);
+
+    if (!ltimer->for_ever) {
+        /* remove callback function from enviroment */
+        luasofia_su_timer_del_function_env(L);
+
+        /* remove timer of the luasofia userdata table */
+        luasofia_userdata_table_remove(L, t);
+    }
+
     lua_call(L, 1, 0);
     lua_pop(L, 2);
-}
-
-
-static void luasofia_su_timer_set_function_env(lua_State *L)
-{
-    /* check the callback function */
-    luaL_checktype(L, -1, LUA_TFUNCTION);
-
-    /* create environment table */
-    lua_createtable(L, 1, 0);
-
-    /* put callback function at top */
-    lua_pushvalue(L, -2);
-
-    /* t[1] = function */
-    lua_rawseti(L, -2, 1);
-
-    /* set callback table as environment for udata */
-    lua_setfenv(L, -3);
 }
 
 
 static int luasofia_su_timer_set(lua_State *L)
 {
     luasofia_su_timer_t *ltimer = NULL;
-   
+
     /* get and check first argument (should be a timer) */
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
+
+    /* store timer at timer userdata table */
+    lua_pushvalue(L, -2);
+    luasofia_userdata_table_set(L, ltimer->timer);
+    lua_pop(L, 1);
 
     /* set callback function as environment for udata */
     luasofia_su_timer_set_function_env(L);
 
     su_timer_set(ltimer->timer, luasofia_su_timer_callback, L);
+    ltimer->for_ever = 0;
     return 0;
 }
 
@@ -179,10 +225,16 @@ static int luasofia_su_timer_set_for_ever(lua_State *L)
     /* get and check first argument (should be a timer) */
     ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -2, SU_TIMER_MTABLE);
 
+    /* store timer at timer userdata table */
+    lua_pushvalue(L, -2);
+    luasofia_userdata_table_set(L, ltimer->timer);
+    lua_pop(L, 1);
+
     /* set callback function as environment for udata */
     luasofia_su_timer_set_function_env(L);
 
     su_timer_set_for_ever(ltimer->timer, luasofia_su_timer_callback, L);
+    ltimer->for_ever = 1;
     return 0;
 }
 
@@ -191,7 +243,15 @@ static int luasofia_su_timer_reset(lua_State *L)
 {
     /* get and check first argument (should be a timer) */
     luasofia_su_timer_t *ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -1, SU_TIMER_MTABLE);
+
     su_timer_reset(ltimer->timer);
+
+    /* remove callback function from enviroment */
+
+    luasofia_su_timer_del_function_env(L);
+
+    /* remove timer of the luasofia userdata table */
+    luasofia_userdata_table_remove(L, ltimer->timer);
     return 0;
 }
 
