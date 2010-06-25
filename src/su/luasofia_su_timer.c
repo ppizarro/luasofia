@@ -115,7 +115,7 @@ int luasofia_su_timer_create(lua_State *L)
 
     /* create a su_timer object */
     ltimer = (luasofia_su_timer_t*) lua_newuserdata(L, sizeof(luasofia_su_timer_t));
-    /* set Lua state */
+    /* set timer */
     ltimer->timer = timer;
     ltimer->for_ever = 0;
 
