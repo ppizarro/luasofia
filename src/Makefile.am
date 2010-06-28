@@ -38,6 +38,7 @@ liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 	sip/luasofia_sip_call_id_private.h \
 	sip/luasofia_sip_content_length_private.h \
 	sip/luasofia_sip_content_type_private.h \
+	sip/luasofia_sip_authenticate_private.h \
 	soa/luasofia_soa.c \
 	tport/luasofia_tport.c \
 	su/luasofia_su.c \

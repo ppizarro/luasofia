@@ -1,4 +1,7 @@
 
+2010-06-28  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* configure.ac: Version 0.1.5
+
 2010-06-24  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* refactory of the su_timer module
 	* nua only will be collected after shutdown complete
