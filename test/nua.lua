@@ -18,13 +18,13 @@
 -- along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------
 
-su = require "sofia.su"
-nua = require "sofia.nua"
-sip = require "sofia.sip"
-soa = require "sofia.soa"
-url = require "sofia.url"
-sdp = require "sofia.sdp"
-tport = require "sofia.tport"
+local su    = require "sofia.su"
+local nua   = require "sofia.nua"
+local sip   = require "sofia.sip"
+local soa   = require "sofia.soa"
+local url   = require "sofia.url"
+local sdp   = require "sofia.sdp"
+local tport = require "sofia.tport"
 
 local callbacks = {}
 
@@ -102,26 +102,27 @@ local function make_user_agent(root, username, sip_port, rtp_port, obj)
 
     local url = "sip:*:" .. sip_port .. ";transport=udp"
 
-    local ua = nua.create(root, callbacks, obj,
-                          { NUTAG_URL = url,
-                            NUTAG_USER_AGENT = "luasofia",
-                            NUTAG_MEDIA_ENABLE = 1,
-                            NUTAG_EARLY_ANSWER = 1,
-                            NUTAG_OUTBOUND = "no-validate no-options-keepalive no-natify",
-                            NUTAG_M_USERNAME = username
-                          })
+    local nua = nua.create(root, callbacks, obj,
+                           { NUTAG_URL = url,
+                             NUTAG_USER_AGENT = "luasofia",
+                             NUTAG_MEDIA_ENABLE = 1,
+                             NUTAG_EARLY_ANSWER = 1,
+                             NUTAG_OUTBOUND = "no-validate no-options-keepalive no-natify",
+                             NUTAG_M_USERNAME = username
+                           })
 
-    if not ua then
+    if not nua then
         error("error on create nua!")
     end
 
-    ua:set_params({ NUTAG_ENABLEINVITE = 1,
-                    NUTAG_AUTOALERT = 1,
-                    NUTAG_SESSION_TIMER = 0,
-                    NUTAG_AUTOANSWER = 0,
-                    SOATAG_USER_SDP_STR = "m=audio "..rtp_port.." RTP/AVP 0 8\r\n"..
-                                          "a=rtpmap:0 PCMU/8000\r\n"..
-                                          "a=rtpmap:8 PCMA/8000\r\n"
+    nua:set_params({ NUTAG_ENABLEINVITE = 1,
+                     NUTAG_AUTOALERT = 0,
+                     NUTAG_AUTOANSWER = 0,
+                     NUTAG_AUTOACK = 0,
+                     NUTAG_SESSION_TIMER = 0,
+                     SOATAG_USER_SDP_STR = "m=audio "..rtp_port.." RTP/AVP 0 8\r\n"..
+                                           "a=rtpmap:0 PCMU/8000\r\n"..
+                                           "a=rtpmap:8 PCMA/8000\r\n"
                   })
     return ua
 end
