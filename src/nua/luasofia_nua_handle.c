@@ -62,7 +62,6 @@ static int luasofia_nua_handle_destroy(lua_State *L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
     luasofia_nua_handle_t *lnh = (luasofia_nua_handle_t*)luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
-
     if (lnh->nh) {
         /* remove lnh of the luasofia userdata table */
         luasofia_userdata_table_remove(L, lnh->nh);
@@ -459,7 +458,6 @@ static const luaL_Reg nua_handle_meths[] = {
     {"method",       luasofia_nua_handle_method },
     {"respond",      luasofia_nua_handle_respond },
     {"destroy",      luasofia_nua_handle_destroy },
-    {"__gc",         luasofia_nua_handle_destroy },
     {NULL, NULL}
 };
 

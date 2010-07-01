@@ -76,6 +76,9 @@ static int luasofia_nua_destroy(lua_State *L)
     luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
 
     if (lnua->nua) {
+        /* remove nua of the luasofia userdata table */
+        luasofia_userdata_table_remove(L, lnua->nua);
+
         // TODO test if shutdown complete before call nua_destroy
         nua_destroy(lnua->nua);
         lnua->nua = NULL;
@@ -113,11 +116,6 @@ static void nua_event_callback(nua_event_t event,
     }
 
     luaL_checkudata(L, -1, NUA_MTABLE);
-
-    if (event == nua_r_shutdown && status >= 200) {
-        /* remove nua of the luasofia userdata table */
-        luasofia_userdata_table_remove(L, nua);
-    }
 
     /* put env table at stack */
     lua_getfenv(L, -1);
@@ -246,7 +244,7 @@ static const luaL_Reg nua_meths[] = {
     {"set_params",    luasofia_nua_set_params },
     {"handle_create", luasofia_nua_create_handle },
     {"shutdown",      luasofia_nua_shutdown },
-    {"__gc",          luasofia_nua_destroy },
+    {"destroy",       luasofia_nua_destroy },
     {NULL, NULL}
 };
 

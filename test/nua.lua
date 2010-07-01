@@ -78,10 +78,19 @@ callbacks[nua.nua_i_state] = function (event, status, phrase, ua, magic, nh, hma
                                  end
                              end
 
+callbacks[nua.nua_i_terminate] = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
+                                     if nh then
+                                         nh:destroy()
+                                     end
+                                 end
+
 callbacks[nua.nua_r_shutdown] = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
                                     print("nua_r_shutdown: status["..status.."] phrase["..phrase.."]")
-                                    if (magic and status == 200) then
-                                        magic.quit = true
+                                    if status >= 200 then
+                                        if magic then
+                                            magic.quit = true
+                                        end
+                                        ua:destroy()
                                     end
                                 end
 
@@ -135,8 +144,6 @@ local a_obj = { quit = false }
 local b_obj = { quit = false }
 
 local ua_a = make_user_agent(root, "1000", 5090, 4000, a_obj )
-
-ua_a:destroy()
 
 local ua_b = make_user_agent(root, "1001", 5080, 5000, b_obj )
 

@@ -1,4 +1,9 @@
 
+2010-07-01  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented destroy method on nua class
+	* nua only will be collected after to call destroy method
+	* fixed nua.lua test to call nua:destroy and nh:destroy
+
 2010-06-28  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.5
 
@@ -14,7 +19,7 @@
 
 2010-06-22  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* support to sofia devel (1.12.11) library (configure --enable-sofia-devel)
-	* Added more tport tags: TPTAG_TLS_VERIFY_POLICY, TPTAG_TLS_VERIFY_DEPTH, 
+	* added more tport tags: TPTAG_TLS_VERIFY_POLICY, TPTAG_TLS_VERIFY_DEPTH, 
 	  TPTAG_TLS_VERIFY_DATE, TPTAG_TLS_VERIFY_SUBJECT. (only 1.12.11)
 	* implemented su_timer_is_set (only 1.12.11)
 
