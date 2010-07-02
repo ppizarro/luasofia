@@ -1,9 +1,11 @@
 
-2010-07-01  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* implemented threading method on root class
+2010-07-02  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented threading method on the root class
+	* fixed bind method of the NuaHandle class
+	  to accept nil or none values (unbind)
 
 2010-07-01  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* implemented destroy method on nua class
+	* implemented destroy method on the nua class
 	* nua only will be collected after to call destroy method
 	* fixed nua.lua test to call nua_destroy and nh_destroy
 

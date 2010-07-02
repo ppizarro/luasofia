@@ -45,6 +45,12 @@ callbacks[nua.nua_i_state] = function (event, status, phrase, ua, magic, nh, hma
                                  end
                              end
 
+callbacks[nua.nua_i_terminated] = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
+                                      if nh then
+                                          nh:destroy()
+                                      end
+                                  end
+
 local function make_call(ua, uri, from, to)
 
     local nh = ua:handle_create({ NUTAG_URL = uri,

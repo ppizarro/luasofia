@@ -37,8 +37,17 @@ static int luasofia_nua_handle_bind(lua_State *L)
     /* check first argument (should be a luasofia_nua_handle_t) */
     luaL_checkudata(L, 1, NUA_HANDLE_MTABLE);
 
-    /* check second argument is a table */
-    luaL_checktype(L, 2, LUA_TTABLE);
+    if (lua_isnone(L, 2)) {
+        lua_pushnil(L);
+        /* set nil as environment for udata */
+        lua_setfenv(L, 1);
+        return 0;
+    }
+
+    /* check second argument is a table or nil */
+    if (!lua_istable(L, 2) && !lua_isnil(L, 2)) {
+        luaL_error(L, "param to bind is not a table or nil!");
+    }
 
     /* set table as environment for udata */
     lua_setfenv(L, 1);
