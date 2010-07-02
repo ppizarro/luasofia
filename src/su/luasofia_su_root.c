@@ -99,6 +99,24 @@ static int luasofia_su_root_break(lua_State *L)
     return 0;
 }
 
+static int luasofia_su_root_threading(lua_State *L)
+{
+    int enable = 0;
+
+    luasofia_su_root_t *lroot = NULL;
+   
+    /* get enable param */
+    enable = lua_toboolean(L, -1);
+
+    /* get and check first argument (should be a root) */
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+
+    enable = su_root_threading(lroot->root, enable);
+
+    lua_pushboolean(L, enable);
+    return 1;
+}
+
 static int luasofia_su_root_step(lua_State *L)
 {
     return 0;
@@ -137,6 +155,7 @@ static const luaL_Reg su_root_meths[] = {
     {"run", luasofia_su_root_run },
     {"quit", luasofia_su_root_break },
     {"step", luasofia_su_root_step },
+    {"threading", luasofia_su_root_threading },
     {"get_max_defer", luasofia_su_root_get_max_defer },
     {"set_max_defer", luasofia_su_root_set_max_defer },
     {"task", luasofia_su_root_task },

@@ -1,8 +1,11 @@
 
 2010-07-01  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented threading method on root class
+
+2010-07-01  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented destroy method on nua class
 	* nua only will be collected after to call destroy method
-	* fixed nua.lua test to call nua:destroy and nh:destroy
+	* fixed nua.lua test to call nua_destroy and nh_destroy
 
 2010-06-28  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.5

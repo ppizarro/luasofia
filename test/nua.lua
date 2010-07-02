@@ -78,11 +78,11 @@ callbacks[nua.nua_i_state] = function (event, status, phrase, ua, magic, nh, hma
                                  end
                              end
 
-callbacks[nua.nua_i_terminate] = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
-                                     if nh then
-                                         nh:destroy()
-                                     end
-                                 end
+callbacks[nua.nua_i_terminated] = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
+                                      if nh then
+                                          nh:destroy()
+                                      end
+                                  end
 
 callbacks[nua.nua_r_shutdown] = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
                                     print("nua_r_shutdown: status["..status.."] phrase["..phrase.."]")
@@ -111,27 +111,27 @@ local function make_user_agent(root, username, sip_port, rtp_port, obj)
 
     local url = "sip:*:" .. sip_port .. ";transport=udp"
 
-    local nua = nua.create(root, callbacks, obj,
-                           { NUTAG_URL = url,
-                             NUTAG_USER_AGENT = "luasofia",
-                             NUTAG_MEDIA_ENABLE = 1,
-                             NUTAG_EARLY_ANSWER = 1,
-                             NUTAG_OUTBOUND = "no-validate no-options-keepalive no-natify",
-                             NUTAG_M_USERNAME = username
-                           })
+    local ua = nua.create(root, callbacks, obj,
+                          { NUTAG_URL = url,
+                            NUTAG_USER_AGENT = "luasofia",
+                            NUTAG_MEDIA_ENABLE = 1,
+                            NUTAG_EARLY_ANSWER = 1,
+                            NUTAG_OUTBOUND = "no-validate no-options-keepalive no-natify",
+                            NUTAG_M_USERNAME = username
+                          })
 
-    if not nua then
+    if not ua then
         error("error on create nua!")
     end
 
-    nua:set_params({ NUTAG_ENABLEINVITE = 1,
-                     NUTAG_AUTOALERT = 0,
-                     NUTAG_AUTOANSWER = 0,
-                     NUTAG_AUTOACK = 0,
-                     NUTAG_SESSION_TIMER = 0,
-                     SOATAG_USER_SDP_STR = "m=audio "..rtp_port.." RTP/AVP 0 8\r\n"..
-                                           "a=rtpmap:0 PCMU/8000\r\n"..
-                                           "a=rtpmap:8 PCMA/8000\r\n"
+    ua:set_params({ NUTAG_ENABLEINVITE = 1,
+                    NUTAG_AUTOALERT = 0,
+                    NUTAG_AUTOANSWER = 0,
+                    NUTAG_AUTOACK = 0,
+                    NUTAG_SESSION_TIMER = 0,
+                    SOATAG_USER_SDP_STR = "m=audio "..rtp_port.." RTP/AVP 0 8\r\n"..
+                                          "a=rtpmap:0 PCMU/8000\r\n"..
+                                          "a=rtpmap:8 PCMA/8000\r\n"
                   })
     return ua
 end
@@ -139,6 +139,8 @@ end
 su.init()
 
 local root = su.root_create()
+
+root:threading(false)
 
 local a_obj = { quit = false }
 local b_obj = { quit = false }

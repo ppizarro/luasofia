@@ -89,6 +89,8 @@ su.init()
 
 local root = su.root_create()
 
+root:threading(false)
+
 local ua_a = make_user_agent(root, "1000", 5090, 4000 )
 
 local ua_b = make_user_agent(root, "1001", 5080, 5000 )

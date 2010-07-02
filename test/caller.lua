@@ -31,15 +31,17 @@ if #argv < 4 then
     return
 end
 
+su.init()
+
 local root = su.root_create()
+root:threading(false)
+
 local try_again       = 0
 local max_try_again   = 3
 local try_again_ms    = 100
 local caller_username = args[2]
 local domain          = args[3]
 local callee_username = args[4]
-
-su.init()
 
 
 local function new_user_agent(root, username, sip_port, rtp_port, userdata)
@@ -185,8 +187,12 @@ local nua_callbacks = {
 
     nua_r_shutdown     = function (event, status, phrase, ua, magic, nh, hmagic, sip_lu, tags)
                              print("nua_r_shutdown: status["..status.."] phrase["..phrase.."]")
-                             if (magic and status == 200) then
-                                 magic.quit = true
+                             if status >= 200 then
+                                 if (magic) then
+                                     magic.quit = true
+                                 end
+                                 ua:destroy()
                              end
                          end
 }
+
