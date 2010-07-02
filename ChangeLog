@@ -1,5 +1,6 @@
 
 2010-07-02  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* configure.ac: Version 0.1.6devel
 	* implemented threading method on the root class
 	* fixed bind method of the NuaHandle class
 	  to accept nil or none values (unbind)
