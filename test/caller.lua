@@ -18,6 +18,8 @@
 -- along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
 ------------------------------------------------------------------------------
 
+--TODO end this test :-)
+
 local sofia = require "sofia.su"
 local nua   = require "sofia.nua"
 local sip   = require "sofia.sip"

@@ -109,7 +109,7 @@ static int luasofia_su_root_threading(lua_State *L)
     enable = lua_toboolean(L, -1);
 
     /* get and check first argument (should be a root) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -2, SU_ROOT_MTABLE);
 
     enable = su_root_threading(lroot->root, enable);
 
