@@ -32,9 +32,9 @@
 static int luasofia_msg_params_find(lua_State *L)
 {
     /* get and check first argument (should be a msg_param_t const **) */
-    msg_param_t const *params = (msg_param_t const *) lua_touserdata (L, 1);
+    msg_param_t const *params = (msg_param_t const *) lua_touserdata (L, -2);
     /* get and check second argument (should be a string) */
-    char const *name = lua_tostring(L, 2);
+    char const *name = lua_tostring(L, -1);
     msg_param_t ret = 0;
 
     if (!params) {

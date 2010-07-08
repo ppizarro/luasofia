@@ -30,11 +30,10 @@ typedef struct luasofia_nta_agent_s {
     lua_State *L;
 } luasofia_nta_agent_t;
 
-
 static int luasofia_nta_agent_destroy(lua_State* L)
 {
     /* get and check first argument (should be a luasofia_nua_handle_t) */
-    luasofia_nta_agent_t *agent = (luasofia_nta_agent_t*)luaL_checkudata(L, 1, NTA_AGENT_MTABLE);
+    luasofia_nta_agent_t *agent = (luasofia_nta_agent_t*)luaL_checkudata(L, -1, NTA_AGENT_MTABLE);
 
     if (agent->agent) {
         /* remove userdata_table[nta_agent_lightudata] = nta_agent_fulludata */
@@ -53,7 +52,6 @@ static const luaL_Reg nta_agent_meths[] = {
     {"__gc", luasofia_nta_agent_destroy },
     {NULL, NULL}
 };
-
 
 static int nta_agent_message_callback(nta_agent_magic_t *context,
                                nta_agent_t *agent,
@@ -79,43 +77,46 @@ static int nta_agent_message_callback(nta_agent_magic_t *context,
     lua_pushlightuserdata(L, msg);
     lua_pushlightuserdata(L, sip);
 
-    lua_call(L,3,0);
+    lua_call(L, 3, 0);
     lua_pop(L, 1);
     return 0;
 }
 
-
 int luasofia_nta_agent_create(lua_State * L)
 {
     luasofia_su_root_t *lroot = NULL;
-    url_string_t * name = NULL;
+    url_string_t * contact = NULL;
     luasofia_nta_agent_t* u_nta_agent = NULL;
     su_home_t *home = su_home_create();
     tagi_t *tags = NULL;
 
     /* get and check first argument (should be a root_t) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -4, SU_ROOT_MTABLE);
 
-    if(lua_isuserdata (L, 2)){
+    if(lua_isuserdata (L, -3)) {
         //Since there is no metatable for url_t or url_string_t we cant perform a checkudata here.
-        name = (url_string_t *) lua_touserdata (L, 2);
-    }else{
-        name = URL_STRING_MAKE(luaL_checkstring (L, 2));
+        contact = (url_string_t *) lua_touserdata (L, -3);
+    } else {
+        contact = URL_STRING_MAKE(luaL_checkstring (L, -3));
     }
 
     /* check the callback function */
-    if(!lua_isfunction(L, 3))
+    if(!lua_isfunction(L, -2))
         luaL_error(L, "nta_agent_create failed!, expected a callback function !");
 
     /* check if there is tags */
-    tags = luasofia_tags_table_to_taglist(L, 4, home);
+    tags = luasofia_tags_table_to_taglist(L, -1, home);
 
     u_nta_agent           = (luasofia_nta_agent_t *) lua_newuserdata(L, sizeof(luasofia_nta_agent_t));
     u_nta_agent->L        = L;
-    u_nta_agent->agent    = nta_agent_create (lroot->root, (url_string_t const *) name, nta_agent_message_callback, (nta_agent_magic_t *) u_nta_agent, TAG_NEXT(tags));
+    u_nta_agent->agent    = nta_agent_create (lroot->root,
+                                              (url_string_t const *)contact,
+                                              nta_agent_message_callback,
+                                              (nta_agent_magic_t *)u_nta_agent,
+                                              TAG_NEXT(tags));
 
     // lets hold the ref to the lua callback function.
-    lua_pushvalue(L, 3);
+    lua_pushvalue(L, -3);
     u_nta_agent->callback_ref = luaL_ref(L, LUA_REGISTRYINDEX);
 
     if (!u_nta_agent->agent)
@@ -132,7 +133,6 @@ int luasofia_nta_agent_create(lua_State * L)
     su_home_unref(home);
     return 1;
 }
-
 
 int luasofia_nta_agent_register_meta(lua_State* L)
 {
