@@ -1,4 +1,10 @@
 
+2010-07-09  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* changed LUA_CMODULE default value on the configure.ac
+
+2010-07-08  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* changed to use negative numbers on the access to the stack
+
 2010-07-02  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.6devel
 	* implemented threading method on the root class

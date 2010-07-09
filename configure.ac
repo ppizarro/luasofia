@@ -80,12 +80,12 @@ PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1,
     ])
 ])
 
-if test "x$LUA_CMODULE" = x; then
-    LUA_CMODULE="/usr/local/lib/lua/5.1"
-fi
-
 if test "x$LUA_VERSION" = x; then
     LUA_VERSION="5.1"
+fi
+
+if test "x$LUA_CMODULE" = x; then
+    LUA_CMODULE="$libdir/lua/$LUA_VERSION"
 fi
 
 AC_SUBST(LUA_LIBS)
