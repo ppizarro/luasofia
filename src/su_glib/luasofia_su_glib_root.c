@@ -38,8 +38,6 @@ int luasofia_su_glib_root_create(lua_State *L)
     if (!root)
         luaL_error(L, "su_root_create failed!");
 
-    su_root_threading(root, 0);
-
     /* create a su_root object */
     lroot = (luasofia_su_root_t*) lua_newuserdata(L, sizeof(luasofia_su_root_t));
     /* set Lua state */
@@ -57,7 +55,7 @@ static int luasofia_su_glib_root_gsource(lua_State *L)
     luasofia_su_root_t *lroot = NULL;
 
     /* get and check first argument (should be a glib root) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
 
     if (!lroot->root) 
         luaL_error(L, "su_glib_root_gsource failed !, NULL su_root_t");
