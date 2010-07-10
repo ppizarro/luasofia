@@ -150,18 +150,18 @@ static int luasofia_proxy_index(lua_State *L)
     luasofia_proxy_info_t* m = NULL;
 
     /* stack has userdata, index */
-    void** ust = luaL_checkudata(L, 1, LUASOFIA_PROXY_META);
+    void** ust = luaL_checkudata(L, -2, LUASOFIA_PROXY_META);
 
     /* put struct info table at stack */
-    lua_getfenv(L, 1);
+    lua_getfenv(L, -2);
 
     /* put index at stack top */
-    lua_pushvalue(L, 2);
+    lua_pushvalue(L, -2);
 
     /* lookup member by name */
     lua_rawget(L, -2);      
     if (!lua_islightuserdata(L, -1))
-        luaL_error(L, "cannot get member '%s'", lua_tostring(L, 2));
+        luaL_error(L, "cannot get member '%s'", lua_tostring(L, -3));
     m = (luasofia_proxy_info_t*)lua_touserdata(L, -1);
 
     /* drop lightuserdata and info table */
@@ -174,7 +174,7 @@ static int luasofia_proxy_index(lua_State *L)
 static int luasofia_proxy_tostring(lua_State *L)
 {
     /* stack has userdata */
-    void** ust = luaL_checkudata(L, 1, LUASOFIA_PROXY_META);
+    void** ust = luaL_checkudata(L, -1, LUASOFIA_PROXY_META);
 
     if (ust)
         lua_pushfstring(L, "proxy: %p", *ust);
