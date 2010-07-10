@@ -95,10 +95,10 @@ int luasofia_su_timer_create(lua_State *L)
     su_duration_t msec = 0;
 
     /* get first argument (a task) */
-    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
+    ltask = (luasofia_su_task_t*)luaL_checkudata(L, -2, SU_TASK_MTABLE);
 
     /* get second argument (a duration int) */
-    msec = luaL_checkinteger(L, 2);
+    msec = luaL_checkinteger(L, -1);
 
     /* create the su_timer */
     timer = su_timer_create(ltask->ptask, msec);
@@ -129,7 +129,7 @@ static int luasofia_su_timer_destroy(lua_State *L)
     luasofia_su_timer_t *ltimer = NULL;
 
     /* get and check first argument (should be a timer) */
-    ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, 1, SU_TIMER_MTABLE);
+    ltimer = (luasofia_su_timer_t*)luaL_checkudata(L, -1, SU_TIMER_MTABLE);
 
     if (ltimer->timer) {
         su_timer_destroy(ltimer->timer);

@@ -149,7 +149,7 @@ tag_type_t luasofia_tags_find(lua_State *L)
     lua_rawget(L, -2);
 
     if (!lua_islightuserdata(L, -1))
-        luaL_error(L, "Failed to get tag object '%s'", lua_tostring(L, 2));
+        luaL_error(L, "Failed to get tag object '%s'", lua_tostring(L, -3));
 
     t_tag = (tag_type_t)lua_touserdata(L, -1);
     lua_pop(L, 2);

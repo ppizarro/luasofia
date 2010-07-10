@@ -53,7 +53,7 @@ static int luasofia_su_tags_index(lua_State *L)
     tagi_t *tags = NULL;
 
     /* stack has userdata, index */
-    void** ust = luaL_checkudata(L, 1, LUASOFIA_TAGS_META);
+    void** ust = luaL_checkudata(L, -2, LUASOFIA_TAGS_META);
     tags = *ust;
 
     if(!tags)

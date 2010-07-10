@@ -53,7 +53,7 @@ static int luasofia_su_root_destroy(lua_State *L)
     luasofia_su_root_t *lroot = NULL;
 
     /* get and check first argument (should be a root) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
 
     if (lroot->root) {
         su_root_destroy(lroot->root);
@@ -82,7 +82,7 @@ static int luasofia_su_root_run(lua_State *L)
     luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a root) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
 
     su_root_run(lroot->root);
     return 0;
@@ -93,7 +93,7 @@ static int luasofia_su_root_break(lua_State *L)
     luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a root) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
 
     su_root_break(lroot->root);
     return 0;
@@ -137,7 +137,7 @@ static int luasofia_su_root_task(lua_State *L)
     luasofia_su_root_t *lroot = NULL;
    
     /* get and check first argument (should be a root) */
-    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 1, SU_ROOT_MTABLE);
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
 
     luasofia_su_task_init(L, su_root_task(lroot->root));
     return 1;

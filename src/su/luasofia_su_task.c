@@ -62,7 +62,7 @@ static int luasofia_su_task_destroy(lua_State *L)
     luasofia_su_task_t *ltask = NULL;
    
     /* get and check first argument (should be a task) */
-    ltask = (luasofia_su_task_t*)luaL_checkudata(L, 1, SU_TASK_MTABLE);
+    ltask = (luasofia_su_task_t*)luaL_checkudata(L, -1, SU_TASK_MTABLE);
 
     if (ltask->ptask == (_su_task_t*)&(ltask->task)) {
         su_task_deinit(ltask->task);
