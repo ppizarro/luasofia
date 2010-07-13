@@ -1,4 +1,8 @@
 
+2010-07-13  Guilherme Silveira <xguiga@gmail.com>
+	* implemented function get_proxy_subscription_state on the module 'sip'
+	* implemented function get_proxy_msg_payload on the module 'sip'
+
 2010-07-10  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* changed sdp module to use negative numbers on the access to the stack 
 	* changed glib module to use negative numbers on the access to the stack 
