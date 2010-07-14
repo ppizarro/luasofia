@@ -25,14 +25,10 @@
  
 #include "utils/luasofia_utils.h"
 
-void stack_dump(lua_State *L)
+static void print_value(lua_State *L, int i)
 {
-    int i = 1;
-    int top = lua_gettop(L);
-    printf("stack(%d): ", top);
-    for (; i <= top; i++) {
-        int t = lua_type(L, i);
-        switch (t) {
+    int t = lua_type(L, i);
+    switch (t) {
         case LUA_TSTRING:
             printf("'%s'", lua_tostring(L, i));
             break;
@@ -44,9 +40,40 @@ void stack_dump(lua_State *L)
             break;
         default:
             printf("%s", lua_typename(L, t));
-        }
+    }
+}
+
+void stack_dump(lua_State *L)
+{
+    int i = 1;
+    int top = lua_gettop(L);
+    printf("stack(%d): ", top);
+    for (; i <= top; i++) {
+        print_value(L, i);
         printf(" ");
     }
     printf("\n");
+}
+
+void print_table(lua_State *L, int i)
+{
+    if (!lua_istable(L, i)) {
+        printf("can print only tables !!!\n");
+        return;
+    }
+
+    /* table is in the stack at index 'i' */
+    lua_pushnil(L);  /* first key */
+
+    while (lua_next(L, i) != 0) {
+        /* uses 'key' (at index -2) and 'value' (at index -1) */
+        printf("key: ");
+        print_value(L, -2);
+
+        printf("value: ");
+        print_value(L, -1);
+        /* removes 'value'; keeps 'key' for next iteration */
+        lua_pop(L, 1);
+    }
 }
 
