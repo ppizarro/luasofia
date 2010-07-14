@@ -48,7 +48,7 @@ int luaopen_sofia_glib(lua_State *L)
     /* sofia[glib] = table */
     lua_newtable(L);
     lua_pushvalue(L, -1);
-    lua_setfield(L, -3, "glib");
+    lua_setfield(L, -4, "glib");
     luaL_register(L, NULL, luasofia_glib_lib);
     return 1;
 }
