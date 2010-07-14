@@ -1,3 +1,50 @@
+=============
+Version 0.1.5
+=============
+
+luasofia Core:
+ * refactory of the su_timer module
+ * nua only will be collected after shutdown complete
+ * support to sofia devel (1.12.11) library (configure --enable-sofia-devel)
+ * fixed glib module name (sofia.glib)
+ * fixed configure.ac to default lua paths
+
+"msg" module:
+ * created msg module
+ * implemented params_find function
+
+"sip" module:
+ * implemented function get_proxy_authenticate
+
+"tport" module:
+ * Added more tport tags: TPTAG_TLS_VERIFY_POLICY,
+TPTAG_TLS_VERIFY_DEPTH, TPTAG_TLS_VERIFY_DATE,
+TPTAG_TLS_VERIFY_SUBJECT. (only 1.12.11)
+
+"su" module:
+ * implemented su_timer_is_set (only 1.12.11)
+
+=============
+Version 0.1.4
+=============
+
+luasofia Core:
+* Changed module's name from 'luasofia' to 'sofia'
+* Changed library's name from 'libluasofia.so' to 'liblua5.1-sofia.so'
+* Changed library's name from 'libluasofia-glib.so' to 'liblua5.1-sofia-glib.so'
+* Fixed core on luasofia.nua.__gc
+* Fixed core on callback where trying to access an already colleted
+nua userdata.
+
+=============
+Version 0.1.3
+=============
+
+luasofia Core:
+   * Change luasofia.nua.create function to receive a magic param.
+   * Callback functions returns a magic value.
+   * Implemented nua_handle_bind to bind a hmagic param with nua handle.
+   * Callback functions returns a hmagic value.
 
 =============
 Version 0.1.2
