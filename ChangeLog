@@ -1,4 +1,10 @@
 
+2010-07-15  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* refactory on load module glib, requiring 'sofia.glib' doesn't load the 'sofia.su' module anymore
+
+2010-07-14  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* fixing bug when loading sofia.glib after loading sofia.su
+
 2010-07-13  Guilherme Silveira <xguiga@gmail.com>
 	* implemented function get_proxy_subscription_state on the module 'sip'
 	* implemented function get_proxy_msg_payload on the module 'sip'

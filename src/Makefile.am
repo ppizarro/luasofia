@@ -42,7 +42,6 @@ liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 	soa/luasofia_soa.c \
 	tport/luasofia_tport.c \
 	su/luasofia_su.c \
-	su/luasofia_su.h \
 	su/luasofia_su_root.h \
 	su/luasofia_su_tags.h \
 	su/luasofia_su_task.h \

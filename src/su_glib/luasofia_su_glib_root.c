@@ -53,6 +53,7 @@ int luasofia_su_glib_root_create(lua_State *L)
 static int luasofia_su_glib_root_gsource(lua_State *L)
 {
     luasofia_su_root_t *lroot = NULL;
+    GSource* source = NULL;
 
     /* get and check first argument (should be a glib root) */
     lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
@@ -60,7 +61,11 @@ static int luasofia_su_glib_root_gsource(lua_State *L)
     if (!lroot->root) 
         luaL_error(L, "su_glib_root_gsource failed !, NULL su_root_t");
 
-    lua_pushlightuserdata(L, su_glib_root_gsource(lroot->root));
+    source = su_glib_root_gsource(lroot->root);
+    if(!source)
+        luaL_error(L, "su_glib_root_gsource failed !, su_glib_root_gsource returns NULL");
+
+    lua_pushlightuserdata(L, source);
     return 1;
 }
 
@@ -72,7 +77,10 @@ static const luaL_Reg su_glib_root_meths[] = {
 
 int luasofia_su_glib_root_register_meta(lua_State *L)
 {
-    luaL_getmetatable(L, SU_ROOT_MTABLE);
+    luaL_newmetatable(L, SU_ROOT_MTABLE);
+    /* metatable.__index = metatable */
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
     luaL_register(L, NULL, su_glib_root_meths);
     lua_pop(L, 1);
     return 0;
