@@ -28,6 +28,12 @@
 static void print_value(lua_State *L, int i)
 {
     int t = lua_type(L, i);
+
+    if (lua_isnone(L, i) || lua_isnil(L, i)) {
+        printf("Invalid value at index[%d]", i);
+        return;
+    }
+
     switch (t) {
         case LUA_TSTRING:
             printf("'%s'", lua_tostring(L, i));
@@ -62,6 +68,7 @@ void print_table(lua_State *L, int i)
         return;
     }
 
+    printf("Printing table at index[%d]\n", i);
     /* table is in the stack at index 'i' */
     lua_pushnil(L);  /* first key */
 
@@ -70,8 +77,9 @@ void print_table(lua_State *L, int i)
         printf("key: ");
         print_value(L, -2);
 
-        printf("value: ");
+        printf(" value: ");
         print_value(L, -1);
+        printf("\n");
         /* removes 'value'; keeps 'key' for next iteration */
         lua_pop(L, 1);
     }

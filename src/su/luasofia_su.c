@@ -57,6 +57,15 @@ static const luaL_Reg su_lib[] = {
 int luaopen_sofia_su(lua_State *L)
 {
     luaopen_sofia(L);
+    lua_getfield(L, -1, "su");
+
+    /* check if sofia.su is already loaded */
+    if (!lua_isnil(L, -1)) {
+        return 1;
+    }    
+
+    /* not loaded, lets load it !!*/
+    lua_pop(L, 1);
 
     luasofia_su_root_register_meta(L);
     luasofia_su_timer_register_meta(L);

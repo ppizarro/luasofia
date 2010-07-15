@@ -27,5 +27,12 @@
     @param L - The lua_State that holds the stack.
 */ 
 void stack_dump(lua_State *L);
+
+/**
+    Prints all the content of a table, usefull for debugging.
+    @param L - The lua_State that holds the stack.
+    @param i - The index where the table is at stack.
+*/
+void print_table(lua_State *L, int i);
  
 #endif //__LUASOFIA_UTILS

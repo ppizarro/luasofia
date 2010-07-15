@@ -42,9 +42,7 @@ static const luaL_Reg luasofia_glib_lib[] = {
 
 int luaopen_sofia_glib(lua_State *L)
 {
-    stack_dump(L);
     luaopen_sofia_su(L);
-    stack_dump(L);
 
     luasofia_su_glib_root_register_meta(L);
 
