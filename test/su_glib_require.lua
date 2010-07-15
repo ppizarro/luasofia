@@ -38,3 +38,5 @@ print_table(sofia.su)
 print("\nPrinting global glib: ")
 print_table(sofia.glib)
 
+assert(glib == sofia.glib)
+assert(su == sofia.su)
