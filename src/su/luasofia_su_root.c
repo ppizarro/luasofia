@@ -171,8 +171,8 @@ int luasofia_su_root_register_meta(lua_State *L)
         lua_pushvalue(L, -1);
         lua_setfield(L, -2, "__index");
         luaL_register(L, NULL, su_root_meths);
-        lua_pop(L, 1);
     }
+    lua_pop(L, 1);
     return 0;
 }
 
