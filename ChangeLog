@@ -1,5 +1,8 @@
 
 2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* configure.ac: Version 0.1.7devel
+
+2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.6
 	* implemented function status_phrase on the module 'sip'
 
