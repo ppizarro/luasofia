@@ -406,7 +406,7 @@ static const luasofia_reg_const_t nua_constants[] = {
     { "nua_callstate_calling", nua_callstate_calling},
     { "nua_callstate_proceeding", nua_callstate_proceeding},
     { "nua_callstate_completing", nua_callstate_completing},
-    { "nua_callstate_received ", nua_callstate_received},
+    { "nua_callstate_received", nua_callstate_received},
     { "nua_callstate_early", nua_callstate_early},
     { "nua_callstate_completed", nua_callstate_completed},
     { "nua_callstate_ready", nua_callstate_ready},
