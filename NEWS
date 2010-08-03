@@ -1,3 +1,25 @@
+
+=============
+Version 0.1.6
+=============
+
+luasofia Core:
+ * nua object only will be collected after calling destroy method
+ * loading sofia.glib after loading sofia.su no longer crashes
+ * added luarocks support
+
+"nua" module:
+ * implemented destroy method on the nua class
+ * fixed bind method of the NuaHandle class to accept nil or none values (unbind)
+
+"si" module:
+ * implemented function get_proxy_subscription_state on the module 'sip'
+ * implemented function get_proxy_msg_payload on the module 'sip'
+ * implemented function status_phrase on the module 'sip'
+
+"su" module:
+ * implemented threading method on the root class
+
 =============
 Version 0.1.5
 =============

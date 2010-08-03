@@ -1,6 +1,10 @@
 
 2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* implemented function sip_status_phrase on the module 'sip'
+	* configure.ac: Version 0.1.6
+	* implemented function status_phrase on the module 'sip'
+
+2010-07-22  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* added luarocks support
 
 2010-07-15  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* refactory on load module glib, requiring 'sofia.glib' doesn't load the 'sofia.su' module anymore
@@ -32,7 +36,7 @@
 
 2010-07-01  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented destroy method on the nua class
-	* nua only will be collected after to call destroy method
+	* nua only will be collected after calling destroy method
 	* fixed nua.lua test to call nua_destroy and nh_destroy
 
 2010-06-28  Paulo Pizarro <paulo.pizarro@gmail.com>
