@@ -1,6 +1,7 @@
 
 2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.7devel
+	* Fixed nua_callstate_received constant name
 
 2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.6
