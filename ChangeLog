@@ -1,4 +1,7 @@
 
+2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented function sip_status_phrase on the module 'sip'
+
 2010-07-15  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* refactory on load module glib, requiring 'sofia.glib' doesn't load the 'sofia.su' module anymore
 

@@ -31,6 +31,7 @@
 
 #include <sofia-sip/sip.h>
 #include <sofia-sip/sip_tag.h>
+#include <sofia-sip/sip_status.h>
 
 #include "luasofia_sip_addr_private.h"
 #include "luasofia_sip_contact_private.h"
@@ -48,6 +49,13 @@
 #include "luasofia_sip_subscription_state_private.h"
 #include "luasofia_sip_msg_payload_private.h"
 
+static int luasofia_sip_status_phrase(lua_State *L)
+{
+    int status = lua_tointeger(L, -1);
+    char const *phrase = sip_status_phrase(status);
+    lua_pushstring(L, phrase);
+    return 1;
+}
 
 static const luaL_Reg sip_lib[] = {
     {"get_proxy",                    luasofia_sip_get_proxy },
@@ -65,6 +73,7 @@ static const luaL_Reg sip_lib[] = {
     {"get_proxy_authenticate",       luasofia_sip_get_proxy_authenticate },
     {"get_proxy_subscription_state", luasofia_sip_get_proxy_subscription_state },
     {"get_proxy_msg_payload",        luasofia_sip_get_proxy_msg_payload },
+    {"status_phrase",                luasofia_sip_status_phrase },
     {NULL, NULL}
 };
 
