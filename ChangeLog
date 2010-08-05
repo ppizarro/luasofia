@@ -1,4 +1,7 @@
 
+2010-08-05  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* implemented function nua_callstate_name on the module 'nua'
+
 2010-08-04  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* added more soa tags: SOATAG_DELAYED_OFFER_ENABLE (configure --enable-sofia-devel)
 

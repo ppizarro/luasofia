@@ -240,6 +240,14 @@ static int luasofia_nua_event_name(lua_State *L)
     return 1;
 }
 
+static int luasofia_nua_callstate_name(lua_State *L)
+{
+    enum nua_callstate call_state = lua_tointeger(L, -1);
+    char const *name = nua_callstate_name(call_state);
+    lua_pushstring(L, name);
+    return 1;
+}
+
 static const luaL_Reg nua_meths[] = {
     {"set_params",    luasofia_nua_set_params },
     {"handle_create", luasofia_nua_create_handle },
@@ -249,8 +257,9 @@ static const luaL_Reg nua_meths[] = {
 };
 
 static const luaL_Reg nua_lib[] = {
-    {"create", luasofia_nua_create },
-    {"event_name", luasofia_nua_event_name },
+    {"create",         luasofia_nua_create },
+    {"event_name",     luasofia_nua_event_name },
+    {"callstate_name", luasofia_nua_callstate_name },
     {NULL, NULL}
 };
 
