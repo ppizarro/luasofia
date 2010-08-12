@@ -22,64 +22,86 @@
 #include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
- 
+
 #include "utils/luasofia_log.h"
+
+/**@var LUASOFIA_DEBUG
+ *
+ * Environment variable determining the default debug log level.
+ *
+ * The LUASOFIA_DEBUG environment variable is used to determine the default
+ * debug logging level. The normal level is 3.
+ *
+ * @sa <sofia-sip/su_debug.h>, su_log_global, SOFIA_DEBUG
+ */
+extern char const LUASOFIA_DEBUG[];
+
+#ifndef SU_DEBUG
+#define SU_DEBUG 3
+#endif
+
+/**Debug log for @b luasofia module.
+ *
+ * The luasofia_log is the log object used by @b luasofia module. The level of
+ * #luasofia_log is set using #LUASOFIA_DEBUG environment variable.
+ */
+su_log_t luasofia_log[] = { SU_LOG_INIT("luasofia", "LUASOFIA_DEBUG", SU_DEBUG) };
 
 static void print_value(lua_State *L, int i)
 {
     int t = lua_type(L, i);
 
     if (lua_isnone(L, i) || lua_isnil(L, i)) {
-        printf("Invalid value at index[%d]", i);
+        SU_DEBUG_9(("Invalid value at index[%d]", i));
         return;
     }
 
     switch (t) {
         case LUA_TSTRING:
-            printf("'%s'", lua_tostring(L, i));
+            SU_DEBUG_9(("'%s'", lua_tostring(L, i)));
             break;
         case LUA_TBOOLEAN:
-            printf(lua_toboolean(L, i) ? "true" : "false");
+            SU_DEBUG_9((lua_toboolean(L, i) ? "true" : "false"));
             break;
         case LUA_TNUMBER:
-            printf("%g", lua_tonumber(L, i));
+            SU_DEBUG_9(("%g", lua_tonumber(L, i)));
             break;
         default:
-            printf("%s", lua_typename(L, t));
+            SU_DEBUG_9(("%s", lua_typename(L, t)));
     }
 }
 
-void stack_dump(lua_State *L)
+void luasofia_stack_dump(lua_State *L)
 {
     int i = 1;
     int top = lua_gettop(L);
-    printf("stack(%d): ", top);
+    SU_DEBUG_9(("stack(%d): ", top));
     for (; i <= top; i++) {
         print_value(L, i);
-        printf(" ");
+        SU_DEBUG_9((" "));
     }
-    printf("\n");
+    SU_DEBUG_9(("\n"));
 }
 
-void print_table(lua_State *L, int i)
+void luasofia_log_table(lua_State *L, int i)
 {
     if (!lua_istable(L, i)) {
-        printf("can print only tables !!!\n");
+        SU_DEBUG_9(("can print only tables !!!\n"));
         return;
     }
 
-    printf("Printing table at index[%d]\n", i);
+    SU_DEBUG_9(("logging table at index[%d]\n", i));
     /* table is in the stack at index 'i' */
     lua_pushnil(L);  /* first key */
 
     while (lua_next(L, i) != 0) {
         /* uses 'key' (at index -2) and 'value' (at index -1) */
-        printf("key: ");
+        SU_DEBUG_9(("key: "));
         print_value(L, -2);
 
-        printf(" value: ");
+        SU_DEBUG_9((" value: "));
         print_value(L, -1);
-        printf("\n");
+        SU_DEBUG_9(("\n"));
         /* removes 'value'; keeps 'key' for next iteration */
         lua_pop(L, 1);
     }

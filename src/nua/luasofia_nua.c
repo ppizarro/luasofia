@@ -28,6 +28,7 @@
 #include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
+#include "utils/luasofia_log.h"
 #include "nua/luasofia_nua_handle.h"
 
 #include <sofia-sip/nua.h>
@@ -104,14 +105,15 @@ static void nua_event_callback(nua_event_t event,
 {
     lua_State *L = (lua_State *)magic;
 
-    //printf("nua: event[%d] status[%d] phrase[%s] nua[%p] magic[%p] sip[%p] tags[%p]\n",
-    //       event, status, phrase, nua, magic, sip, tags);
+    SU_DEBUG_9(("nua_event_callback: event[%s] status[%d] phrase[%s] "
+                "nua[%p] magic[%p] nh[%p] hmagic[%p] sip[%p] tags[%p]\n",
+                nua_event_name(event), status, phrase, nua, magic, nh, hmagic, sip, tags));
 
     /* put nua userdatum at stack and check if it is ok. */
     luasofia_userdata_table_get(L, nua);
 
     if (lua_isnil(L, -1)) {
-        //printf("nua userdata not found on userdata_table!\n");
+        SU_DEBUG_1(("nua_event_callback: nua userdata not found on userdata_table!\n"));
         return;
     }
 
@@ -124,6 +126,7 @@ static void nua_event_callback(nua_event_t event,
     lua_rawgeti(L, -1, ENV_CALLBACK_INDEX);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 3);
+        SU_DEBUG_1(("nua_event_callback: callback table not found!\n"));
         return;
     }
 
@@ -135,6 +138,7 @@ static void nua_event_callback(nua_event_t event,
         lua_rawgeti(L, -1, NUA_EVENT_DEFAULT_INDEX);
         if (lua_isnil(L, -1)) {
             lua_pop(L, 4);
+            SU_DEBUG_9(("nua_event_callback: event[%s] callback not found!\n", nua_event_name(event)));
             return;
         }
     }
@@ -171,6 +175,7 @@ static void nua_event_callback(nua_event_t event,
 
     tags ? lua_pushlightuserdata(L, (void*)tags) : lua_pushnil(L);
 
+    SU_DEBUG_9(("nua_event_callback: calling lua callback\n"));
     lua_call(L, 9, 0);
     lua_pop(L, 3);
 }

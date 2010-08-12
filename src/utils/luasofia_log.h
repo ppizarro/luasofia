@@ -22,17 +22,20 @@
 #ifndef __LUASOFIA_UTILS_H__
 #define __LUASOFIA_UTILS_H__
 
-/**
-    Prints all the content of the stack, usefull for debugging.
-    @param L - The lua_State that holds the stack.
-*/ 
-void stack_dump(lua_State *L);
+#define SU_LOG luasofia_log
+#include <sofia-sip/su_debug.h>
 
 /**
-    Prints all the content of a table, usefull for debugging.
+    Logs all the content of the stack, usefull for debugging.
+    @param L - The lua_State that holds the stack.
+*/ 
+void luasofia_stack_dump(lua_State *L);
+
+/**
+    Logs all the content of a table, usefull for debugging.
     @param L - The lua_State that holds the stack.
     @param i - The index where the table is at stack.
 */
-void print_table(lua_State *L, int i);
- 
+void luasofia_log_table(lua_State *L, int i);
+
 #endif //__LUASOFIA_UTILS

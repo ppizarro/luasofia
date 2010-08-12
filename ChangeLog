@@ -1,5 +1,8 @@
 
 2010-08-12  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* Created the LUASOFIA_DEBUG environment variable is used to determine the debug logging
+	  level. The default level is 3.
+	* now logging nua_event_callback
 	* renamed luasofia_utils.* to luasofia_log.*
 
 2010-08-05  Paulo Pizarro <paulo.pizarro@gmail.com>
