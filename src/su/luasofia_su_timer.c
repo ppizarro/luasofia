@@ -26,7 +26,7 @@
 #include "su/luasofia_su_timer.h"
 #include "su/luasofia_su_task.h"
 #include "utils/luasofia_userdata_table.h"
-#include "utils/luasofia_utils.h"
+#include "utils/luasofia_log.h"
 
 #define SU_TIMER_MTABLE "su_timer_t"
 

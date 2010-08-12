@@ -23,9 +23,14 @@
 #include <lua.h>
 #include <lualib.h>
 
+#define SU_LOG (luasofia_log)
+#include <sofia-sip/su_debug.h>
+
 #include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_proxy.h"
+
+su_log_t luasofia_log[] = { SU_LOG_INIT("luasofia", "LUASOFIA_DEBUG", 3) };
 
 static const struct luaL_reg core_lib[] = {
   {NULL, NULL},
@@ -33,6 +38,8 @@ static const struct luaL_reg core_lib[] = {
 
 int luaopen_sofia(lua_State *L)
 { 
+    su_llog(luasofia_log, 3, "luaopen_sofia...\n");
+
     lua_getglobal(L, "sofia");
     if(!lua_isnil(L, -1)) {
         return 1;

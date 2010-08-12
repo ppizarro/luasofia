@@ -23,7 +23,7 @@
 #include <lua.h>
 #include <lualib.h>
  
-#include "utils/luasofia_utils.h"
+#include "utils/luasofia_log.h"
 
 static void print_value(lua_State *L, int i)
 {

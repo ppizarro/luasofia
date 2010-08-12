@@ -30,7 +30,7 @@
 #include <string.h>
 
 #include "utils/luasofia_tags.h"
-#include "utils/luasofia_utils.h"
+#include "utils/luasofia_log.h"
 
 #define TAGS_LIST_SIZE 32
 

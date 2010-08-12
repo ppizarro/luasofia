@@ -1,4 +1,7 @@
 
+2010-08-12  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* renamed luasofia_utils.* to luasofia_log.*
+
 2010-08-05  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented function nua_callstate_name on the module 'nua'
 

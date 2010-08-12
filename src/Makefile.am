@@ -63,8 +63,8 @@ liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 	utils/luasofia_proxy.h \
 	utils/luasofia_tags.c \
 	utils/luasofia_tags.h \
-	utils/luasofia_utils.c \
-	utils/luasofia_utils.h \
+	utils/luasofia_log.c \
+	utils/luasofia_log.h \
 	utils/luasofia_userdata_table.c \
 	utils/luasofia_userdata_table.h
 
