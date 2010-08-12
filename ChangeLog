@@ -1,5 +1,8 @@
 
 2010-08-12  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* Calls nua event callbacks in protected mode.
+	* Calls nta agent message callback in protected mode.
+	* Calls timer callback in protected mode.
 	* Created the LUASOFIA_DEBUG environment variable is used to determine the debug logging
 	  level. The default level is 3.
 	* now logging nua_event_callback

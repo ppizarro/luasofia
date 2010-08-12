@@ -103,6 +103,7 @@ static void nua_event_callback(nua_event_t event,
                                sip_t const *sip,
                                tagi_t tags[])
 {
+    int error;
     lua_State *L = (lua_State *)magic;
 
     SU_DEBUG_9(("nua_event_callback: event[%s] status[%d] phrase[%s] "
@@ -176,7 +177,13 @@ static void nua_event_callback(nua_event_t event,
     tags ? lua_pushlightuserdata(L, (void*)tags) : lua_pushnil(L);
 
     SU_DEBUG_9(("nua_event_callback: calling lua callback\n"));
-    lua_call(L, 9, 0);
+    if ((error = lua_pcall(L, 9, 0, 0)) != 0) {
+        if (error == LUA_ERRMEM) 
+            SU_DEBUG_0(("nua_event_callback: memory allocation error! error[%s]\n", lua_tostring(L, -1)));
+        else
+            SU_DEBUG_1(("nua_event_callback: error on calling callback! error[%s]\n", lua_tostring(L, -1)));
+        lua_pop(L, 1);
+    }
     lua_pop(L, 3);
 }
 

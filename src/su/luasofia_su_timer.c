@@ -143,6 +143,7 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
                                        su_timer_t *t,
                                        su_timer_arg_t *arg)
 {
+    int error;
     luasofia_su_timer_t *ltimer = NULL;
     lua_State *L = (lua_State*)arg;
 
@@ -150,9 +151,8 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     luasofia_userdata_table_get(L, t);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 1);
-        luaL_error(L, "Fatal error on su_timer callback, "
-                      "callback called but was impossible "
-                      "to recover the su_timer userdata !");     
+        SU_DEBUG_1(("luasofia_su_timer_callback: su_timer userdata not found!\n"));
+        return;
     }
 
     ltimer = luaL_checkudata(L, -1, SU_TIMER_MTABLE);
@@ -160,9 +160,8 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
     /* get callback function from enviroment table */
     if(!luasofia_su_timer_get_function_env(L)) {
         lua_pop(L, 1);
-        luaL_error(L, "Fatal error on su_timer callback, "
-                      "callback called but was impossible "
-                      "to recover lua callback function!");
+        SU_DEBUG_1(("luasofia_su_timer_callback: callback function not found!\n"));
+        return;
     }
 
     lua_pushvalue(L, -3);
@@ -175,7 +174,15 @@ static void luasofia_su_timer_callback(su_root_magic_t *magic,
         luasofia_userdata_table_remove(L, t);
     }
 
-    lua_call(L, 1, 0);
+    SU_DEBUG_9(("luasofia_su_timer_callback: calling lua callback\n"));
+    if ((error = lua_pcall(L, 1, 0, 0)) != 0) {
+        if (error == LUA_ERRMEM)
+            SU_DEBUG_0(("luasofia_su_timer_callback: memory allocation error! error[%s]\n", lua_tostring(L, -1)));
+        else
+            SU_DEBUG_1(("luasofia_su_timer_callback: error on calling callback! error[%s]\n", lua_tostring(L, -1)));
+        lua_pop(L, 1);
+    }
+
     lua_pop(L, 2);
 }
 

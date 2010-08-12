@@ -20,6 +20,7 @@
 #include "nta/luasofia_nta_agent.h"
 #include "utils/luasofia_userdata_table.h"
 #include "utils/luasofia_tags.h"
+#include "utils/luasofia_log.h"
 #include "su/luasofia_su_root.h"
 
 #define NTA_AGENT_MTABLE "luasofia_nta_agent_t"
@@ -58,8 +59,12 @@ static int nta_agent_message_callback(nta_agent_magic_t *context,
                                msg_t *msg,
                                sip_t *sip)
 {
+    int error;
     luasofia_nta_agent_t* u_nta_agent = (luasofia_nta_agent_t*) context;
     lua_State *L = u_nta_agent->L;
+
+    SU_DEBUG_9(("nta_agent_message_callback: context[%p] agent[%p] msg[%p] sip[%p]\n",
+                context, agent, msg, sip));
 
     /* put nta_agent userdatum at stack and check if it is ok. */
     luasofia_userdata_table_get(L, agent);
@@ -69,6 +74,7 @@ static int nta_agent_message_callback(nta_agent_magic_t *context,
     lua_rawgeti(L, LUA_REGISTRYINDEX, u_nta_agent->callback_ref);
     if (lua_isnil(L, -1)) {
         lua_pop(L, 2);
+        SU_DEBUG_1(("nta_agent_message_callback: callback function not found!\n"));
         return -1; //error, lets not return 0 (should always return 0).
     }
 
@@ -77,7 +83,15 @@ static int nta_agent_message_callback(nta_agent_magic_t *context,
     lua_pushlightuserdata(L, msg);
     lua_pushlightuserdata(L, sip);
 
-    lua_call(L, 3, 0);
+    SU_DEBUG_9(("nta_agent_message_callback: calling lua callback\n"));
+    if ((error = lua_pcall(L, 3, 0, 0)) != 0) {
+        if (error == LUA_ERRMEM)
+            SU_DEBUG_0(("nta_agent_message_callback: memory allocation error! error[%s]\n", lua_tostring(L, -1)));
+        else
+            SU_DEBUG_1(("nta_agent_message_callback: error on calling callback! error[%s]\n", lua_tostring(L, -1)));
+        lua_pop(L, 1);
+    }
+
     lua_pop(L, 1);
     return 0;
 }
