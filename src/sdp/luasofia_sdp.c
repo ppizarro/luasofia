@@ -47,6 +47,7 @@
 
 static const luaL_Reg sdp_lib[] = {
     {"parse"                , luasofia_sdp_parser_parse},
+    {"attribute_find"       , luasofia_sdp_attribute_find},
     {"get_proxy_session"    , luasofia_sdp_get_proxy_session},
     {"get_proxy_attribute"  , luasofia_sdp_get_proxy_attribute},
     {"get_proxy_bandwidth"  , luasofia_sdp_get_proxy_bandwidth},

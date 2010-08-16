@@ -37,5 +37,17 @@ static int luasofia_sdp_get_proxy_attribute(lua_State *L)
     return luasofia_proxy_create(L, SDP_ATTRIBUTE_TABLE_NAME);
 }
 
+static int luasofia_sdp_attribute_find(lua_State *L)
+{
+    sdp_attribute_t const * attr = (sdp_attribute_t const *) lua_touserdata (L, -2); /* First argument is a sdp_attribute_t*  */
+    char const * name            = (char const *) lua_tostring (L, -1);              /* Second argument is a string, the name */
+
+    if (!(attr && name)) {
+        return 0;
+    }
+
+    lua_pushlightuserdata (L, sdp_attribute_find(attr, name));
+    return 1;
+}
 
 #endif /* __LUASOFIA_SDP_ATTRIBUTE_PRIVATE_H__ */
