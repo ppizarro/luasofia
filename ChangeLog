@@ -1,4 +1,7 @@
 
+2010-08-17  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* Implemented access to 'rm_predef', 'rm_pt' and 'rm_any' fields of the sdp_rtpmap_t struct
+
 2010-08-12  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* Calls nua event callbacks in protected mode.
 	* Calls nta agent message callback in protected mode.
