@@ -37,10 +37,14 @@ local sdp_parser_msg = table.concat({"v=0\r\n",
 
 function setUp()
     sdp_parser = sdp.parse(sdp_parser_msg, 0)
+    sdp_session       = sdp_parser:get_sdp_session()
+    sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    sdp_media         = sdp_session_proxy.sdp_media
+    sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
 end
 
 function test_an_sdp_parser_has_a_string_representation()
-    assert_not_equal(nil, sdp_parser)
+    assert_not_nil(sdp_parser)
     assert_equal(sdp_parser_msg, tostring(sdp_parser))
 end
 
@@ -48,24 +52,19 @@ end
 -- sdp_session tests --
 -----------------------
 function test_can_get_sdp_session_lightudata()
-    local sdp_session = sdp_parser:get_sdp_session()
-    assert_not_equal(nil, sdp_session)
+    assert_not_nil(sdp_session)
     assert_equal("userdata", type(sdp_session))
 end
 
 function test_can_get_sdp_session_proxy()
-    local sdp_session = sdp_parser:get_sdp_session()
-    assert_not_equal(nil, sdp_session)
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    assert_not_equal(nil, sdp_session_proxy)
+    assert_not_nil(sdp_session)
+    assert_not_nil(sdp_session_proxy)
     assert_equal("userdata", type(sdp_session_proxy))
 end
 
 function test_can_access_sdp_session_proxy_members()
-    local sdp_session = sdp_parser:get_sdp_session()
-    assert_not_equal(nil, sdp_session)
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    assert_not_equal(nil, sdp_session_proxy)
+    assert_not_nil(sdp_session)
+    assert_not_nil(sdp_session_proxy)
     
     -- 64 bits size test assert_equal(128, sdp_session_proxy.sdp_size)
     -- 32 bits size test assert_equal(64, sdp_session_proxy.sdp_size)
@@ -88,16 +87,12 @@ end
 -- sdp_origin tests --
 ----------------------
 function test_can_get_sdp_origin_lightudata()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_origin = sdp_session_proxy.sdp_origin
     assert_not_equal(nil, sdp_origin)
     assert_equal("userdata", type(sdp_origin))
 end
 
 function test_can_get_sdp_origin_proxy()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_origin = sdp_session_proxy.sdp_origin
     assert_not_equal(nil, sdp_origin)
     local sdp_origin_proxy = sdp.get_proxy_origin(sdp_origin)
@@ -106,8 +101,6 @@ function test_can_get_sdp_origin_proxy()
 end
 
 function test_can_access_sdp_origin_proxy_members()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_origin = sdp_session_proxy.sdp_origin
     assert_not_equal(nil, sdp_origin)
     local sdp_origin_proxy = sdp.get_proxy_origin(sdp_origin)
@@ -127,16 +120,12 @@ end
 -- sdp_connection tests --
 --------------------------
 function test_can_get_sdp_connection_lightudata()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_connection = sdp_session_proxy.sdp_connection
     assert_not_equal(nil, sdp_connection)
     assert_equal("userdata", type(sdp_connection))
 end
 
 function test_can_get_sdp_connection_proxy()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_connection = sdp_session_proxy.sdp_connection
     assert_not_equal(nil, sdp_connection)
     local sdp_connection_proxy = sdp.get_proxy_connection(sdp_connection)
@@ -145,8 +134,6 @@ function test_can_get_sdp_connection_proxy()
 end
 
 function test_can_access_sdp_connection_proxy_members()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_connection = sdp_session_proxy.sdp_connection
     assert_not_equal(nil, sdp_connection)
     local sdp_connection_proxy = sdp.get_proxy_connection(sdp_connection)
@@ -166,16 +153,12 @@ end
 -- sdp_time tests --
 --------------------
 function test_can_get_sdp_time_lightudata()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_time = sdp_session_proxy.sdp_time
     assert_not_equal(nil, sdp_time)
     assert_equal("userdata", type(sdp_time))
 end
 
 function test_can_get_sdp_time_proxy()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_time = sdp_session_proxy.sdp_time
     assert_not_equal(nil, sdp_time)
     local sdp_time_proxy = sdp.get_proxy_time(sdp_time)
@@ -184,8 +167,6 @@ function test_can_get_sdp_time_proxy()
 end
 
 function test_can_access_sdp_time_proxy_members()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
     local sdp_time = sdp_session_proxy.sdp_time
     assert_not_equal(nil, sdp_time)
     local sdp_time_proxy = sdp.get_proxy_time(sdp_time)
@@ -204,29 +185,18 @@ end
 -- sdp_media tests --
 ---------------------
 function test_can_get_sdp_media_lightudata()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    local sdp_media = sdp_session_proxy.sdp_media
     assert_not_equal(nil, sdp_media)
     assert_equal("userdata", type(sdp_media))
 end
 
 function test_can_get_sdp_media_proxy()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    local sdp_media = sdp_session_proxy.sdp_media
     assert_not_equal(nil, sdp_media)
-    local sdp_media_proxy = sdp.get_proxy_media(sdp_media)
     assert_not_equal(nil, sdp_media_proxy)
     assert_equal("userdata", type(sdp_media_proxy))
 end
 
 function test_can_access_sdp_media_proxy_members()
-    local sdp_session = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    local sdp_media = sdp_session_proxy.sdp_media
     assert_not_equal(nil, sdp_media)
-    local sdp_media_proxy = sdp.get_proxy_media(sdp_media)
     assert_not_equal(nil, sdp_media_proxy)
     assert_equal("userdata", type(sdp_media_proxy))
 
@@ -254,20 +224,12 @@ end
 -- sdp_rtpmap tests --
 ----------------------
 function test_can_get_sdp_rtpmap_lightudata()
-    local sdp_session       = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    local sdp_media         = sdp_session_proxy.sdp_media
-    local sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
     local sdp_rtpmap        = sdp_media_proxy.m_rtpmaps
     assert_not_nil(sdp_rtpmap)
     assert_equal("userdata", type(sdp_rtpmap))
 end
 
 function test_can_get_sdp_rtpmap_proxy()
-    local sdp_session       = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    local sdp_media         = sdp_session_proxy.sdp_media
-    local sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
     local sdp_rtpmap        = sdp_media_proxy.m_rtpmaps
 
     assert_not_nil(sdp_rtpmap)
@@ -279,10 +241,6 @@ function test_can_get_sdp_rtpmap_proxy()
 end
 
 function test_can_get_sdp_rtpmap_fields()
-    local sdp_session       = sdp_parser:get_sdp_session()
-    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
-    local sdp_media         = sdp_session_proxy.sdp_media
-    local sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
     local sdp_rtpmap        = sdp_media_proxy.m_rtpmaps
 
     assert_not_nil(sdp_rtpmap)
@@ -296,6 +254,53 @@ function test_can_get_sdp_rtpmap_fields()
     assert_equal("annexb=yes", sdp_rtpmap_proxy.rm_fmtp)   
     assert_equal("PCMU",       sdp_rtpmap_proxy.rm_encoding)
     assert_equal(8000,         sdp_rtpmap_proxy.rm_rate)
+end
+
+
+-------------------------
+-- sdp_attribute tests --
+-------------------------
+function test_can_get_sdp_attribute_lightudata()
+    local sdp_attribute     = sdp_media_proxy.m_attributes
+
+    assert_not_nil(sdp_attribute)
+    assert_equal("userdata", type(sdp_attribute))
+end
+
+function test_can_get_sdp_attribute_proxy()
+    local sdp_attribute     = sdp_media_proxy.m_attributes
+
+    assert_not_nil(sdp_attribute)
+    assert_equal("userdata", type(sdp_attribute))
+
+    local sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+
+    assert_not_nil(sdp_attribute_proxy)
+    assert_equal("userdata", type(sdp_attribute_proxy))
+end
+
+function test_can_get_sdp_attribute_fields()
+    local sdp_attribute     = sdp_media_proxy.m_attributes
+
+    assert_not_nil(sdp_attribute)
+    assert_equal("userdata", type(sdp_attribute))
+
+    local sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+
+    assert_not_nil(sdp_attribute_proxy)
+    assert_equal("userdata", type(sdp_attribute_proxy))
+
+    assert_equal("ptime", sdp_attribute_proxy.a_name)
+    assert_equal("8", sdp_attribute_proxy.a_value)
+
+    sdp_attribute = sdp_attribute_proxy.a_next
+    assert_not_nil(sdp_attribute)
+
+    sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+    assert_not_nil(sdp_attribute_proxy)
+
+    assert_equal("crypto", sdp_attribute_proxy.a_name)
+    assert_equal("1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj", sdp_attribute_proxy.a_value)
 end
 
 lunit.main()
