@@ -34,7 +34,8 @@ local sdp_parser_msg = table.concat({"v=0\r\n",
                                      "a=fmtp:8 annexb=yes\r\n",
                                      "a=rtpmap:0 PCMU/8000\r\n",
                                      "a=ptime:20\r\n",
-                                     "a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj\r\n"})
+                                     "a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj\r\n",
+                                     "a=crypto:2 AES_CM_256_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zs\r\n"})
 
 function setUp()
     sdp_parser = sdp.parse(sdp_parser_msg, 0)
@@ -303,6 +304,57 @@ function test_can_get_sdp_attribute_fields()
 
     assert_equal("crypto", sdp_attribute_proxy.a_name)
     assert_equal("1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj", sdp_attribute_proxy.a_value)
+end
+
+function test_attribute_find_function_gets_an_attribute_by_name()
+    local sdp_attribute = sdp_media_proxy.m_attributes
+
+    assert_not_nil(sdp_attribute)
+    sdp_attribute = sdp.attribute_find(sdp_attribute, "ptime")
+    assert_not_nil(sdp_attribute)
+
+    local sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+    assert_not_nil(sdp_attribute_proxy)
+
+    assert_equal("ptime", sdp_attribute_proxy.a_name)
+    assert_equal("20", sdp_attribute_proxy.a_value)
+    
+end
+
+function test_attribute_find_function_gets_the_first_occurence_of_an_attribute()
+    local sdp_attribute = sdp_media_proxy.m_attributes
+    
+    assert_not_nil(sdp_attribute)
+
+    sdp_attribute = sdp.attribute_find(sdp_attribute, "crypto")
+
+    local sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+    assert_not_nil(sdp_attribute_proxy)
+
+    assert_equal("crypto", sdp_attribute_proxy.a_name)
+    assert_equal("1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj", sdp_attribute_proxy.a_value)
+end
+
+function test_the_next_attribute_must_be_get_to_find_a_second_occurence()
+    local sdp_attribute = sdp_media_proxy.m_attributes
+
+    assert_not_nil(sdp_attribute)
+
+    sdp_attribute = sdp.attribute_find(sdp_attribute, "crypto")
+
+    local sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+    assert_not_nil(sdp_attribute_proxy)
+
+    assert_equal("crypto", sdp_attribute_proxy.a_name)
+    assert_equal("1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj", sdp_attribute_proxy.a_value)
+
+    sdp_attribute = sdp_attribute_proxy.a_next
+
+    local sdp_attribute_proxy = sdp.get_proxy_attribute(sdp_attribute)
+    assert_not_nil(sdp_attribute_proxy)
+
+    assert_equal("crypto", sdp_attribute_proxy.a_name)
+    assert_equal("2 AES_CM_256_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zs", sdp_attribute_proxy.a_value)
 end
 
 lunit.main()
