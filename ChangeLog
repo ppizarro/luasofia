@@ -1,12 +1,19 @@
 
 2010-08-17  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* Implemented access to 'rm_predef', 'rm_pt' and 'rm_any' fields of the sdp_rtpmap_t struct
+	* implemented access to 'rm_predef', 'rm_pt' and 'rm_any' fields of the sdp_rtpmap_t struct.
+
+2010-07-17  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* adding sdp_attribute tests.
+	* adding tests for the sdp_rtpmap proxy.
+
+2010-07-16  Tiago Katcipis <tiagokatcipis@gmail.com>
+	* adding the new function sdp_attribute_find
 
 2010-08-12  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* Calls nua event callbacks in protected mode.
-	* Calls nta agent message callback in protected mode.
-	* Calls timer callback in protected mode.
-	* Created the LUASOFIA_DEBUG environment variable is used to determine the debug logging
+	* calls nua event callbacks in protected mode.
+	* calls nta agent message callback in protected mode.
+	* calls timer callback in protected mode.
+	* created the LUASOFIA_DEBUG environment variable is used to determine the debug logging
 	  level. The default level is 3.
 	* now logging nua_event_callback
 	* renamed luasofia_utils.* to luasofia_log.*
@@ -19,7 +26,7 @@
 
 2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.7devel
-	* Fixed nua_callstate_received constant name
+	* fixed nua_callstate_received constant name
 
 2010-08-03  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.6
