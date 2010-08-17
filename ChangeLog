@@ -5,6 +5,7 @@
 2010-07-17  Tiago Katcipis <tiagokatcipis@gmail.com>
 	* adding sdp_attribute tests.
 	* adding tests for the sdp_rtpmap proxy.
+	* adding tests to the sdp_attribute_find function.
 
 2010-07-16  Tiago Katcipis <tiagokatcipis@gmail.com>
 	* adding the new function sdp_attribute_find
