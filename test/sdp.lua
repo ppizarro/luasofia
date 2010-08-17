@@ -1,29 +1,39 @@
---[[
+-----------------------------------------------------------------------------
+--
+-- @author Paulo Pizarro  <paulo.pizarro@gmail.com>
+-- @author Tiago Katcipis <tiagokatcipis@gmail.com>
+--
+-- This file is part of Luasofia.
+--
+-- Luasofia is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU Lesser General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+-- 
+-- Luasofia is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU Lesser General Public License for more details.
 
-@author Paulo Pizarro  <paulo.pizarro@gmail.com>
-@author Tiago Katcipis <tiagokatcipis@gmail.com>
-
-This file is part of Luasofia.
-
-Luasofia is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Luasofia is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public License
-along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
-]]--
+-- You should have received a copy of the GNU Lesser General Public License
+-- along with Luasofia.  If not, see <http://www.gnu.org/licenses/>.
+-----------------------------------------------------------------------------
 
 require "lunit"
 local sdp = require "sofia.sdp"
 
 module("sdp_testcase", lunit.testcase, package.seeall)
-sdp_parser_msg = "v=0\r\no=- 449464639571140607 115495315904426258 IN IP4 192.168.170.145\r\ns=-\r\nc=IN IP4 192.168.170.145\r\nt=0 0\r\nm=audio 5000 RTP/AVP 0\r\na=rtpmap:0 PCMU/8000\r\n"
+
+local sdp_parser_msg = table.concat({"v=0\r\n",
+                                     "o=- 449464639571140607 115495315904426258 IN IP4 192.168.170.145\r\n",
+                                     "s=-\r\n",
+                                     "c=IN IP4 192.168.170.145\r\n",
+                                     "t=0 0\r\n",
+                                     "m=audio 5000 RTP/AVP 0\r\n",
+                                     "a=rtpmap:0 PCMU/8000\r\n",
+                                     "a=fmtp:0 annexb=yes\r\n",
+                                     "a=ptime:8\r\n",
+                                     "a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj\r\n"})
 
 function setUp()
     sdp_parser = sdp.parse(sdp_parser_msg, 0)
@@ -34,7 +44,9 @@ function test_an_sdp_parser_has_a_string_representation()
     assert_equal(sdp_parser_msg, tostring(sdp_parser))
 end
 
---sdp_session tests
+-----------------------
+-- sdp_session tests --
+-----------------------
 function test_can_get_sdp_session_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()
     assert_not_equal(nil, sdp_session)
@@ -72,7 +84,9 @@ function test_can_access_sdp_session_proxy_members()
     assert_equal("userdata", type(sdp_session_proxy.sdp_media))
 end
 
---sdp_origin tests
+----------------------
+-- sdp_origin tests --
+----------------------
 function test_can_get_sdp_origin_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()
     local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
@@ -109,7 +123,9 @@ function test_can_access_sdp_origin_proxy_members()
  
 end
 
---sdp_connection tests
+--------------------------
+-- sdp_connection tests --
+--------------------------
 function test_can_get_sdp_connection_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()
     local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
@@ -146,8 +162,9 @@ function test_can_access_sdp_connection_proxy_members()
     assert_equal(1, sdp_connection_proxy.c_groups)
 end
 
-
---sdp_time tests
+--------------------
+-- sdp_time tests --
+--------------------
 function test_can_get_sdp_time_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()
     local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
@@ -183,8 +200,9 @@ function test_can_access_sdp_time_proxy_members()
     assert_equal(nil, sdp_time_proxy.t_repeat)
 end
 
-
---sdp_media tests
+---------------------
+-- sdp_media tests --
+---------------------
 function test_can_get_sdp_media_lightudata()
     local sdp_session = sdp_parser:get_sdp_session()
     local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
@@ -228,9 +246,56 @@ function test_can_access_sdp_media_proxy_members()
     assert_equal(nil, sdp_media_proxy.m_connections)
     assert_equal(nil, sdp_media_proxy.m_bandwidths)
     assert_equal(nil, sdp_media_proxy.m_key)
-    assert_equal(nil, sdp_media_proxy.m_attributes)
+    assert_not_nil(sdp_media_proxy.m_attributes)
     assert_equal(nil, sdp_media_proxy.m_user)
 end
 
+----------------------
+-- sdp_rtpmap tests --
+----------------------
+function test_can_get_sdp_rtpmap_lightudata()
+    local sdp_session       = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_media         = sdp_session_proxy.sdp_media
+    local sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
+    local sdp_rtpmap        = sdp_media_proxy.m_rtpmaps
+    assert_not_nil(sdp_rtpmap)
+    assert_equal("userdata", type(sdp_rtpmap))
+end
+
+function test_can_get_sdp_rtpmap_proxy()
+    local sdp_session       = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_media         = sdp_session_proxy.sdp_media
+    local sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
+    local sdp_rtpmap        = sdp_media_proxy.m_rtpmaps
+
+    assert_not_nil(sdp_rtpmap)
+    assert_equal("userdata", type(sdp_rtpmap))
+    
+    local sdp_rtpmap_proxy = sdp.get_proxy_rtpmap(sdp_rtpmap)
+    assert_not_nil(sdp_rtpmap_proxy)
+    assert_equal("userdata", type(sdp_rtpmap_proxy))
+end
+
+function test_can_get_sdp_rtpmap_fields()
+    local sdp_session       = sdp_parser:get_sdp_session()
+    local sdp_session_proxy = sdp.get_proxy_session(sdp_session)
+    local sdp_media         = sdp_session_proxy.sdp_media
+    local sdp_media_proxy   = sdp.get_proxy_media(sdp_media)
+    local sdp_rtpmap        = sdp_media_proxy.m_rtpmaps
+
+    assert_not_nil(sdp_rtpmap)
+    assert_equal("userdata", type(sdp_rtpmap))
+
+    local sdp_rtpmap_proxy = sdp.get_proxy_rtpmap(sdp_rtpmap)
+
+    assert_not_nil(sdp_rtpmap_proxy)
+    assert_equal("userdata", type(sdp_rtpmap_proxy))
+    assert_nil(sdp_rtpmap_proxy.rm_params)        
+    assert_equal("annexb=yes", sdp_rtpmap_proxy.rm_fmtp)   
+    assert_equal("PCMU",       sdp_rtpmap_proxy.rm_encoding)
+    assert_equal(8000,         sdp_rtpmap_proxy.rm_rate)
+end
 
 lunit.main()
