@@ -29,10 +29,11 @@ local sdp_parser_msg = table.concat({"v=0\r\n",
                                      "s=-\r\n",
                                      "c=IN IP4 192.168.170.145\r\n",
                                      "t=0 0\r\n",
-                                     "m=audio 5000 RTP/AVP 0\r\n",
+                                     "m=audio 5000 RTP/AVP 8 0\r\n",
+                                     "a=rtpmap:8 PCMA/8000\r\n",
+                                     "a=fmtp:8 annexb=yes\r\n",
                                      "a=rtpmap:0 PCMU/8000\r\n",
-                                     "a=fmtp:0 annexb=yes\r\n",
-                                     "a=ptime:8\r\n",
+                                     "a=ptime:20\r\n",
                                      "a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj\r\n"})
 
 function setUp()
@@ -252,8 +253,9 @@ function test_can_get_sdp_rtpmap_fields()
     assert_equal("userdata", type(sdp_rtpmap_proxy))
     assert_nil(sdp_rtpmap_proxy.rm_params)        
     assert_equal("annexb=yes", sdp_rtpmap_proxy.rm_fmtp)   
-    assert_equal("PCMU",       sdp_rtpmap_proxy.rm_encoding)
+    assert_equal("PCMA",       sdp_rtpmap_proxy.rm_encoding)
     assert_equal(8000,         sdp_rtpmap_proxy.rm_rate)
+    assert_equal(8,            sdp_rtpmap_proxy.rm_pt)
 end
 
 
@@ -291,7 +293,7 @@ function test_can_get_sdp_attribute_fields()
     assert_equal("userdata", type(sdp_attribute_proxy))
 
     assert_equal("ptime", sdp_attribute_proxy.a_name)
-    assert_equal("8", sdp_attribute_proxy.a_value)
+    assert_equal("20", sdp_attribute_proxy.a_value)
 
     sdp_attribute = sdp_attribute_proxy.a_next
     assert_not_nil(sdp_attribute)

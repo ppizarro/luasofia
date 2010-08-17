@@ -24,14 +24,37 @@
 
 #define SDP_RTPMAP_TABLE_NAME "luasofia_sdp_rtpmap_t"
 
+static int luasofia_proxy_get_rm_predef (lua_State *L, void *v)
+{
+    sdp_rtpmap_t *rtpmap = v;
+    lua_pushnumber(L, rtpmap->rm_predef);
+    return 1;
+}
+
+static int luasofia_proxy_get_rm_pt (lua_State *L, void *v)
+{
+    sdp_rtpmap_t *rtpmap = v;
+    lua_pushnumber(L, rtpmap->rm_pt);
+    return 1;
+}
+
+static int luasofia_proxy_get_rm_any (lua_State *L, void *v)
+{
+    sdp_rtpmap_t *rtpmap = v;
+    lua_pushnumber(L, rtpmap->rm_any);
+    return 1;
+}
+
 static const luasofia_proxy_info_t sdp_rtpmap_info[] = {
-{"rm_size",      luasofia_proxy_get_int,     offsetof(sdp_rtpmap_t, rm_size),     0},
-{"rm_next",      luasofia_proxy_get_pointer, offsetof(sdp_rtpmap_t, rm_next),     0},
-{"rm_encoding",  luasofia_proxy_get_string,  offsetof(sdp_rtpmap_t, rm_encoding), 0},
-{"rm_rate",      luasofia_proxy_get_int,     offsetof(sdp_rtpmap_t, rm_rate),     0},
-{"rm_params",    luasofia_proxy_get_string,  offsetof(sdp_rtpmap_t, rm_params),   0},
-{"rm_fmtp",      luasofia_proxy_get_string,  offsetof(sdp_rtpmap_t, rm_fmtp),     0},
-//FIXME how to acess unsigned rm_predef: 1, rm_pt: 7, rm_any: 1 ?
+{"rm_size",     luasofia_proxy_get_int,       offsetof(sdp_rtpmap_t, rm_size),     0},
+{"rm_next",     luasofia_proxy_get_pointer,   offsetof(sdp_rtpmap_t, rm_next),     0},
+{"rm_encoding", luasofia_proxy_get_string,    offsetof(sdp_rtpmap_t, rm_encoding), 0},
+{"rm_rate",     luasofia_proxy_get_int,       offsetof(sdp_rtpmap_t, rm_rate),     0},
+{"rm_params",   luasofia_proxy_get_string,    offsetof(sdp_rtpmap_t, rm_params),   0},
+{"rm_fmtp",     luasofia_proxy_get_string,    offsetof(sdp_rtpmap_t, rm_fmtp),     0},
+{"rm_predef",   luasofia_proxy_get_rm_predef, 0, 0},
+{"rm_pt",       luasofia_proxy_get_rm_pt,     0, 0},
+{"rm_any",      luasofia_proxy_get_rm_any,    0, 0},
 {NULL, NULL, 0 }
 };
 
