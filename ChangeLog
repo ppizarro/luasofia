@@ -1,6 +1,7 @@
 
 2010-08-19  Paulo Pizarro <paulo.pizarro@gmail.com>
-	* added media states constants on the module 'soa'
+	* added media states constants on the module 'soa'.
+	* fixed attribute_find function on the module 'sdp' to return nil if not found.
 
 2010-08-17  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented access to 'rm_predef', 'rm_pt' and 'rm_any' fields of the sdp_rtpmap_t struct.

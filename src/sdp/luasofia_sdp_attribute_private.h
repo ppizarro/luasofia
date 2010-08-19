@@ -39,14 +39,21 @@ static int luasofia_sdp_get_proxy_attribute(lua_State *L)
 
 static int luasofia_sdp_attribute_find(lua_State *L)
 {
-    sdp_attribute_t const * attr = (sdp_attribute_t const *) lua_touserdata (L, -2); /* First argument is a sdp_attribute_t*  */
-    char const * name            = (char const *) lua_tostring (L, -1);              /* Second argument is a string, the name */
+    /* First argument is a sdp_attribute_t*  */
+    sdp_attribute_t * attr = (sdp_attribute_t *) lua_touserdata (L, -2);
+    /* Second argument is a string, the name */
+    char const * name = (char const *) lua_tostring (L, -1);
 
     if (!(attr && name)) {
         return 0;
     }
 
-    lua_pushlightuserdata (L, sdp_attribute_find(attr, name));
+    attr = sdp_attribute_find (attr, name);
+    if (!attr) {
+        return 0;
+    }
+
+    lua_pushlightuserdata (L, attr);
     return 1;
 }
 
