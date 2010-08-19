@@ -81,6 +81,12 @@ static const luasofia_tag_reg_t soa_tags[] = {
 };
 
 static const luasofia_reg_const_t soa_constants[] = {
+    { "SOA_ACTIVE_DISABLED", SOA_ACTIVE_DISABLED },
+    { "SOA_ACTIVE_REJECTED", SOA_ACTIVE_REJECTED },
+    { "SOA_ACTIVE_INACTIVE", SOA_ACTIVE_INACTIVE },
+    { "SOA_ACTIVE_SENDONLY", SOA_ACTIVE_SENDONLY },
+    { "SOA_ACTIVE_RECVONLY", SOA_ACTIVE_RECVONLY },
+    { "SOA_ACTIVE_SENDRECV", SOA_ACTIVE_SENDRECV },
     {NULL, 0 }
 };
 
