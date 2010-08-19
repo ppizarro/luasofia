@@ -37,7 +37,8 @@ local sdp_parser_msg = table.concat({"v=0\r\n",
                                      "a=crypto:1 AES_CM_128_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zj\r\n",
                                      "a=crypto:2 AES_CM_256_HMAC_SHA1_80 inline:NzB4d1BINUAvLEw6UzF3WSJ+PSdFcGdUJShpX1Zs\r\n"})
 
-function setUp()
+function setUp(parser_msg)
+    local msg = parser_msg or sdp_parser_msg 
     sdp_parser = sdp.parse(sdp_parser_msg, 0)
     sdp_session       = sdp_parser:get_sdp_session()
     sdp_session_proxy = sdp.get_proxy_session(sdp_session)
@@ -259,6 +260,49 @@ function test_can_get_sdp_rtpmap_fields()
     assert_equal(8,            sdp_rtpmap_proxy.rm_pt)
 end
 
+function test_rtpmaps_are_iterated_on_the_order_of_preference_of_the_media_codecs()
+    
+    local function run_test()
+        local sdp_rtpmap = sdp_media_proxy.m_rtpmaps
+
+        assert_not_nil(sdp_rtpmap)
+        assert_equal("userdata", type(sdp_rtpmap))
+
+        local sdp_rtpmap_proxy = sdp.get_proxy_rtpmap(sdp_rtpmap)
+
+        assert_not_nil(sdp_rtpmap_proxy)
+        assert_equal("annexb=yes", sdp_rtpmap_proxy.rm_fmtp)
+        assert_equal("PCMA",       sdp_rtpmap_proxy.rm_encoding)
+        assert_equal(8000,         sdp_rtpmap_proxy.rm_rate)
+        assert_equal(8,            sdp_rtpmap_proxy.rm_pt)
+
+        local sdp_rtpmap = sdp_rtpmap_proxy.rm_next
+
+        assert_not_nil(sdp_rtpmap)
+
+        local sdp_rtpmap_proxy = sdp.get_proxy_rtpmap(sdp_rtpmap)
+    
+        assert_not_nil(sdp_rtpmap_proxy)
+        assert_equal("PCMU",       sdp_rtpmap_proxy.rm_encoding)
+        assert_equal(8000,         sdp_rtpmap_proxy.rm_rate)
+        assert_equal(0,            sdp_rtpmap_proxy.rm_pt)
+    end
+
+    run_test()
+
+    local parser_msg = table.concat({"v=0\r\n",
+                                     "o=- 449464639571140607 115495315904426258 IN IP4 192.168.170.145\r\n",
+                                     "s=-\r\n",
+                                     "c=IN IP4 192.168.170.145\r\n",
+                                     "t=0 0\r\n",
+                                     "m=audio 5000 RTP/AVP 8 0\r\n",
+                                     "a=rtpmap:0 PCMU/8000\r\n",
+                                     "a=rtpmap:8 PCMA/8000\r\n",
+                                     "a=fmtp:8 annexb=yes\r\n"})
+
+    setUp(parser_msg)
+    run_test()
+end
 
 -------------------------
 -- sdp_attribute tests --
