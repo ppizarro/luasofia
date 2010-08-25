@@ -61,6 +61,18 @@ static int luasofia_nua_set_params(lua_State *L)
     return 0;
 }
 
+static int luasofia_nua_get_params(lua_State *L)
+{
+    /* get and check first argument (should be a luasofia_nua_t) */
+    su_home_t *home = su_home_create();
+    luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, 1, NUA_MTABLE);
+    tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+
+    nua_get_params(lnua->nua, TAG_NEXT(tags));
+    su_home_unref(home);
+    return 0;
+}
+
 static int luasofia_nua_create_handle(lua_State *L)
 {
     luasofia_nua_t *lnua = NULL;
@@ -262,6 +274,7 @@ static int luasofia_nua_callstate_name(lua_State *L)
 
 static const luaL_Reg nua_meths[] = {
     {"set_params",    luasofia_nua_set_params },
+    {"get_params",    luasofia_nua_get_params },
     {"handle_create", luasofia_nua_create_handle },
     {"shutdown",      luasofia_nua_shutdown },
     {"destroy",       luasofia_nua_destroy },

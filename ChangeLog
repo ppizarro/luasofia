@@ -1,6 +1,8 @@
 
 2010-08-25  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented method 'set_hparams' to NuaHandle class.
+	* implemented method 'get_hparams' to NuaHandle class.
+	* implemented method 'get_params' to Nua class.
 
 2010-08-19  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* added media states constants on the module 'soa'.
