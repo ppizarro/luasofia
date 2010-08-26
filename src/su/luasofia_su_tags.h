@@ -28,5 +28,7 @@ int luasofia_su_tags_register_meta(lua_State *L);
 
 int luasofia_su_tags_get_proxy(lua_State *L);
 
+int luasofia_su_tags_get_table(lua_State *L);
+
 #endif //__LUASOFIA_SU_TAGS_H_
 

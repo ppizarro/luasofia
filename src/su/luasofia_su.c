@@ -45,12 +45,13 @@ static int luasofia_su_deinit(lua_State *L)
 }
 
 static const luaL_Reg su_lib[] = {
-    {"init",         luasofia_su_init },
-    {"deinit",       luasofia_su_deinit },
-    {"root_create",  luasofia_su_root_create },
-    {"timer_create", luasofia_su_timer_create },
+    {"init",           luasofia_su_init },
+    {"deinit",         luasofia_su_deinit },
+    {"root_create",    luasofia_su_root_create },
+    {"timer_create",   luasofia_su_timer_create },
     {"task_create",    luasofia_su_task_create },
     {"get_proxy_tags", luasofia_su_tags_get_proxy },
+    {"get_tags",       luasofia_su_tags_get_table },
     {NULL, NULL}
 };
 

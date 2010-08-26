@@ -58,5 +58,13 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
 */
 tag_type_t luasofia_tags_find(lua_State *L);
 
+/** 
+    Converts a Sofia-SIP tag list to a Luasofia Tags table.
+    @param L      - The Lua state.
+    @param tags   - The Sofia-SIP tag list
+    @return         zero if something goes wrong.
+*/
+int luasofia_tags_taglist_to_table(lua_State *L, tagi_t* tags);
+
 #endif //__LUASOFIA_TAGS
 
