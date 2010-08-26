@@ -26,6 +26,7 @@
 #include "luasofia.h"
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_const.h"
+#include "su/luasofia_su_root.h"
 
 #include <sofia-sip/soa.h>
 #include <sofia-sip/soa_tag.h>
@@ -39,11 +40,43 @@ struct lua_soa_session_s {
     lua_State *L;
 };
 
+static int luasofia_soa_create(lua_State *L)
+{
+    char const *name = NULL;
+    lua_soa_session_t *lsoa = NULL;
+    luasofia_su_root_t *lroot = NULL;
+    soa_session_t *soa = NULL;
+
+    /* get and check first argument (should be a string) */
+    name = luaL_checkstring (L, 1);
+
+    /* get and check second argument (should be a root_t) */
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, 2, SU_ROOT_MTABLE);
+
+    /* create a soa object */
+    lsoa = (lua_soa_session_t*) lua_newuserdata(L, sizeof(lua_soa_session_t));
+
+    /* create the soa_session_t */
+    soa = soa_create(name, lroot->root, NULL);
+    if (!soa) {
+        luaL_error(L, "soa_create failed!");
+    }
+    /* save soa object */
+    lsoa->soa = soa;
+
+    /* set its metatable */
+    luaL_getmetatable(L, SOA_SESSION_MTABLE);
+    lua_setmetatable(L, -2);
+
+    return 1;
+}
+
 static const luaL_Reg soa_session_meths[] = {
     {NULL, NULL}
 };
 
 static const luaL_Reg soa_lib[] = {
+    {"create",    luasofia_soa_create },
     {NULL, NULL}
 };
 
