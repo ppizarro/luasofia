@@ -458,9 +458,9 @@ static int luasofia_nua_handle_get_hparams(lua_State *L)
         su_home_t *home = su_home_create();
       
         /* get and check second argument (should be a tag table) */
-        tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
+        //tagi_t *tags = luasofia_tags_table_to_taglist(L, 2, home);
 
-        nua_get_hparams(lnh->nh, TAG_NEXT(tags));
+        nua_get_hparams(lnh->nh, TAG_ANY(), TAG_NULL()); //FIXME TAG_NEXT(tags));
 
         su_home_unref(home);
     }

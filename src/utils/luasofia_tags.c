@@ -74,10 +74,15 @@ int luasofia_tags_taglist_to_table(lua_State *L, tagi_t* tags)
     tag_type_t t_tag = NULL;
     tag_value_t value;
 
+    t_tag = tags[i].t_tag;
     lua_createtable(L, TAGS_LIST_SIZE, 0);
-    while(tags[i].t_tag) {
-        t_tag = tags[i].t_tag;
+    while(t_tag != NULL) {
+        /* FIXME: name and value */
         value = tags[i++].t_value;
+        lua_pushstring(L, t_tag->tt_name);
+        lua_pushlightuserdata(L, (void*)value);
+        lua_rawset(L,-3);
+        t_tag = tags[i].t_tag;
     }
     return 1;
 }

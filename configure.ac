@@ -17,7 +17,7 @@ LT_INIT([disable-static])
 #   change to C+1:0:0
 # - If the interface is the same as the previous version, change to C:R+1:A
 
-LT_VERSION=5:0:0
+LT_VERSION=7:0:0
 AC_SUBST(LT_VERSION)
 
 AC_CONFIG_SRCDIR([src/luasofia.c])
@@ -60,21 +60,27 @@ AM_CONDITIONAL([TEST_SOFIA_DEVEL], [test "x$enable_sofia_devel" = xyes])
 # lib: lua
 # ----------------------------------------------------------------------------
 
-PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1, 
+PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1,
 [
-    LUA_CMODULE=`$PKG_CONFIG lua5.1 --variable=INSTALL_CMOD`
+    if test "x$LUA_CMODULE" = x; then
+        LUA_CMODULE=`$PKG_CONFIG lua5.1 --variable=INSTALL_CMOD`
+    fi
     LUA_VERSION="5.1"
 ], 
 [
     PKG_CHECK_MODULES(LUA, lua5.2 >= 5.2,
     [
-        LUA_CMODULE=`$PKG_CONFIG lua5.2 --variable=INSTALL_CMOD`
+        if test "x$LUA_CMODULE" = x; then
+            LUA_CMODULE=`$PKG_CONFIG lua5.2 --variable=INSTALL_CMOD`
+        fi
         LUA_VERSION="5.2"
     ],
     [
         PKG_CHECK_MODULES(LUA, lua >= 5.1,
         [
-            LUA_CMODULE=`$PKG_CONFIG lua --variable=INSTALL_CMOD`
+            if test "x$LUA_CMODULE" = x; then
+                LUA_CMODULE=`$PKG_CONFIG lua --variable=INSTALL_CMOD`
+            fi
             LUA_VERSION=`$PKG_CONFIG lua --variable=major_version`
         ])
     ])

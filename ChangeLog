@@ -1,4 +1,7 @@
 
+2010-10-06  Paulo Pizarro <paulo.pizarro@gmail.com>
+	* changed configure.ac to use LUA_CMODULE defined.
+
 2010-08-26  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* implemented function 'get_tags' on the module 'su'.
 
