@@ -62,25 +62,16 @@ AM_CONDITIONAL([TEST_SOFIA_DEVEL], [test "x$enable_sofia_devel" = xyes])
 
 PKG_CHECK_MODULES(LUA, lua5.1 >= 5.1,
 [
-    if test "x$LUA_CMODULE" = x; then
-        LUA_CMODULE=`$PKG_CONFIG lua5.1 --variable=INSTALL_CMOD`
-    fi
     LUA_VERSION="5.1"
 ], 
 [
     PKG_CHECK_MODULES(LUA, lua5.2 >= 5.2,
     [
-        if test "x$LUA_CMODULE" = x; then
-            LUA_CMODULE=`$PKG_CONFIG lua5.2 --variable=INSTALL_CMOD`
-        fi
         LUA_VERSION="5.2"
     ],
     [
         PKG_CHECK_MODULES(LUA, lua >= 5.1,
         [
-            if test "x$LUA_CMODULE" = x; then
-                LUA_CMODULE=`$PKG_CONFIG lua --variable=INSTALL_CMOD`
-            fi
             LUA_VERSION=`$PKG_CONFIG lua --variable=major_version`
         ])
     ])
@@ -90,12 +81,7 @@ if test "x$LUA_VERSION" = x; then
     LUA_VERSION="5.1"
 fi
 
-if test "x$LUA_CMODULE" = x; then
-    LUA_CMODULE="$libdir/lua/$LUA_VERSION"
-fi
-
 AC_SUBST(LUA_CFLAGS)
-AC_SUBST(LUA_CMODULE)
 AC_SUBST(LUA_VERSION)
 
 # Create files
