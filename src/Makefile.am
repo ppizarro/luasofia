@@ -1,10 +1,10 @@
-
+LUA_CMODULE = @libdir@/lua/@LUA_VERSION@
 
 lib_LTLIBRARIES = liblua@LUA_VERSION@-sofia.la liblua@LUA_VERSION@-sofia-glib.la
 
 liblua@LUA_VERSION@_sofia_la_CFLAGS = -Werror -Wall $(SOFIA_SIP_UA_CFLAGS) $(LUA_CFLAGS) -I@includedir@
 
-liblua@LUA_VERSION@_sofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) $(LUA_LIBS) -version-info @LT_VERSION@
+liblua@LUA_VERSION@_sofia_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_LIBS) -version-info @LT_VERSION@
 
 liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 	luasofia.h \
@@ -71,7 +71,7 @@ liblua@LUA_VERSION@_sofia_la_SOURCES = luasofia.c \
 
 liblua@LUA_VERSION@_sofia_glib_la_CFLAGS = -Wall $(SOFIA_SIP_UA_GLIB_CFLAGS) $(LUA_CFLAGS) -I@includedir@
 
-liblua@LUA_VERSION@_sofia_glib_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_GLIB_LIBS) $(LUA_LIBS) -version-info @LT_VERSION@
+liblua@LUA_VERSION@_sofia_glib_la_LDFLAGS = -L@libdir@ $(SOFIA_SIP_UA_GLIB_LIBS) -version-info @LT_VERSION@
 
 liblua@LUA_VERSION@_sofia_glib_la_LIBADD = liblua@LUA_VERSION@-sofia.la
 
@@ -80,11 +80,11 @@ liblua@LUA_VERSION@_sofia_glib_la_SOURCES = su_glib/luasofia_su_glib.c \
         su_glib/luasofia_su_glib_root.c
 
 install-exec-hook:
-	mkdir -p @LUA_CMODULE@/sofia
-	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia.so @LUA_CMODULE@/sofia.so
-	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia-glib.so @LUA_CMODULE@/sofia/glib.so
+	mkdir -p ${LUA_CMODULE}/sofia
+	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia.so ${LUA_CMODULE}/sofia.so
+	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia-glib.so ${LUA_CMODULE}/sofia/glib.so
 
 uninstall-hook:
-	rm -f @LUA_CMODULE@/sofia.so
-	rm -rf @LUA_CMODULE@/sofia
+	rm -f ${LUA_CMODULE}/sofia.so
+	rm -rf ${LUA_CMODULE}/sofia
 

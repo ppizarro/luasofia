@@ -1,3 +1,6 @@
+2011-02-21 Tiago Katcipis <tiago.katcipis@gmail.com>
+	* not linking lua core anymore (potential source of bugs).
+	* we no longer force installation of files into Lua's default libdir. We use configured prefix instead
 
 2010-10-06  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* changed configure.ac to use LUA_CMODULE defined.
