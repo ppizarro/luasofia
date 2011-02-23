@@ -2,7 +2,7 @@ package="LuaSofia"
 version="0.1.7-1"
 source = {
    url = "http://downloads.sourceforge.net/project/luasofia/luasofia-0.1.7.tar.gz",
-   md5 = "TODO",
+   md5 = "d40806ee567dfed35a21226569e6ced2",
 }
 description = {
    summary  = "LuaSofia is a Lua binding of Sofia-Sip library",
@@ -21,6 +21,6 @@ dependencies = {
 
 build = {
    type = "command",
-   build_command = "./configure --prefix=$(PREFIX) && make",
+   build_command = "LUA_CMODULE=$(LUA_LIBDIR) ./configure --prefix=$(PREFIX) && make",
    install_command = "make install",
 }
