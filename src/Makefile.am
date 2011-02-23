@@ -1,4 +1,4 @@
-LUA_CMODULE = @libdir@/lua/@LUA_VERSION@
+
 
 lib_LTLIBRARIES = liblua@LUA_VERSION@-sofia.la liblua@LUA_VERSION@-sofia-glib.la
 
@@ -80,11 +80,11 @@ liblua@LUA_VERSION@_sofia_glib_la_SOURCES = su_glib/luasofia_su_glib.c \
         su_glib/luasofia_su_glib_root.c
 
 install-exec-hook:
-	mkdir -p ${LUA_CMODULE}/sofia
-	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia.so ${LUA_CMODULE}/sofia.so
-	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia-glib.so ${LUA_CMODULE}/sofia/glib.so
+	mkdir -p @LUA_CMODULE@/sofia
+	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia.so @LUA_CMODULE@/sofia.so
+	ln -s -f @libdir@/liblua@LUA_VERSION@-sofia-glib.so @LUA_CMODULE@/sofia/glib.so
 
 uninstall-hook:
-	rm -f ${LUA_CMODULE}/sofia.so
-	rm -rf ${LUA_CMODULE}/sofia
+	rm -f @LUA_CMODULE@/sofia.so
+	rm -rf @LUA_CMODULE@/sofia
 
