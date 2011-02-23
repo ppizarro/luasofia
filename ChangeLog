@@ -1,6 +1,6 @@
 2011-02-23  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.7
-	* changed luarocks to support 0.1.7
+	* adding rockspec for the 0.1.7 release 
 
 2011-02-21 Tiago Katcipis <tiago.katcipis@gmail.com>
 	* not linking lua core anymore (potential source of bugs).
