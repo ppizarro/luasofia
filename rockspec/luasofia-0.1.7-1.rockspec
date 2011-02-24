@@ -21,6 +21,6 @@ dependencies = {
 
 build = {
    type = "command",
-   build_command = "LUA_CMODULE=$(LUA_LIBDIR) ./configure --prefix=$(PREFIX) && make",
+   build_command = "LUA_CMODULE=$(PREFIX)/lib ./configure --prefix=$(PREFIX) --libdir=$(PREFIX)/lib_version && make",
    install_command = "make install",
 }

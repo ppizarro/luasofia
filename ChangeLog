@@ -1,5 +1,6 @@
 2011-02-23  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.8devel
+	* fixed rockspec for the 0.1.7 release 
 
 2011-02-23  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.7
