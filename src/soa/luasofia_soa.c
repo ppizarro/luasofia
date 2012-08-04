@@ -107,9 +107,7 @@ static const luasofia_tag_reg_t soa_tags[] = {
     { "SOATAG_HOLD", soatag_hold },
     { "SOATAG_ORDERED_USER", soatag_ordered_user },
     { "SOATAG_REUSE_REJECTED", soatag_reuse_rejected },
-#ifdef HAVE_SOFIA_DEVEL
     { "SOATAG_DELAYED_OFFER_ENABLE", soatag_delayed_offer_enable },
-#endif
     { NULL, NULL}
 };
 

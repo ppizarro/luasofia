@@ -1,7 +1,7 @@
 ## Process this file with autoconf to produce a configure script.
-AC_INIT([LuaSofia], [0.1.8devel], [luasofia-devel@lists.sourceforge.net], luasofia)
+AC_INIT([LuaSofia], [0.1.9], [luasofia-devel@lists.sourceforge.net], luasofia)
 
-AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_MACRO_DIR([m4macros])
 
 AC_CONFIG_AUX_DIR(build-aux)
 
@@ -9,16 +9,18 @@ AM_INIT_AUTOMAKE
 
 LT_INIT([disable-static])
 
-# Before making a release, the LT_VERSION string should be modified.
-# The string is of the form C:R:A.
-# - If interfaces have been changed or added, but binary compatibility has
-#   been preserved, change to C+1:0:A+1
-# - If binary compatibility has been broken (eg removed or changed interfaces)
-#   change to C+1:0:0
-# - If the interface is the same as the previous version, change to C:R+1:A
+# Increment on interface addition. Reset on removal.
+LUASOFIA_AGE=0
 
-LT_VERSION=8:0:0
-AC_SUBST(LT_VERSION)
+# Increment on interface add, remove, or change.
+LUASOFIA_CURRENT=8
+
+# Increment on source change. Reset when CURRENT changes.
+LUASOFIA_REVISION=0
+
+AC_SUBST(LUASOFIA_CURRENT)
+AC_SUBST(LUASOFIA_REVISION)
+AC_SUBST(LUASOFIA_AGE)
 
 AC_CONFIG_SRCDIR([src/luasofia.c])
 
@@ -33,7 +35,7 @@ PKG_PROG_PKG_CONFIG
 
 # lib: sofia-sip-ua
 # ----------------------------------------------------------------------------
-PKG_CHECK_MODULES(SOFIA_SIP_UA, sofia-sip-ua >= 1.12.10,
+PKG_CHECK_MODULES(SOFIA_SIP_UA, sofia-sip-ua >= 1.12.11,
 [
     SOFIA_SIP_UA_VERSION=`pkg-config sofia-sip-ua --modversion`
 ])
@@ -43,19 +45,10 @@ AC_SUBST(SOFIA_SIP_UA_VERSION)
 
 # lib: sofia-sip-ua-glib
 # ----------------------------------------------------------------------------
-PKG_CHECK_MODULES(SOFIA_SIP_UA_GLIB, sofia-sip-ua-glib >= 1.12.10)
+PKG_CHECK_MODULES(SOFIA_SIP_UA_GLIB, sofia-sip-ua-glib >= 1.12.11)
 AC_SUBST(SOFIA_SIP_UA_GLIB_LIBS)
 AC_SUBST(SOFIA_SIP_UA_GLIB_CFLAGS)
 AC_SUBST(SOFIA_SIP_UA_GLIB_VERSION)
-
-AC_ARG_ENABLE(sofia_devel,
-[  --enable-sofia-devel          enable sofia devel support [[disabled]]],
- , enable_sofia_devel=no)
-
-if test x$enable_sofia_devel = xyes ; then
-  AC_DEFINE([HAVE_SOFIA_DEVEL], 1, [Define to 1 if we use sofia devel library])
-fi
-AM_CONDITIONAL([TEST_SOFIA_DEVEL], [test "x$enable_sofia_devel" = xyes])
 
 # lib: lua
 # ----------------------------------------------------------------------------
