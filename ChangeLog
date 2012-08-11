@@ -1,3 +1,9 @@
+2012-08-03  Tiago Katcippis <tiago.katcipis@gmail.com>
+	* changing the sofia-sip dependency to version 1.12.11
+	* everything that was optional via the --enable-sofia-devel option
+	is now enabled as default.
+	* removing the --enable-sofia-devel option from configure.ac
+
 2011-02-23  Paulo Pizarro <paulo.pizarro@gmail.com>
 	* configure.ac: Version 0.1.8devel
 	* fixed rockspec for the 0.1.7 release 
