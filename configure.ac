@@ -1,5 +1,5 @@
 ## Process this file with autoconf to produce a configure script.
-AC_INIT([LuaSofia], [0.1.9], [luasofia-devel@lists.sourceforge.net], luasofia)
+AC_INIT([LuaSofia], [0.1.8], [luasofia-devel@lists.sourceforge.net], luasofia)
 
 AC_CONFIG_MACRO_DIR([m4macros])
 
@@ -10,10 +10,10 @@ AM_INIT_AUTOMAKE
 LT_INIT([disable-static])
 
 # Increment on interface addition. Reset on removal.
-LUASOFIA_AGE=0
+LUASOFIA_AGE=1
 
 # Increment on interface add, remove, or change.
-LUASOFIA_CURRENT=8
+LUASOFIA_CURRENT=9
 
 # Increment on source change. Reset when CURRENT changes.
 LUASOFIA_REVISION=0
