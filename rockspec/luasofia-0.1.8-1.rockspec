@@ -2,7 +2,7 @@ package="LuaSofia"
 version="0.1.8-1"
 source = {
    url = "http://downloads.sourceforge.net/project/luasofia/luasofia-0.1.8.tar.gz",
-   md5 = "",
+   md5 = "8ab01109cec9a0d0d775e1d3090f571d",
 }
 description = {
    summary  = "LuaSofia is a Lua binding of Sofia-Sip library",
