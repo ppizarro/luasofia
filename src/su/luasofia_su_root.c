@@ -51,7 +51,6 @@ int luasofia_su_root_create(lua_State *L)
 static int luasofia_su_root_destroy(lua_State *L)
 {
     luasofia_su_root_t *lroot = NULL;
-
     /* get and check first argument (should be a root) */
     lroot = (luasofia_su_root_t*)luaL_checkudata(L, -1, SU_ROOT_MTABLE);
 
@@ -61,6 +60,7 @@ static int luasofia_su_root_destroy(lua_State *L)
     }
     return 0;
 }
+
 
 static int luasofia_su_root_register(lua_State *L)
 {
@@ -119,7 +119,21 @@ static int luasofia_su_root_threading(lua_State *L)
 
 static int luasofia_su_root_step(lua_State *L)
 {
-    return 0;
+    int tout = 0;
+
+    luasofia_su_root_t *lroot = NULL;
+   
+    /* get tout param */
+    tout = lua_tointeger(L, -1);
+
+    /* get and check first argument (should be a root) */
+    lroot = (luasofia_su_root_t*)luaL_checkudata(L, -2, SU_ROOT_MTABLE);
+
+    tout = su_root_step(lroot->root, tout);
+
+    lua_pushinteger(L, tout);
+    return 1;
+
 }
 
 static int luasofia_su_root_get_max_defer(lua_State *L)
@@ -154,6 +168,7 @@ static const luaL_Reg su_root_meths[] = {
     {"get_max_defer", luasofia_su_root_get_max_defer },
     {"set_max_defer", luasofia_su_root_set_max_defer },
     {"task", luasofia_su_root_task },
+    {"destroy", luasofia_su_root_destroy },
     {"__gc", luasofia_su_root_destroy },
     {NULL, NULL}
 };
