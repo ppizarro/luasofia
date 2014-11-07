@@ -48,6 +48,7 @@
 #include "luasofia_sip_authenticate_private.h"
 #include "luasofia_sip_subscription_state_private.h"
 #include "luasofia_sip_msg_payload_private.h"
+#include "luasofia_sip_msg_generic_private.h"
 
 static int luasofia_sip_status_phrase(lua_State *L)
 {
@@ -73,6 +74,7 @@ static const luaL_Reg sip_lib[] = {
     {"get_proxy_authenticate",       luasofia_sip_get_proxy_authenticate },
     {"get_proxy_subscription_state", luasofia_sip_get_proxy_subscription_state },
     {"get_proxy_msg_payload",        luasofia_sip_get_proxy_msg_payload },
+    {"get_proxy_msg_generic",        luasofia_sip_get_proxy_msg_generic },
     {"status_phrase",                luasofia_sip_status_phrase },
     {NULL, NULL}
 };
@@ -259,6 +261,7 @@ int luaopen_sofia_sip(lua_State *L)
     luasofia_proxy_register_info_table(L, SIP_AUTHENTICATE_TABLE_NAME, sip_authenticate_info);
     luasofia_proxy_register_info_table(L, SIP_SUBSCRIPTION_STATE_TABLE_NAME, sip_subscription_state_info);
     luasofia_proxy_register_info_table(L, SIP_MSG_PAYLOAD_TABLE_NAME, sip_msg_payload_info);
+    luasofia_proxy_register_info_table(L, SIP_MSG_GENERIC_TABLE_NAME, sip_msg_generic_info);
 
     luasofia_const_register_constants(L, sip_constants);
 
