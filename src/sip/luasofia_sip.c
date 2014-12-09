@@ -36,6 +36,7 @@
 #include "luasofia_sip_addr_private.h"
 #include "luasofia_sip_contact_private.h"
 #include "luasofia_sip_request_private.h"
+#include "luasofia_sip_cseq_private.h"
 #include "luasofia_sip_via_private.h"
 #include "luasofia_sip_private.h"
 #include "luasofia_sip_status_private.h"
@@ -63,6 +64,7 @@ static const luaL_Reg sip_lib[] = {
     {"get_proxy",                    luasofia_sip_get_proxy },
     {"get_proxy_addr",               luasofia_sip_get_proxy_addr },
     {"get_proxy_contact",            luasofia_sip_get_proxy_contact },
+    {"get_proxy_cseq",               luasofia_sip_get_proxy_cseq },
     {"get_proxy_request",            luasofia_sip_get_proxy_request },
     {"get_proxy_via",                luasofia_sip_get_proxy_via },
     {"get_proxy_status",             luasofia_sip_get_proxy_status },
@@ -251,6 +253,7 @@ int luaopen_sofia_sip(lua_State *L)
     luasofia_proxy_register_info_table(L, SIP_TABLE_NAME, sip_info);    
     luasofia_proxy_register_info_table(L, SIP_ADDR_TABLE_NAME, sip_addr_info);    
     luasofia_proxy_register_info_table(L, SIP_CONTACT_TABLE_NAME, sip_contact_info);    
+    luasofia_proxy_register_info_table(L, SIP_CSEQ_TABLE_NAME, sip_cseq_info);    
     luasofia_proxy_register_info_table(L, SIP_REQUEST_TABLE_NAME, sip_request_info);
     luasofia_proxy_register_info_table(L, SIP_VIA_TABLE_NAME, sip_via_info);
     luasofia_proxy_register_info_table(L, SIP_STATUS_TABLE_NAME, sip_status_info);
