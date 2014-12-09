@@ -25,7 +25,7 @@
 #define SIP_REQUEST_TABLE_NAME "luasofia_sip_request_t"
 
 static const luasofia_proxy_info_t sip_request_info[] = {
-{"rq_method",      luasofia_proxy_get_address, offsetof(sip_request_t, rq_method),     0},
+{"rq_method",      luasofia_proxy_get_int,     offsetof(sip_request_t, rq_method),     0},
 {"rq_method_name", luasofia_proxy_get_string,  offsetof(sip_request_t, rq_method_name),0},
 {"rq_url",         luasofia_proxy_get_address, offsetof(sip_request_t, rq_url),        0},
 {"rq_version",     luasofia_proxy_get_string,  offsetof(sip_request_t, rq_version), 0},
