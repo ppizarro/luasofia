@@ -26,11 +26,14 @@
 #include <sofia-sip/su_tag_io.h>
 #include <sofia-sip/su_alloc.h>
 #include <sofia-sip/nua_tag.h>
+#include <sofia-sip/nua.h>
 
 #include <string.h>
 
 #include "utils/luasofia_tags.h"
 #include "utils/luasofia_log.h"
+
+#include "nua/luasofia_nua.h"
 
 #define TAGS_LIST_SIZE 32
 
@@ -123,7 +126,6 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
             lua_pop(L, 1);
             continue;
         }
-        s = lua_tostring(L, -1);
 
         /* lookup key in the tag table and push tag_type_t */
         lua_pushvalue(L, -2);
@@ -131,9 +133,26 @@ tagi_t* luasofia_tags_table_to_taglist(lua_State *L, int index, su_home_t *home)
         t_tag = lua_touserdata(L, -1);
         lua_pop(L, 1);
 
-        if(t_scan(t_tag, home, s, &return_value) == -1) {
-            su_free(home, tags);
-            luaL_error(L, "Tag '%s' doesn't exist!", lua_tostring(L, -2));
+        if (lua_isuserdata(L,-1)) {
+            if (!strcmp(t_tag->tt_ns,"nua") && !strcmp(t_tag->tt_name,"with")) {
+                luasofia_nua_t *lnua = (luasofia_nua_t*)luaL_checkudata(L, -1, NUA_MTABLE);
+                if (lnua) {
+                    return_value = (tag_value_t) tag_ptr_v(nua_current_request(lnua->nua));
+                } else {
+                    su_free(home, tags);
+                    luaL_error(L, "Tag '%s' has userdata and can't be converted with nua_current_request", lua_tostring(L, -2));
+                }
+            } else {
+                su_free(home, tags);
+                luaL_error(L, "Tag '%s' has userdata and conversion is unknown", lua_tostring(L, -2));
+            }
+
+        } else {
+            s = lua_tostring(L, -1);
+            if(t_scan(t_tag, home, s, &return_value) == -1) {
+                su_free(home, tags);
+                luaL_error(L, "Tag '%s' doesn't exist!", lua_tostring(L, -2));
+            }
         }
 
         tags[i].t_tag = t_tag;
