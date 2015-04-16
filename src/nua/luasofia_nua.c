@@ -30,24 +30,18 @@
 #include "utils/luasofia_const.h"
 #include "utils/luasofia_log.h"
 #include "nua/luasofia_nua_handle.h"
+#include "nua/luasofia_nua.h"
 
 #include <sofia-sip/nua.h>
 #include <sofia-sip/nua_tag.h>
 #include <sofia-sip/soa_tag.h>
 #include <sofia-sip/su_tag_io.h>
 
-typedef struct luasofia_nua_s luasofia_nua_t;
-
-#define NUA_MTABLE              "luasofia_nua_t"
 
 #define NUA_EVENT_DEFAULT_INDEX -10
 
 #define ENV_CALLBACK_INDEX      1
 #define ENV_MAGIC_INDEX         2
-
-struct luasofia_nua_s {
-    nua_t *nua;
-};
 
 static int luasofia_nua_set_params(lua_State *L)
 {
